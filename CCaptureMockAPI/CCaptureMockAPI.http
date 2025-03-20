@@ -1,0 +1,6 @@
+@CCaptureMockAPI_HostAddress = http://localhost:5152
+
+GET {{CCaptureMockAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
