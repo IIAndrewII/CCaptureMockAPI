@@ -1,15 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 using CCaptureMockAPI.Models;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
+
 
 namespace CCaptureMockApi.Controllers
 {
     [ApiController]
     [Route("ProcessDocument")]
-    [Authorize]
+    //[Authorize]
     public class DocumentController : ControllerBase
     {
+        //private readonly IConnection _connection;
+        //private readonly IModel _channel;
+        //private const string QueueName = "CCaptureQueue";
+
+        //public DocumentController()
+        //{
+        //    var factory = new ConnectionFactory { HostName = "localhost" }; // Update as needed
+        //    _connection = factory.CreateConnection();
+        //    _channel = _connection.CreateModel();
+        //    _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        //}
+
         [HttpPost("StartDocumentVerification")]
         public IActionResult StartDocumentVerification(
             [FromHeader] string sourceSystem,
@@ -20,21 +39,29 @@ namespace CCaptureMockApi.Controllers
             [FromHeader] string userCode,
             [FromBody] DocumentRequest request)
         {
-            if (request == null)
-                return BadRequest(new ErrorResponse { Code = "-1", Message = "Invalid input" });
-
-            // Simulate file processing and return a response
-            var response = new
+            if (request == null || request.Documents == null || request.Documents.Count == 0)
             {
-                BatchClassName = "Allianz Modules",
-                Documents = new List<object>
-                {
-                    new { FileName = "File1.ext", Buffer = "/9j/4AAQSkZJRgABAQEAeAB4AAD/4RD6RXhpZgAATU0AKgAAAA[...]" },
-                    new { FileName = "File2.ext", Buffer = "/9j/4AAQSkZJRgABAQEAeAB4AAD/4RD6RXhpZgAATU0AKgAAAA[...]" }
-                }
-            };
+                return BadRequest(new { errors = new { Documents = new List<string> { "Documents list cannot be empty." } } });
+            }
 
-            return Ok(response);
+            // Validate PageType only for "Allianz Transfers" batch class
+            if (request.BatchClassName == "Allianz Transfers")
+            {
+                foreach (var doc in request.Documents)
+                {
+                    if (string.IsNullOrEmpty(doc.PageType))
+                    {
+                        return BadRequest(new { errors = new { PageType = "PageType is required for Allianz Transfers batch class." } });
+                    }
+                }
+            }
+
+            // Simulating message queuing
+            var message = JsonSerializer.Serialize(request);
+            Console.WriteLine($"Simulated Queue Message: {message}");
+
+
+            return Ok(new { RequestGuid = Guid.NewGuid().ToString() });
         }
 
         [HttpGet("ReadDocumentVerification")]
@@ -50,26 +77,9 @@ namespace CCaptureMockApi.Controllers
             if (string.IsNullOrWhiteSpace(requestGuid))
                 return BadRequest(new ErrorResponse { Code = "-1", Message = "Missing requestGuid" });
 
-            return Ok(new DocumentResponse
+            return Ok(new
             {
-                Status = 200,
-                ExecutionDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss"),
-                Batch = new Batch
-                {
-                    Id = 1,
-                    Name = requestGuid,
-                    CreationDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss"),
-                    CloseDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss"),
-                    BatchClass = new BatchClass { Name = "BATCH_CLASS" },
-                    BatchFields = new System.Collections.Generic.List<BatchField>
-                    {
-                        new BatchField { Name = "Field1", Value = "Value1", Confidence = 0.99 }
-                    },
-                    BatchStates = new System.Collections.Generic.List<BatchState>
-                    {
-                        new BatchState { Value = "OCR", TrackDate = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss"), Workstation = "WEB_SERVER" }
-                    }
-                }
+                RequestGuid = requestGuid
             });
         }
     }
