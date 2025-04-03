@@ -1,11 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using CCaptureMockAPI.Models;
+using CCaptureMockAPI.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Configure the DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // Add Swagger/OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
@@ -48,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Add Authentication BEFORE app.Build()
+// Add Authentication
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
@@ -61,7 +69,6 @@ builder.Services.AddAuthentication("Bearer")
             ValidateAudience = false
         };
     });
-;
 
 var app = builder.Build();
 

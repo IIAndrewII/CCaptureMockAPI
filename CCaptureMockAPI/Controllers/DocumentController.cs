@@ -18,12 +18,12 @@ namespace CCaptureMockApi.Controllers
     //[Authorize]
     public class DocumentController : ControllerBase
     {
-        //private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        //public DocumentController(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
+        public DocumentController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
 
         //[HttpPost("ConvertFileToBase64")]
@@ -140,9 +140,9 @@ namespace CCaptureMockApi.Controllers
                 CreatedAt = DateTime.UtcNow
             };
 
-            //// Save the request to the database
-            //await _context.DocumentVerificationRequests.AddAsync(verificationRequest);
-            //await _context.SaveChangesAsync();
+            // Save the request to the database
+            await _context.DocumentVerificationRequests.AddAsync(verificationRequest);
+            await _context.SaveChangesAsync();
 
             // Simulate message queuing
             var message = JsonSerializer.Serialize(request);
