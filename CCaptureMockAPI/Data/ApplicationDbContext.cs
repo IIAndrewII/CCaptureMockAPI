@@ -8,7 +8,9 @@ namespace CCaptureMockAPI.Swagger
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<DocumentVerificationRequest> DocumentVerificationRequests { get; set; }
-        public DbSet<DocumentVerificationResponse> DocumentVerificationResponses { get; set; }  // ADD THIS LINE
+        public DbSet<DocumentVerificationResponse> DocumentVerificationResponses { get; set; }
+        public virtual DbSet<AppCredential> AppCredentials { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

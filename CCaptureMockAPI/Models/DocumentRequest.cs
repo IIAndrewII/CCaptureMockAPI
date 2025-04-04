@@ -27,16 +27,4 @@ namespace CCaptureMockAPI.Models
         [Required]
         public string Buffer { get; set; } // Base64 string
     }
-
-
-    public class DocumentVerificationRequest
-    {
-        public int Id { get; set; }
-        public Guid RequestGuid { get; set; }
-        public string BatchClassName { get; set; }
-        public string Fields { get; set; }  // JSON string of fields
-        public string Documents { get; set; }  // JSON string of documents
-        public string FilePath { get; set; }  // Path(s) to files
-        public DateTime CreatedAt { get; set; }
-    }
 }
