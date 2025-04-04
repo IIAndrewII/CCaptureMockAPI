@@ -9,13 +9,14 @@ using CCaptureMockAPI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace CCaptureMockApi.Controllers
 {
     [ApiController]
     [Route("ProcessDocument")]
-    //[Authorize]
+    [Authorize]
     public class DocumentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -241,13 +242,13 @@ namespace CCaptureMockApi.Controllers
 
         [HttpGet("ReadDocumentVerification")]
         public async Task<IActionResult> ReadDocumentVerification(
-    [FromHeader] string sourceSystem,
-    [FromHeader] string channel,
-    [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
-    [FromHeader] string sessionID,
-    [FromHeader] string messageID,
-    [FromHeader] string userCode,
-    [FromQuery] string requestGuid)  
+        [FromHeader] string sourceSystem,
+        [FromHeader] string channel,
+        [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+        [FromHeader] string sessionID,
+        [FromHeader] string messageID,
+        [FromHeader] string userCode,
+        [FromQuery] string requestGuid)  
         {
             if (string.IsNullOrWhiteSpace(requestGuid))
                 return BadRequest(new { Code = "-1", Message = "Missing requestGuid" });
