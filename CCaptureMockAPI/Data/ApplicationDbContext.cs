@@ -8,6 +8,12 @@ namespace CCaptureMockAPI.Swagger
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<DocumentVerificationRequest> DocumentVerificationRequests { get; set; }
+        public DbSet<DocumentVerificationResponse> DocumentVerificationResponses { get; set; }  // ADD THIS LINE
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DocumentVerificationResponse>().HasKey(d => d.RequestGuid);
+        }
     }
 
 }

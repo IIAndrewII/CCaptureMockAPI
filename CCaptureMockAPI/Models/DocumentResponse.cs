@@ -1,4 +1,6 @@
-﻿namespace CCaptureMockAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CCaptureMockAPI.Models
 {
     public class DocumentResponse
     {
@@ -35,4 +37,14 @@
         public string TrackDate { get; set; }
         public string Workstation { get; set; }
     }
+
+    public class DocumentVerificationResponse
+    {
+        [Key]
+        public string RequestGuid { get; set; }
+
+        [Required]
+        public string ResponseJson { get; set; }
+    }
+
 }

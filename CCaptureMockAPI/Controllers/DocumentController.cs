@@ -154,23 +154,112 @@ namespace CCaptureMockApi.Controllers
 
 
 
+    //    [HttpGet("ReadDocumentVerification")]
+    //    public IActionResult ReadDocumentVerification(
+    //[FromHeader] string sourceSystem,
+    //[FromHeader] string channel,
+    //[FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+    //[FromHeader] string sessionID,
+    //[FromHeader] string messageID,
+    //[FromHeader] string userCode,
+    //[FromQuery] string requestGuid)
+    //    {
+    //        if (string.IsNullOrWhiteSpace(requestGuid))
+    //            return BadRequest(new { Code = "-1", Message = "Missing requestGuid" });
+
+    //        return Ok(new
+    //        {
+    //            Batch = new
+    //            {
+    //                Id = 8765,
+    //                Name = "7758334c05f54e598f39f80fc3a8723dc531080867d64f8599131448a5697b02",
+    //                CreationDate = "2024-11-22T09:05:13.2311317+01:00",
+    //                CloseDate = "2024-11-22T09:05:16.8028944+01:00",
+    //                BatchClass = new { Name = "ALLIANZ" },
+    //                BatchFields = new[]
+    //                {
+    //            new { Name = "NAME_IN", Value = "ALESSANDRO", Confidence = 0 },
+    //            new { Name = "SURNAME_IN", Value = "GAIA", Confidence = 0 },
+    //            new { Name = "CF_IN", Value = "GAILSN70P09E463H", Confidence = 0 },
+    //            new { Name = "NAME_OUT", Value = "ALESSANDRO", Confidence = 1 },
+    //            new { Name = "SURNAME_OUT", Value = "GAIA", Confidence = 1 },
+    //            new { Name = "EXP_DATE_OUT", Value = "2028/11/28", Confidence = 0 }
+    //        },
+    //                Documents = new[]
+    //                {
+    //            new
+    //            {
+    //                Name = "pag1.png",
+    //                Pages = new[]
+    //                {
+    //                    new
+    //                    {
+    //                        FileName = "000001.png",
+    //                        PageTypes = new[] { new { Name = "CIE Fronte", Confidence = 0.95180047 } },
+    //                        Sections = (object)null
+    //                    }
+    //                },
+    //                DocumentClass = new { Name = "CIE" },
+    //                DocumentFields = Array.Empty<object>(),
+    //                Signatures = Array.Empty<object>()
+    //            },
+    //            new
+    //            {
+    //                Name = "pag2.png",
+    //                Pages = new[]
+    //                {
+    //                    new
+    //                    {
+    //                        FileName = "000002.png",
+    //                        PageTypes = new[] { new { Name = "CIE Retro", Confidence = 0.9265266 } },
+    //                        Sections = (object)null
+    //                    }
+    //                },
+    //                DocumentClass = new { Name = "CIE" },
+    //                DocumentFields = Array.Empty<object>(),
+    //                Signatures = Array.Empty<object>()
+    //            }
+    //        },
+    //                BatchStates = new[]
+    //                {
+    //            new { Value = "Start", TrackDate = "2024-11-22T09:05:13.0357384+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "Create", TrackDate = "2024-11-22T09:05:13.2311317+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "OCR", TrackDate = "2024-11-22T09:05:15.6735245+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "Expression Match", TrackDate = "2024-11-22T09:05:16.6689351+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "Classification Page Types", TrackDate = "2024-11-22T09:05:16.7008192+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "Fields Assignment", TrackDate = "2024-11-22T09:05:16.7485408+01:00", Workstation = "SPW-MSXIWEBSVB" },
+    //            new { Value = "Close", TrackDate = "2024-11-22T09:05:16.8028944+01:00", Workstation = "SPW-MSXIWEBSVB" }
+    //        }
+    //            },
+    //            Status = 0,
+    //            ExecutionDate = "2024-11-22T09:05:16.8650052+01:00",
+    //            ErrorMessage = (object)null
+    //        });
+    //    }
+
+
+
         [HttpGet("ReadDocumentVerification")]
-        public IActionResult ReadDocumentVerification(
-            [FromHeader] string sourceSystem,
-            [FromHeader] string channel,
-            [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
-            [FromHeader] string sessionID,
-            [FromHeader] string messageID,
-            [FromHeader] string userCode,
-            [FromQuery] string requestGuid)
+        public async Task<IActionResult> ReadDocumentVerification(
+    [FromHeader] string sourceSystem,
+    [FromHeader] string channel,
+    [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+    [FromHeader] string sessionID,
+    [FromHeader] string messageID,
+    [FromHeader] string userCode,
+    [FromQuery] string requestGuid)  
         {
             if (string.IsNullOrWhiteSpace(requestGuid))
-                return BadRequest(new ErrorResponse { Code = "-1", Message = "Missing requestGuid" });
+                return BadRequest(new { Code = "-1", Message = "Missing requestGuid" });
 
-            return Ok(new
-            {
-                RequestGuid = requestGuid
-            });
+            var responseRecord = await _context.DocumentVerificationResponses
+                .FindAsync(requestGuid);  // Use primary key lookup
+
+            if (responseRecord == null)
+                return NotFound(new { Code = "-2", Message = "No response found for given requestGuid" });
+
+            return Content(responseRecord.ResponseJson, "application/json");
         }
+
     }
 }
