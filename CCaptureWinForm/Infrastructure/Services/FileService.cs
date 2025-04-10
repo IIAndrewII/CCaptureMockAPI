@@ -11,13 +11,33 @@ namespace CCaptureWinForm.Infrastructure.Services
     {
         public string ReadFileAsBase64(string filePath)
         {
-            byte[] fileBytes = File.ReadAllBytes(filePath);
-            return Convert.ToBase64String(fileBytes);
+            // Validate file exists
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException($"The file was not found: {filePath}");
+            }
+
+            try
+            {
+                byte[] fileBytes = File.ReadAllBytes(filePath);
+                return Convert.ToBase64String(fileBytes);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Error reading file: {ex.Message}", ex);
+            }
         }
 
         public string GetFileName(string filePath)
         {
-            return Path.GetFileName(filePath);
+            try
+            {
+                return Path.GetFileName(filePath);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Invalid file path: {ex.Message}", ex);
+            }
         }
     }
 }

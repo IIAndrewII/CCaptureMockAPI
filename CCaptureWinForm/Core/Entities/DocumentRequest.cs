@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace CCaptureWinForm.Core.Entities
 {
+    public class Field
+    {
+        public string FieldName { get; set; }
+        public string FieldValue { get; set; }
+    }
+
     public class DocumentRequest
     {
         public string BatchClassName { get; set; }
-        public Dictionary<string, string> Fields { get; set; } = new();
-        public List<Document> Documents { get; set; } = new();
+        public List<Field> Fields { get; set; } = new List<Field>
+    {
+        new Field { FieldName = "NAME_IN", FieldValue = "GIUSEPPE" },
+        new Field { FieldName = "SURNAME_IN", FieldValue = "MARUCCIA" },
+        new Field { FieldName = "CF_IN", FieldValue = "MRCGPP58M14E463J" }
+    };
+        public List<Document> Documents { get; set; }
         public string SourceSystem { get; set; }
         public string Channel { get; set; }
         public string InteractionDateTime { get; set; }

@@ -18,6 +18,14 @@ namespace CCaptureWinForm
             var fileService = new FileService();
             _viewModel = new MainViewModel(apiService, fileService);
         }
+        //private void InitializeFieldsGrid()
+        //{
+        //    dataGridViewFields.Columns.Add("Key", "Field Key");
+        //    dataGridViewFields.Columns.Add("Value", "Field Value");
+        //    dataGridViewFields.AllowUserToAddRows = true;
+        //    dataGridViewFields.AllowUserToDeleteRows = true;
+        //    dataGridViewFields.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+        //}
 
         private async void btnGetToken_Click(object sender, EventArgs e)
         {
@@ -42,6 +50,19 @@ namespace CCaptureWinForm
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtFilePath.Text) ||
+                    string.IsNullOrWhiteSpace(txtBatchClassName.Text) ||
+                    string.IsNullOrWhiteSpace(txtPageType.Text) ||
+                    string.IsNullOrWhiteSpace(txtSourceSystem.Text) ||
+                    string.IsNullOrWhiteSpace(txtChannel.Text) ||
+                    string.IsNullOrWhiteSpace(txtSessionID.Text) ||
+                    string.IsNullOrWhiteSpace(txtMessageID.Text) ||
+                    string.IsNullOrWhiteSpace(txtUserCode.Text))
+                {
+                    lblDocumentStatus.Text = "Error: All fields are required.";
+                    lblDocumentStatus.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
                 var requestGuid = await _viewModel.SubmitDocumentAsync(
                     txtFilePath.Text,
                     txtBatchClassName.Text,

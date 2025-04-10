@@ -44,31 +44,42 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string messageId,
             string userCode)
         {
-            var base64Content = _fileService.ReadFileAsBase64(filePath);
-            var fileName = _fileService.GetFileName(filePath);
-
-            var request = new DocumentRequest
+            try
             {
-                BatchClassName = batchClassName,
-                Documents =
+                if (string.IsNullOrWhiteSpace(filePath))
                 {
-                    new Document
-                    {
-                        FileName = fileName,
-                        Buffer = base64Content,
-                        PageType = pageType
-                    }
-                },
-                SourceSystem = sourceSystem,
-                Channel = channel,
-                InteractionDateTime = DateTime.Now.ToString("o"),
-                SessionID = sessionId,
-                MessageID = messageId,
-                UserCode = userCode
-            };
+                    throw new ArgumentException("Please select a file first");
+                }
 
-            _lastRequestGuid = await _apiService.SubmitDocumentAsync(request, _authToken);
-            return _lastRequestGuid;
+                var base64Content = _fileService.ReadFileAsBase64(filePath);
+                var fileName = _fileService.GetFileName(filePath);
+
+                var request = new DocumentRequest
+                {
+                    BatchClassName = batchClassName,
+                    Documents = new List<Document>
+                    {
+                        new Document
+                        {
+                            FileName = fileName,
+                            Buffer = base64Content,
+                            PageType = pageType
+                        }
+                    },
+                    SourceSystem = sourceSystem,
+                    Channel = channel,
+                    InteractionDateTime = DateTime.Now.ToString("o"),
+                    SessionID = sessionId,
+                    MessageID = messageId,
+                    UserCode = userCode
+                };
+                _lastRequestGuid = await _apiService.SubmitDocumentAsync(request, _authToken);
+                return _lastRequestGuid;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Failed to submit document: {ex.Message}", ex);
+            }
         }
 
         public async Task<string> CheckVerificationStatusAsync(
