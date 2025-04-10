@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCaptureMockAPI", "CCaptureMockAPI\CCaptureMockAPI.csproj", "{04FD4BA9-2C7C-4075-B08E-A336D8C36B64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCaptureWinForm", "CCaptureWinForm\CCaptureWinForm.csproj", "{A2AE8E0F-BFDA-4279-A66D-5702B98E628E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04FD4BA9-2C7C-4075-B08E-A336D8C36B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04FD4BA9-2C7C-4075-B08E-A336D8C36B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04FD4BA9-2C7C-4075-B08E-A336D8C36B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04FD4BA9-2C7C-4075-B08E-A336D8C36B64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2AE8E0F-BFDA-4279-A66D-5702B98E628E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2AE8E0F-BFDA-4279-A66D-5702B98E628E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2AE8E0F-BFDA-4279-A66D-5702B98E628E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2AE8E0F-BFDA-4279-A66D-5702B98E628E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F246A9F4-440B-43E7-BD08-6988EF0E08DF}
+	EndGlobalSection
+EndGlobal
