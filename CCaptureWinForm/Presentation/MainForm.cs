@@ -2,6 +2,7 @@ using CCaptureWinForm.Core.Entities;
 using CCaptureWinForm.Infrastructure.Services;
 using CCaptureWinForm.Presentation.ViewModels;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -43,19 +44,21 @@ namespace CCaptureWinForm
         {
             try
             {
-                //if (string.IsNullOrWhiteSpace(txtFilePath.Text) ||
-                //    string.IsNullOrWhiteSpace(txtBatchClassName.Text) ||
-                //    string.IsNullOrWhiteSpace(txtPageType.Text) ||
-                //    string.IsNullOrWhiteSpace(txtSourceSystem.Text) ||
-                //    string.IsNullOrWhiteSpace(txtChannel.Text) ||
-                //    string.IsNullOrWhiteSpace(txtSessionID.Text) ||
-                //    string.IsNullOrWhiteSpace(txtMessageID.Text) ||
-                //    string.IsNullOrWhiteSpace(txtUserCode.Text))
-                //{
-                //    lblDocumentStatus.Text = "Error: All fields are required.";
-                //    lblDocumentStatus.ForeColor = System.Drawing.Color.Red;
-                //    return;
-                //}
+                if (dataGridViewDocuments.RowCount == 0 ||
+                    string.IsNullOrWhiteSpace(txtBatchClassName.Text) ||
+                    string.IsNullOrWhiteSpace(txtSourceSystem.Text) ||
+                    string.IsNullOrWhiteSpace(txtChannel.Text) ||
+                    string.IsNullOrWhiteSpace(txtSessionID.Text) ||
+                    string.IsNullOrWhiteSpace(txtMessageID.Text) ||
+                    string.IsNullOrWhiteSpace(txtUserCode.Text))
+                {
+                    lblDocumentStatus.Text = "Error: All fields are required.";
+                    lblDocumentStatus.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
+                lblDocumentStatus.Text = $"Loading...";
+                lblDocumentStatus.ForeColor = System.Drawing.Color.Blue;
 
 
                 // Collect data from DataGridViewFields
@@ -130,6 +133,9 @@ namespace CCaptureWinForm
                     return;
                 }
 
+                lblReadStatus.Text = $"Loading...";
+                lblReadStatus.ForeColor = System.Drawing.Color.Blue;
+
                 var result = await _viewModel.CheckVerificationStatusAsync(
                     txtStatusRequestGuid.Text,
                     txtStatusSourceSystem.Text,
@@ -139,6 +145,13 @@ namespace CCaptureWinForm
                     txtStatusUserCode.Text);
 
                 txtStatusResult.Text = result;
+
+                // Show in the new viewer instead of raw text box
+                var statusForm = new VerificationStatusForm(result);
+                statusForm.ShowDialog();
+
+                lblReadStatus.Text = $"Done successfully!";
+                lblReadStatus.ForeColor = System.Drawing.Color.Green;
             }
             catch (Exception ex)
             {
@@ -189,6 +202,158 @@ namespace CCaptureWinForm
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtStatusResult_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+    public class VerificationStatusForm : Form
+    {
+        private readonly string _jsonResponse;
+        private TreeView _treeView;
+        private Button _btnClose;
+        private Button _btnExport;
+
+        public VerificationStatusForm(string jsonResponse)
+        {
+            _jsonResponse = jsonResponse;
+            InitializeComponents();
+            PopulateTreeView();
+            this.Text = "Document Verification Details";
+            this.Size = new Size(800, 600);
+            this.StartPosition = FormStartPosition.CenterParent;
+        }
+
+        private void InitializeComponents()
+        {
+            _treeView = new TreeView
+            {
+                Dock = DockStyle.Fill,
+                CheckBoxes = false,
+                FullRowSelect = true,
+                ShowPlusMinus = true,
+                ShowRootLines = true,
+                HideSelection = false
+            };
+
+            _btnClose = new Button
+            {
+                Text = "Close",
+                Dock = DockStyle.Bottom,
+                Height = 40
+            };
+            _btnClose.Click += (s, e) => this.Close();
+
+            _btnExport = new Button
+            {
+                Text = "Export to JSON",
+                Dock = DockStyle.Bottom,
+                Height = 40
+            };
+            _btnExport.Click += (s, e) => ExportToJson();
+
+            this.Controls.Add(_treeView);
+            this.Controls.Add(_btnExport);
+            this.Controls.Add(_btnClose);
+        }
+
+        private void PopulateTreeView()
+        {
+            try
+            {
+                var jsonDocument = JsonDocument.Parse(_jsonResponse);
+                var rootNode = _treeView.Nodes.Add("Verification Results");
+
+                // Add Batch 
+                var batchNode = rootNode.Nodes.Add("Batch Information");
+                AddBatchDetails(batchNode, jsonDocument.RootElement.GetProperty("Batch"));
+
+                // Add Status 
+                rootNode.Nodes.Add($"Status: {jsonDocument.RootElement.GetProperty("Status").GetInt32()}");
+
+                // Add Execution Date
+                rootNode.Nodes.Add($"Execution Date: {jsonDocument.RootElement.GetProperty("ExecutionDate").GetString()}");
+
+                // Expand the first level
+                rootNode.Expand();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error parsing response: {ex.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AddBatchDetails(TreeNode parentNode, JsonElement batchElement)
+        {
+            // Basic batch info
+            parentNode.Nodes.Add($"ID: {batchElement.GetProperty("Id").GetInt32()}");
+            parentNode.Nodes.Add($"Name: {batchElement.GetProperty("Name").GetString()}");
+            parentNode.Nodes.Add($"Creation Date: {batchElement.GetProperty("CreationDate").GetString()}");
+            parentNode.Nodes.Add($"Close Date: {batchElement.GetProperty("CloseDate").GetString()}");
+
+            // Batch Class
+            var batchClassNode = parentNode.Nodes.Add("Batch Class");
+            batchClassNode.Nodes.Add($"Name: {batchElement.GetProperty("BatchClass").GetProperty("Name").GetString()}");
+
+            // Batch Fields
+            var fieldsNode = parentNode.Nodes.Add("Batch Fields");
+            foreach (var field in batchElement.GetProperty("BatchFields").EnumerateArray())
+            {
+                fieldsNode.Nodes.Add($"{field.GetProperty("Name").GetString()}: {field.GetProperty("Value").GetString()} " +
+                                   $"(Confidence: {field.GetProperty("Confidence").GetDouble():P0})");
+            }
+
+            // Documents
+            var documentsNode = parentNode.Nodes.Add("Documents");
+            foreach (var doc in batchElement.GetProperty("Documents").EnumerateArray())
+            {
+                var docNode = documentsNode.Nodes.Add($"Document: {doc.GetProperty("Name").GetString()}");
+                docNode.Nodes.Add($"Class: {doc.GetProperty("DocumentClass").GetProperty("Name").GetString()}");
+
+                // Pages
+                var pagesNode = docNode.Nodes.Add("Pages");
+                foreach (var page in doc.GetProperty("Pages").EnumerateArray())
+                {
+                    var pageNode = pagesNode.Nodes.Add($"Page: {page.GetProperty("FileName").GetString()}");
+
+                    // Page Types
+                    var typesNode = pageNode.Nodes.Add("Page Types");
+                    foreach (var type in page.GetProperty("PageTypes").EnumerateArray())
+                    {
+                        typesNode.Nodes.Add($"{type.GetProperty("Name").GetString()} " +
+                                          $"(Confidence: {type.GetProperty("Confidence").GetDouble():P1})");
+                    }
+                }
+            }
+
+            // Batch States
+            var statesNode = parentNode.Nodes.Add("Processing States");
+            foreach (var state in batchElement.GetProperty("BatchStates").EnumerateArray())
+            {
+                statesNode.Nodes.Add($"{state.GetProperty("Value").GetString()} at " +
+                                   $"{state.GetProperty("TrackDate").GetString()} " +
+                                   $"(Workstation: {state.GetProperty("Workstation").GetString()})");
+            }
+        }
+
+        private void ExportToJson()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json",
+                Title = "Save verification results"
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, _jsonResponse);
+                MessageBox.Show("Results exported successfully!", "Export Complete",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

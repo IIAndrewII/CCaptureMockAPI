@@ -52,6 +52,7 @@
             txtBatchClassName = new TextBox();
             label11 = new Label();
             tabPage3 = new TabPage();
+            lblReadStatus = new Label();
             txtStatusResult = new TextBox();
             btnCheckStatus = new Button();
             txtStatusRequestGuid = new TextBox();
@@ -66,7 +67,6 @@
             label16 = new Label();
             txtStatusSourceSystem = new TextBox();
             label17 = new Label();
-            lblReadStatus = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -438,6 +438,15 @@
             tabPage3.Text = "Check Status";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // lblReadStatus
+            // 
+            lblReadStatus.AutoSize = true;
+            lblReadStatus.Location = new Point(22, 168);
+            lblReadStatus.Margin = new Padding(4, 0, 4, 0);
+            lblReadStatus.Name = "lblReadStatus";
+            lblReadStatus.Size = new Size(0, 15);
+            lblReadStatus.TabIndex = 20;
+            // 
             // txtStatusResult
             // 
             txtStatusResult.Location = new Point(22, 195);
@@ -447,6 +456,7 @@
             txtStatusResult.ScrollBars = ScrollBars.Both;
             txtStatusResult.Size = new Size(874, 265);
             txtStatusResult.TabIndex = 19;
+            txtStatusResult.TextChanged += txtStatusResult_TextChanged;
             // 
             // btnCheckStatus
             // 
@@ -567,15 +577,6 @@
             label17.Size = new Size(87, 15);
             label17.TabIndex = 6;
             label17.Text = "Source System:";
-            // 
-            // lblReadStatus
-            // 
-            lblReadStatus.AutoSize = true;
-            lblReadStatus.Location = new Point(22, 168);
-            lblReadStatus.Margin = new Padding(4, 0, 4, 0);
-            lblReadStatus.Name = "lblReadStatus";
-            lblReadStatus.Size = new Size(0, 15);
-            lblReadStatus.TabIndex = 20;
             // 
             // MainForm
             // 
