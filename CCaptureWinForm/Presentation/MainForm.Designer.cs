@@ -53,7 +53,6 @@
             label11 = new Label();
             tabPage3 = new TabPage();
             lblReadStatus = new Label();
-            txtStatusResult = new TextBox();
             btnCheckStatus = new Button();
             txtStatusRequestGuid = new TextBox();
             label12 = new Label();
@@ -67,6 +66,7 @@
             label16 = new Label();
             txtStatusSourceSystem = new TextBox();
             label17 = new Label();
+            panelStatusViewer = new Panel();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -414,8 +414,8 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(panelStatusViewer);
             tabPage3.Controls.Add(lblReadStatus);
-            tabPage3.Controls.Add(txtStatusResult);
             tabPage3.Controls.Add(btnCheckStatus);
             tabPage3.Controls.Add(txtStatusRequestGuid);
             tabPage3.Controls.Add(label12);
@@ -446,17 +446,6 @@
             lblReadStatus.Name = "lblReadStatus";
             lblReadStatus.Size = new Size(0, 15);
             lblReadStatus.TabIndex = 20;
-            // 
-            // txtStatusResult
-            // 
-            txtStatusResult.Location = new Point(22, 195);
-            txtStatusResult.Margin = new Padding(4, 3, 4, 3);
-            txtStatusResult.Multiline = true;
-            txtStatusResult.Name = "txtStatusResult";
-            txtStatusResult.ScrollBars = ScrollBars.Both;
-            txtStatusResult.Size = new Size(874, 265);
-            txtStatusResult.TabIndex = 19;
-            txtStatusResult.TextChanged += txtStatusResult_TextChanged;
             // 
             // btnCheckStatus
             // 
@@ -578,6 +567,14 @@
             label17.TabIndex = 6;
             label17.Text = "Source System:";
             // 
+            // panelStatusViewer
+            // 
+            panelStatusViewer.Location = new Point(8, 188);
+            panelStatusViewer.Name = "panelStatusViewer";
+            panelStatusViewer.Size = new Size(910, 297);
+            panelStatusViewer.TabIndex = 21;
+            panelStatusViewer.Paint += panelStatusViewer_Paint;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -629,7 +626,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtBatchClassName;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox txtStatusResult;
         private System.Windows.Forms.Button btnCheckStatus;
         private System.Windows.Forms.TextBox txtStatusRequestGuid;
         private System.Windows.Forms.Label label12;
@@ -652,5 +648,6 @@
         private DataGridViewTextBoxColumn FilePath;
         private DataGridViewTextBoxColumn PageType;
         private Label lblReadStatus;
+        private Panel panelStatusViewer;
     }
 }

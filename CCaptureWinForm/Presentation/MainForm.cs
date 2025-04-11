@@ -11,6 +11,8 @@ namespace CCaptureWinForm
     public partial class MainForm : Form
     {
         private readonly MainViewModel _viewModel;
+        private VerificationStatusViewer _statusViewer;
+        private bool _viewerInitialized = false;
 
         public MainForm()
         {
@@ -19,6 +21,20 @@ namespace CCaptureWinForm
             var apiService = new ApiService("https://localhost:7059");
             var fileService = new FileService();
             _viewModel = new MainViewModel(apiService, fileService);
+        }
+
+        private void InitializeStatusViewer()
+        {
+            if (!_viewerInitialized)
+            {
+                _statusViewer = new VerificationStatusViewer
+                {
+                    Dock = DockStyle.Fill,
+                    Visible = false
+                };
+                panelStatusViewer.Controls.Add(_statusViewer);
+                _viewerInitialized = true;
+            }
         }
 
         private async void btnGetToken_Click(object sender, EventArgs e)
@@ -136,6 +152,8 @@ namespace CCaptureWinForm
                 lblReadStatus.Text = $"Loading...";
                 lblReadStatus.ForeColor = System.Drawing.Color.Blue;
 
+                InitializeStatusViewer();
+
                 var result = await _viewModel.CheckVerificationStatusAsync(
                     txtStatusRequestGuid.Text,
                     txtStatusSourceSystem.Text,
@@ -144,18 +162,19 @@ namespace CCaptureWinForm
                     txtStatusMessageID.Text,
                     txtStatusUserCode.Text);
 
-                txtStatusResult.Text = result;
+                _statusViewer.DisplayResults(result);
+                _statusViewer.Visible = true;
 
-                // Show in the new viewer instead of raw text box
-                var statusForm = new VerificationStatusForm(result);
-                statusForm.ShowDialog();
+                //// Hide other controls if needed
+                //txtStatusRequestGuid.Visible = false;
 
                 lblReadStatus.Text = $"Done successfully!";
                 lblReadStatus.ForeColor = System.Drawing.Color.Green;
             }
             catch (Exception ex)
             {
-                txtStatusResult.Text = $"Error: {ex.Message}";
+                lblReadStatus.Text = $"Error: {ex.Message}";
+                lblReadStatus.ForeColor = System.Drawing.Color.Red;
             }
         }
 
@@ -208,27 +227,33 @@ namespace CCaptureWinForm
         {
 
         }
+
+        private void VerificationStatusForm_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panelStatusViewer_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 
-    public class VerificationStatusForm : Form
+    public class VerificationStatusViewer : UserControl
     {
-        private readonly string _jsonResponse;
         private TreeView _treeView;
-        private Button _btnClose;
-        private Button _btnExport;
+        private Button _btnCollapseAll;
+        private Button _btnExpandAll;
+        private Button _btnExportJson;
 
-        public VerificationStatusForm(string jsonResponse)
+        public VerificationStatusViewer()
         {
-            _jsonResponse = jsonResponse;
             InitializeComponents();
-            PopulateTreeView();
-            this.Text = "Document Verification Details";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterParent;
         }
 
         private void InitializeComponents()
         {
+            // TreeView for hierarchical display
             _treeView = new TreeView
             {
                 Dock = DockStyle.Fill,
@@ -236,42 +261,71 @@ namespace CCaptureWinForm
                 FullRowSelect = true,
                 ShowPlusMinus = true,
                 ShowRootLines = true,
-                HideSelection = false
+                HideSelection = false,
+                Font = new Font("Segoe UI", 9),
+                BorderStyle = BorderStyle.FixedSingle
             };
 
-            _btnClose = new Button
+            // Button panel at bottom
+            var buttonPanel = new Panel
             {
-                Text = "Close",
                 Dock = DockStyle.Bottom,
                 Height = 40
             };
-            _btnClose.Click += (s, e) => this.Close();
 
-            _btnExport = new Button
+            // Collapse All button
+            _btnCollapseAll = new Button
             {
-                Text = "Export to JSON",
-                Dock = DockStyle.Bottom,
-                Height = 40
+                Text = "Collapse All",
+                Width = 100,
+                Dock = DockStyle.Left
             };
-            _btnExport.Click += (s, e) => ExportToJson();
+            _btnCollapseAll.Click += (s, e) => CollapseAllNodes();
 
+            // Expand All button
+            _btnExpandAll = new Button
+            {
+                Text = "Expand All",
+                Width = 100,
+                Dock = DockStyle.Left
+            };
+            _btnExpandAll.Click += (s, e) => ExpandAllNodes();
+
+            // Export JSON button
+            _btnExportJson = new Button
+            {
+                Text = "Export JSON",
+                Width = 100,
+                Dock = DockStyle.Right
+            };
+            _btnExportJson.Click += (s, e) => ExportToJson();
+
+            // Add buttons to panel
+            buttonPanel.Controls.Add(_btnCollapseAll);
+            buttonPanel.Controls.Add(_btnExpandAll);
+            buttonPanel.Controls.Add(_btnExportJson);
+
+            // Add controls to user control
             this.Controls.Add(_treeView);
-            this.Controls.Add(_btnExport);
-            this.Controls.Add(_btnClose);
+            this.Controls.Add(buttonPanel);
         }
 
-        private void PopulateTreeView()
+        private string _jsonResponse;
+        public void DisplayResults(string jsonResponse)
         {
+            _jsonResponse = jsonResponse;
+            _treeView.Nodes.Clear();
+
             try
             {
-                var jsonDocument = JsonDocument.Parse(_jsonResponse);
+                var jsonDocument = JsonDocument.Parse(jsonResponse);
                 var rootNode = _treeView.Nodes.Add("Verification Results");
 
-                // Add Batch 
+                // Add Batch information
                 var batchNode = rootNode.Nodes.Add("Batch Information");
                 AddBatchDetails(batchNode, jsonDocument.RootElement.GetProperty("Batch"));
 
-                // Add Status 
+                // Add Status information
                 rootNode.Nodes.Add($"Status: {jsonDocument.RootElement.GetProperty("Status").GetInt32()}");
 
                 // Add Execution Date
@@ -340,6 +394,22 @@ namespace CCaptureWinForm
             }
         }
 
+        private void CollapseAllNodes()
+        {
+            foreach (TreeNode node in _treeView.Nodes)
+            {
+                node.Collapse();
+            }
+        }
+
+        private void ExpandAllNodes()
+        {
+            foreach (TreeNode node in _treeView.Nodes)
+            {
+                node.ExpandAll();
+            }
+        }
+
         private void ExportToJson()
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -350,10 +420,27 @@ namespace CCaptureWinForm
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                File.WriteAllText(saveFileDialog.FileName, _jsonResponse);
-                MessageBox.Show("Results exported successfully!", "Export Complete",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(_jsonResponse))
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, _jsonResponse);
+                        MessageBox.Show("Results exported successfully!", "Export Complete",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No data available to export.", "Export Failed",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error exporting JSON: {ex.Message}", "Export Error",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
+
     }
 }
