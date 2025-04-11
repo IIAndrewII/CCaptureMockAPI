@@ -118,6 +118,18 @@ namespace CCaptureWinForm
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(txtStatusRequestGuid.Text) ||
+                    string.IsNullOrWhiteSpace(txtStatusSourceSystem.Text) ||
+                    string.IsNullOrWhiteSpace(txtStatusChannel.Text) ||
+                    string.IsNullOrWhiteSpace(txtStatusSessionID.Text) ||
+                    string.IsNullOrWhiteSpace(txtStatusMessageID.Text) ||
+                    string.IsNullOrWhiteSpace(txtStatusUserCode.Text))
+                {
+                    lblReadStatus.Text = "Error: All fields are required.";
+                    lblReadStatus.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+
                 var result = await _viewModel.CheckVerificationStatusAsync(
                     txtStatusRequestGuid.Text,
                     txtStatusSourceSystem.Text,

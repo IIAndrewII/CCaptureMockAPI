@@ -66,6 +66,7 @@
             label16 = new Label();
             txtStatusSourceSystem = new TextBox();
             label17 = new Label();
+            lblReadStatus = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
@@ -245,7 +246,7 @@
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(345, 172);
+            label19.Location = new Point(341, 172);
             label19.Margin = new Padding(4, 0, 4, 0);
             label19.Name = "label19";
             label19.Size = new Size(40, 15);
@@ -256,7 +257,7 @@
             // 
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFields.Columns.AddRange(new DataGridViewColumn[] { FieldName, FieldValue });
-            dataGridViewFields.Location = new Point(349, 190);
+            dataGridViewFields.Location = new Point(345, 190);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.Size = new Size(240, 150);
             dataGridViewFields.TabIndex = 20;
@@ -305,7 +306,7 @@
             // 
             // txtUserCode
             // 
-            txtUserCode.Location = new Point(349, 140);
+            txtUserCode.Location = new Point(345, 92);
             txtUserCode.Margin = new Padding(4, 3, 4, 3);
             txtUserCode.Name = "txtUserCode";
             txtUserCode.Size = new Size(233, 23);
@@ -314,7 +315,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(346, 121);
+            label7.Location = new Point(342, 73);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(64, 15);
@@ -341,7 +342,7 @@
             // 
             // txtSessionID
             // 
-            txtSessionID.Location = new Point(349, 92);
+            txtSessionID.Location = new Point(345, 140);
             txtSessionID.Margin = new Padding(4, 3, 4, 3);
             txtSessionID.Name = "txtSessionID";
             txtSessionID.Size = new Size(233, 23);
@@ -350,7 +351,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(345, 72);
+            label5.Location = new Point(341, 120);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(63, 15);
@@ -395,7 +396,7 @@
             // 
             // txtBatchClassName
             // 
-            txtBatchClassName.Location = new Point(349, 46);
+            txtBatchClassName.Location = new Point(345, 46);
             txtBatchClassName.Margin = new Padding(4, 3, 4, 3);
             txtBatchClassName.Name = "txtBatchClassName";
             txtBatchClassName.Size = new Size(233, 23);
@@ -404,7 +405,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(345, 28);
+            label11.Location = new Point(341, 28);
             label11.Margin = new Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new Size(105, 15);
@@ -413,6 +414,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(lblReadStatus);
             tabPage3.Controls.Add(txtStatusResult);
             tabPage3.Controls.Add(btnCheckStatus);
             tabPage3.Controls.Add(txtStatusRequestGuid);
@@ -438,12 +440,12 @@
             // 
             // txtStatusResult
             // 
-            txtStatusResult.Location = new Point(22, 179);
+            txtStatusResult.Location = new Point(22, 195);
             txtStatusResult.Margin = new Padding(4, 3, 4, 3);
             txtStatusResult.Multiline = true;
             txtStatusResult.Name = "txtStatusResult";
             txtStatusResult.ScrollBars = ScrollBars.Both;
-            txtStatusResult.Size = new Size(874, 281);
+            txtStatusResult.Size = new Size(874, 265);
             txtStatusResult.TabIndex = 19;
             // 
             // btnCheckStatus
@@ -459,7 +461,7 @@
             // 
             // txtStatusRequestGuid
             // 
-            txtStatusRequestGuid.Location = new Point(325, 81);
+            txtStatusRequestGuid.Location = new Point(22, 37);
             txtStatusRequestGuid.Margin = new Padding(4, 3, 4, 3);
             txtStatusRequestGuid.Name = "txtStatusRequestGuid";
             txtStatusRequestGuid.Size = new Size(233, 23);
@@ -469,7 +471,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(321, 63);
+            label12.Location = new Point(18, 19);
             label12.Margin = new Padding(4, 0, 4, 0);
             label12.Name = "label12";
             label12.Size = new Size(82, 15);
@@ -496,7 +498,7 @@
             // 
             // txtStatusMessageID
             // 
-            txtStatusMessageID.Location = new Point(22, 35);
+            txtStatusMessageID.Location = new Point(322, 37);
             txtStatusMessageID.Margin = new Padding(4, 3, 4, 3);
             txtStatusMessageID.Name = "txtStatusMessageID";
             txtStatusMessageID.Size = new Size(233, 23);
@@ -505,7 +507,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(19, 17);
+            label14.Location = new Point(322, 19);
             label14.Margin = new Padding(4, 0, 4, 0);
             label14.Name = "label14";
             label14.Size = new Size(70, 15);
@@ -514,7 +516,7 @@
             // 
             // txtStatusSessionID
             // 
-            txtStatusSessionID.Location = new Point(325, 35);
+            txtStatusSessionID.Location = new Point(583, 37);
             txtStatusSessionID.Margin = new Padding(4, 3, 4, 3);
             txtStatusSessionID.Name = "txtStatusSessionID";
             txtStatusSessionID.Size = new Size(233, 23);
@@ -523,7 +525,7 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(321, 17);
+            label15.Location = new Point(579, 19);
             label15.Margin = new Padding(4, 0, 4, 0);
             label15.Name = "label15";
             label15.Size = new Size(63, 15);
@@ -550,7 +552,7 @@
             // 
             // txtStatusSourceSystem
             // 
-            txtStatusSourceSystem.Location = new Point(583, 35);
+            txtStatusSourceSystem.Location = new Point(322, 81);
             txtStatusSourceSystem.Margin = new Padding(4, 3, 4, 3);
             txtStatusSourceSystem.Name = "txtStatusSourceSystem";
             txtStatusSourceSystem.Size = new Size(233, 23);
@@ -559,12 +561,21 @@
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new Point(580, 17);
+            label17.Location = new Point(319, 63);
             label17.Margin = new Padding(4, 0, 4, 0);
             label17.Name = "label17";
             label17.Size = new Size(87, 15);
             label17.TabIndex = 6;
             label17.Text = "Source System:";
+            // 
+            // lblReadStatus
+            // 
+            lblReadStatus.AutoSize = true;
+            lblReadStatus.Location = new Point(22, 168);
+            lblReadStatus.Margin = new Padding(4, 0, 4, 0);
+            lblReadStatus.Name = "lblReadStatus";
+            lblReadStatus.Size = new Size(0, 15);
+            lblReadStatus.TabIndex = 20;
             // 
             // MainForm
             // 
@@ -639,5 +650,6 @@
         private DataGridView dataGridViewDocuments;
         private DataGridViewTextBoxColumn FilePath;
         private DataGridViewTextBoxColumn PageType;
+        private Label lblReadStatus;
     }
 }
