@@ -42,7 +42,8 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string channel,
             string sessionId,
             string messageId,
-            string userCode)
+            string userCode,
+            List<Field> fields)
         {
             try
             {
@@ -71,7 +72,8 @@ namespace CCaptureWinForm.Presentation.ViewModels
                     InteractionDateTime = DateTime.Now.ToString("o"),
                     SessionID = sessionId,
                     MessageID = messageId,
-                    UserCode = userCode
+                    UserCode = userCode,
+                    Fields = fields
                 };
                 _lastRequestGuid = await _apiService.SubmitDocumentAsync(request, _authToken);
                 return _lastRequestGuid;

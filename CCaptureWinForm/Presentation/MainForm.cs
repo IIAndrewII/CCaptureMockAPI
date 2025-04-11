@@ -18,14 +18,6 @@ namespace CCaptureWinForm
             var fileService = new FileService();
             _viewModel = new MainViewModel(apiService, fileService);
         }
-        //private void InitializeFieldsGrid()
-        //{
-        //    dataGridViewFields.Columns.Add("Key", "Field Key");
-        //    dataGridViewFields.Columns.Add("Value", "Field Value");
-        //    dataGridViewFields.AllowUserToAddRows = true;
-        //    dataGridViewFields.AllowUserToDeleteRows = true;
-        //    dataGridViewFields.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
-        //}
 
         private async void btnGetToken_Click(object sender, EventArgs e)
         {
@@ -50,19 +42,39 @@ namespace CCaptureWinForm
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(txtFilePath.Text) ||
-                    string.IsNullOrWhiteSpace(txtBatchClassName.Text) ||
-                    string.IsNullOrWhiteSpace(txtPageType.Text) ||
-                    string.IsNullOrWhiteSpace(txtSourceSystem.Text) ||
-                    string.IsNullOrWhiteSpace(txtChannel.Text) ||
-                    string.IsNullOrWhiteSpace(txtSessionID.Text) ||
-                    string.IsNullOrWhiteSpace(txtMessageID.Text) ||
-                    string.IsNullOrWhiteSpace(txtUserCode.Text))
+                //if (string.IsNullOrWhiteSpace(txtFilePath.Text) ||
+                //    string.IsNullOrWhiteSpace(txtBatchClassName.Text) ||
+                //    string.IsNullOrWhiteSpace(txtPageType.Text) ||
+                //    string.IsNullOrWhiteSpace(txtSourceSystem.Text) ||
+                //    string.IsNullOrWhiteSpace(txtChannel.Text) ||
+                //    string.IsNullOrWhiteSpace(txtSessionID.Text) ||
+                //    string.IsNullOrWhiteSpace(txtMessageID.Text) ||
+                //    string.IsNullOrWhiteSpace(txtUserCode.Text))
+                //{
+                //    lblDocumentStatus.Text = "Error: All fields are required.";
+                //    lblDocumentStatus.ForeColor = System.Drawing.Color.Red;
+                //    return;
+                //}
+
+
+                // Collect data from DataGridView
+                var fields = new List<CCaptureWinForm.Core.Entities.Field>();
+                foreach (DataGridViewRow row in dataGridViewFields.Rows)
                 {
-                    lblDocumentStatus.Text = "Error: All fields are required.";
-                    lblDocumentStatus.ForeColor = System.Drawing.Color.Red;
-                    return;
+                    if (row.IsNewRow) continue;
+                    var key = row.Cells["FieldName"].Value?.ToString();
+                    var value = row.Cells["FieldValue"].Value?.ToString();
+                    if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
+                    {
+                        fields.Add(new CCaptureWinForm.Core.Entities.Field
+                        {
+                            FieldName = key,
+                            FieldValue = value
+                        });
+                    }
                 }
+
+                // Pass the fields to the SubmitDocumentAsync method
                 var requestGuid = await _viewModel.SubmitDocumentAsync(
                     txtFilePath.Text,
                     txtBatchClassName.Text,
@@ -71,7 +83,8 @@ namespace CCaptureWinForm
                     txtChannel.Text,
                     txtSessionID.Text,
                     txtMessageID.Text,
-                    txtUserCode.Text);
+                    txtUserCode.Text,
+                    fields);
 
                 lblDocumentStatus.Text = $"Document submitted successfully! Request GUID: {requestGuid}";
                 lblDocumentStatus.ForeColor = System.Drawing.Color.Green;
@@ -110,6 +123,11 @@ namespace CCaptureWinForm
             {
                 txtFilePath.Text = openFileDialog.FileName;
             }
+        }
+
+        private void dataGridViewFields_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

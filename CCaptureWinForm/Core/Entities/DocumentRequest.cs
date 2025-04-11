@@ -15,12 +15,7 @@ namespace CCaptureWinForm.Core.Entities
     public class DocumentRequest
     {
         public string BatchClassName { get; set; }
-        public List<Field> Fields { get; set; } = new List<Field>
-    {
-        new Field { FieldName = "NAME_IN", FieldValue = "GIUSEPPE" },
-        new Field { FieldName = "SURNAME_IN", FieldValue = "MARUCCIA" },
-        new Field { FieldName = "CF_IN", FieldValue = "MRCGPP58M14E463J" }
-    };
+        public List<Field> Fields { get; set; }
         public List<Document> Documents { get; set; }
         public string SourceSystem { get; set; }
         public string Channel { get; set; }
