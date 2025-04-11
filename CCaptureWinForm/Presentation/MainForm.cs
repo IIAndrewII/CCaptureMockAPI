@@ -88,6 +88,7 @@ namespace CCaptureWinForm
 
                 lblDocumentStatus.Text = $"Document submitted successfully! Request GUID: {requestGuid}";
                 lblDocumentStatus.ForeColor = System.Drawing.Color.Green;
+                txtStatusRequestGuid.Text = requestGuid;
             }
             catch (Exception ex)
             {
@@ -126,6 +127,11 @@ namespace CCaptureWinForm
         }
 
         private void dataGridViewFields_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void txtStatusRequestGuid_TextChanged(object sender, EventArgs e)
         {
 
         }

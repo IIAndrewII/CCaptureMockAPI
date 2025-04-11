@@ -2,6 +2,7 @@
 using CCaptureWinForm.Core.Entities;
 using CCaptureWinForm.Core.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -61,7 +62,7 @@ namespace CCaptureWinForm.Infrastructure.Services
             // Serialize the body to JSON
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
-            // Log headers and body for debugging
+            // Log headers and body
             Debug.WriteLine("Request Headers:");
             foreach (var header in _httpClient.DefaultRequestHeaders)
             {
@@ -71,10 +72,9 @@ namespace CCaptureWinForm.Infrastructure.Services
             Debug.WriteLine("Request Body:");
             Debug.WriteLine(JsonConvert.SerializeObject(requestBody, Formatting.Indented));
 
-            // Set the Authorization header
+            // Add headers
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
 
-            // Add additional headers
             _httpClient.DefaultRequestHeaders.Add("sourceSystem", request.SourceSystem);
             _httpClient.DefaultRequestHeaders.Add("channel", request.Channel);
             _httpClient.DefaultRequestHeaders.Add("interactionDate-Time", request.InteractionDateTime);
@@ -89,10 +89,15 @@ namespace CCaptureWinForm.Infrastructure.Services
             response.EnsureSuccessStatusCode();
 
             // Read the response content
-            var responseContent = await response.Content.ReadAsStringAsync();
-            dynamic result = JsonConvert.DeserializeObject(responseContent);
 
-            return result.RequestGuid;
+            //var responseContent = await response.Content.ReadAsStringAsync();
+            //dynamic result = JsonConvert.DeserializeObject(responseContent);
+            //return result.RequestGuid;
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<JObject>(responseContent);
+            string requestGuid = result["requestGuid"]?.ToString();
+            return requestGuid;
         }
 
 

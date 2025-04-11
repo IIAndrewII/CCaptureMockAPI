@@ -32,7 +32,6 @@
             dataGridViewFields = new DataGridView();
             FieldName = new DataGridViewTextBoxColumn();
             FieldValue = new DataGridViewTextBoxColumn();
-            label18 = new Label();
             lblDocumentStatus = new Label();
             btnSubmitDocument = new Button();
             btnBrowseFile = new Button();
@@ -185,7 +184,6 @@
             // 
             tabPage2.Controls.Add(label19);
             tabPage2.Controls.Add(dataGridViewFields);
-            tabPage2.Controls.Add(label18);
             tabPage2.Controls.Add(lblDocumentStatus);
             tabPage2.Controls.Add(btnSubmitDocument);
             tabPage2.Controls.Add(btnBrowseFile);
@@ -243,16 +241,6 @@
             // 
             FieldValue.HeaderText = "Field Value";
             FieldValue.Name = "FieldValue";
-            // 
-            // label18
-            // 
-            label18.AutoSize = true;
-            label18.Location = new Point(349, 28);
-            label18.Margin = new Padding(4, 0, 4, 0);
-            label18.Name = "label18";
-            label18.Size = new Size(105, 15);
-            label18.TabIndex = 19;
-            label18.Text = "Batch Class Name:";
             // 
             // lblDocumentStatus
             // 
@@ -422,7 +410,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(346, -18);
+            label11.Location = new Point(349, 28);
             label11.Margin = new Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new Size(105, 15);
@@ -456,17 +444,17 @@
             // 
             // txtStatusResult
             // 
-            txtStatusResult.Location = new Point(22, 138);
+            txtStatusResult.Location = new Point(22, 179);
             txtStatusResult.Margin = new Padding(4, 3, 4, 3);
             txtStatusResult.Multiline = true;
             txtStatusResult.Name = "txtStatusResult";
             txtStatusResult.ScrollBars = ScrollBars.Both;
-            txtStatusResult.Size = new Size(874, 322);
+            txtStatusResult.Size = new Size(874, 281);
             txtStatusResult.TabIndex = 19;
             // 
             // btnCheckStatus
             // 
-            btnCheckStatus.Location = new Point(22, 92);
+            btnCheckStatus.Location = new Point(22, 127);
             btnCheckStatus.Margin = new Padding(4, 3, 4, 3);
             btnCheckStatus.Name = "btnCheckStatus";
             btnCheckStatus.Size = new Size(233, 27);
@@ -477,16 +465,17 @@
             // 
             // txtStatusRequestGuid
             // 
-            txtStatusRequestGuid.Location = new Point(350, 46);
+            txtStatusRequestGuid.Location = new Point(325, 81);
             txtStatusRequestGuid.Margin = new Padding(4, 3, 4, 3);
             txtStatusRequestGuid.Name = "txtStatusRequestGuid";
             txtStatusRequestGuid.Size = new Size(233, 23);
             txtStatusRequestGuid.TabIndex = 17;
+            txtStatusRequestGuid.TextChanged += txtStatusRequestGuid_TextChanged;
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(346, 28);
+            label12.Location = new Point(321, 63);
             label12.Margin = new Padding(4, 0, 4, 0);
             label12.Name = "label12";
             label12.Size = new Size(82, 15);
@@ -495,7 +484,7 @@
             // 
             // txtStatusUserCode
             // 
-            txtStatusUserCode.Location = new Point(22, 46);
+            txtStatusUserCode.Location = new Point(22, 81);
             txtStatusUserCode.Margin = new Padding(4, 3, 4, 3);
             txtStatusUserCode.Name = "txtStatusUserCode";
             txtStatusUserCode.Size = new Size(233, 23);
@@ -504,7 +493,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(19, 28);
+            label13.Location = new Point(19, 63);
             label13.Margin = new Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new Size(64, 15);
@@ -513,7 +502,7 @@
             // 
             // txtStatusMessageID
             // 
-            txtStatusMessageID.Location = new Point(22, 0);
+            txtStatusMessageID.Location = new Point(22, 35);
             txtStatusMessageID.Margin = new Padding(4, 3, 4, 3);
             txtStatusMessageID.Name = "txtStatusMessageID";
             txtStatusMessageID.Size = new Size(233, 23);
@@ -522,7 +511,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(19, -18);
+            label14.Location = new Point(19, 17);
             label14.Margin = new Padding(4, 0, 4, 0);
             label14.Name = "label14";
             label14.Size = new Size(70, 15);
@@ -531,7 +520,7 @@
             // 
             // txtStatusSessionID
             // 
-            txtStatusSessionID.Location = new Point(350, 0);
+            txtStatusSessionID.Location = new Point(325, 35);
             txtStatusSessionID.Margin = new Padding(4, 3, 4, 3);
             txtStatusSessionID.Name = "txtStatusSessionID";
             txtStatusSessionID.Size = new Size(233, 23);
@@ -540,7 +529,7 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new Point(346, -18);
+            label15.Location = new Point(321, 17);
             label15.Margin = new Padding(4, 0, 4, 0);
             label15.Name = "label15";
             label15.Size = new Size(63, 15);
@@ -549,7 +538,7 @@
             // 
             // txtStatusChannel
             // 
-            txtStatusChannel.Location = new Point(583, 46);
+            txtStatusChannel.Location = new Point(583, 81);
             txtStatusChannel.Margin = new Padding(4, 3, 4, 3);
             txtStatusChannel.Name = "txtStatusChannel";
             txtStatusChannel.Size = new Size(233, 23);
@@ -558,7 +547,7 @@
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new Point(580, 28);
+            label16.Location = new Point(580, 63);
             label16.Margin = new Padding(4, 0, 4, 0);
             label16.Name = "label16";
             label16.Size = new Size(54, 15);
@@ -567,7 +556,7 @@
             // 
             // txtStatusSourceSystem
             // 
-            txtStatusSourceSystem.Location = new Point(583, 0);
+            txtStatusSourceSystem.Location = new Point(583, 35);
             txtStatusSourceSystem.Margin = new Padding(4, 3, 4, 3);
             txtStatusSourceSystem.Name = "txtStatusSourceSystem";
             txtStatusSourceSystem.Size = new Size(233, 23);
@@ -576,7 +565,7 @@
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new Point(580, -18);
+            label17.Location = new Point(580, 17);
             label17.Margin = new Padding(4, 0, 4, 0);
             label17.Name = "label17";
             label17.Size = new Size(87, 15);
@@ -651,7 +640,6 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox txtStatusSourceSystem;
         private System.Windows.Forms.Label label17;
-        private Label label18;
         private DataGridView dataGridViewFields;
         private DataGridViewTextBoxColumn FieldName;
         private DataGridViewTextBoxColumn FieldValue;
