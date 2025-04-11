@@ -51,7 +51,6 @@ namespace CCaptureWinForm.Infrastructure.Services
                 }
             }
 
-            // Prepare the request body
             var requestBody = new
             {
                 request.BatchClassName,

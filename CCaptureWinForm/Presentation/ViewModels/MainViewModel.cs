@@ -35,38 +35,33 @@ namespace CCaptureWinForm.Presentation.ViewModels
         }
 
         public async Task<string> SubmitDocumentAsync(
-            string filePath,
             string batchClassName,
-            string pageType,
             string sourceSystem,
             string channel,
             string sessionId,
             string messageId,
             string userCode,
-            List<Field> fields)
+            List<Field> fields,
+            List<Document_Row> documents)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(filePath))
-                {
-                    throw new ArgumentException("Please select a file first");
-                }
+                //if (string.IsNullOrWhiteSpace(filePath))
+                //{
+                //    throw new ArgumentException("Please select a file first");
+                //}
 
-                var base64Content = _fileService.ReadFileAsBase64(filePath);
-                var fileName = _fileService.GetFileName(filePath);
+                var documentList = documents.Select(doc => new Document
+                {
+                    FileName = _fileService.GetFileName(doc.FilePath),
+                    Buffer = _fileService.ReadFileAsBase64(doc.FilePath),
+                    PageType = doc.PageType
+                }).ToList();
 
                 var request = new DocumentRequest
                 {
                     BatchClassName = batchClassName,
-                    Documents = new List<Document>
-                    {
-                        new Document
-                        {
-                            FileName = fileName,
-                            Buffer = base64Content,
-                            PageType = pageType
-                        }
-                    },
+                    Documents = documentList,
                     SourceSystem = sourceSystem,
                     Channel = channel,
                     InteractionDateTime = DateTime.Now.ToString("o"),

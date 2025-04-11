@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace CCaptureWinForm.Core.Entities
 {
-    public class Field
-    {
-        public string FieldName { get; set; }
-        public string FieldValue { get; set; }
-    }
 
     public class DocumentRequest
     {

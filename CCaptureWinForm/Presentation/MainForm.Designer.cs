@@ -28,6 +28,10 @@
             txtAppName = new TextBox();
             label1 = new Label();
             tabPage2 = new TabPage();
+            label18 = new Label();
+            dataGridViewDocuments = new DataGridView();
+            FilePath = new DataGridViewTextBoxColumn();
+            PageType = new DataGridViewTextBoxColumn();
             label19 = new Label();
             dataGridViewFields = new DataGridView();
             FieldName = new DataGridViewTextBoxColumn();
@@ -35,8 +39,6 @@
             lblDocumentStatus = new Label();
             btnSubmitDocument = new Button();
             btnBrowseFile = new Button();
-            txtFilePath = new TextBox();
-            label8 = new Label();
             txtUserCode = new TextBox();
             label7 = new Label();
             txtMessageID = new TextBox();
@@ -47,8 +49,6 @@
             label4 = new Label();
             txtSourceSystem = new TextBox();
             label9 = new Label();
-            txtPageType = new TextBox();
-            label10 = new Label();
             txtBatchClassName = new TextBox();
             label11 = new Label();
             tabPage3 = new TabPage();
@@ -69,6 +69,7 @@
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).BeginInit();
             tabPage3.SuspendLayout();
             SuspendLayout();
@@ -85,6 +86,7 @@
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(933, 519);
             tabControl1.TabIndex = 0;
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // tabPage1
             // 
@@ -182,13 +184,13 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(label18);
+            tabPage2.Controls.Add(dataGridViewDocuments);
             tabPage2.Controls.Add(label19);
             tabPage2.Controls.Add(dataGridViewFields);
             tabPage2.Controls.Add(lblDocumentStatus);
             tabPage2.Controls.Add(btnSubmitDocument);
             tabPage2.Controls.Add(btnBrowseFile);
-            tabPage2.Controls.Add(txtFilePath);
-            tabPage2.Controls.Add(label8);
             tabPage2.Controls.Add(txtUserCode);
             tabPage2.Controls.Add(label7);
             tabPage2.Controls.Add(txtMessageID);
@@ -199,8 +201,6 @@
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(txtSourceSystem);
             tabPage2.Controls.Add(label9);
-            tabPage2.Controls.Add(txtPageType);
-            tabPage2.Controls.Add(label10);
             tabPage2.Controls.Add(txtBatchClassName);
             tabPage2.Controls.Add(label11);
             tabPage2.Location = new Point(4, 24);
@@ -211,11 +211,41 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Submit Document";
             tabPage2.UseVisualStyleBackColor = true;
+            tabPage2.Click += tabPage2_Click;
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point(18, 172);
+            label18.Margin = new Padding(4, 0, 4, 0);
+            label18.Name = "label18";
+            label18.Size = new Size(71, 15);
+            label18.TabIndex = 23;
+            label18.Text = "Documents:";
+            // 
+            // dataGridViewDocuments
+            // 
+            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
+            dataGridViewDocuments.Location = new Point(22, 190);
+            dataGridViewDocuments.Name = "dataGridViewDocuments";
+            dataGridViewDocuments.Size = new Size(240, 150);
+            dataGridViewDocuments.TabIndex = 22;
+            // 
+            // FilePath
+            // 
+            FilePath.HeaderText = "File Path";
+            FilePath.Name = "FilePath";
+            // 
+            // PageType
+            // 
+            PageType.HeaderText = "Page Type";
+            PageType.Name = "PageType";
             // 
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(349, 120);
+            label19.Location = new Point(345, 172);
             label19.Margin = new Padding(4, 0, 4, 0);
             label19.Name = "label19";
             label19.Size = new Size(40, 15);
@@ -226,7 +256,7 @@
             // 
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFields.Columns.AddRange(new DataGridViewColumn[] { FieldName, FieldValue });
-            dataGridViewFields.Location = new Point(353, 138);
+            dataGridViewFields.Location = new Point(349, 190);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.Size = new Size(240, 150);
             dataGridViewFields.TabIndex = 20;
@@ -245,7 +275,7 @@
             // lblDocumentStatus
             // 
             lblDocumentStatus.AutoSize = true;
-            lblDocumentStatus.Location = new Point(22, 369);
+            lblDocumentStatus.Location = new Point(18, 439);
             lblDocumentStatus.Margin = new Padding(4, 0, 4, 0);
             lblDocumentStatus.Name = "lblDocumentStatus";
             lblDocumentStatus.Size = new Size(0, 15);
@@ -253,7 +283,7 @@
             // 
             // btnSubmitDocument
             // 
-            btnSubmitDocument.Location = new Point(22, 323);
+            btnSubmitDocument.Location = new Point(191, 391);
             btnSubmitDocument.Margin = new Padding(4, 3, 4, 3);
             btnSubmitDocument.Name = "btnSubmitDocument";
             btnSubmitDocument.Size = new Size(233, 27);
@@ -264,36 +294,18 @@
             // 
             // btnBrowseFile
             // 
-            btnBrowseFile.Location = new Point(167, 274);
+            btnBrowseFile.Location = new Point(18, 357);
             btnBrowseFile.Margin = new Padding(4, 3, 4, 3);
             btnBrowseFile.Name = "btnBrowseFile";
             btnBrowseFile.Size = new Size(88, 27);
             btnBrowseFile.TabIndex = 16;
-            btnBrowseFile.Text = "Browse...";
+            btnBrowseFile.Text = "Add Files";
             btnBrowseFile.UseVisualStyleBackColor = true;
             btnBrowseFile.Click += btnBrowseFile_Click;
             // 
-            // txtFilePath
-            // 
-            txtFilePath.Location = new Point(22, 277);
-            txtFilePath.Margin = new Padding(4, 3, 4, 3);
-            txtFilePath.Name = "txtFilePath";
-            txtFilePath.Size = new Size(135, 23);
-            txtFilePath.TabIndex = 15;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(19, 258);
-            label8.Margin = new Padding(4, 0, 4, 0);
-            label8.Name = "label8";
-            label8.Size = new Size(55, 15);
-            label8.TabIndex = 14;
-            label8.Text = "File Path:";
-            // 
             // txtUserCode
             // 
-            txtUserCode.Location = new Point(22, 231);
+            txtUserCode.Location = new Point(349, 140);
             txtUserCode.Margin = new Padding(4, 3, 4, 3);
             txtUserCode.Name = "txtUserCode";
             txtUserCode.Size = new Size(233, 23);
@@ -302,7 +314,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(19, 212);
+            label7.Location = new Point(346, 121);
             label7.Margin = new Padding(4, 0, 4, 0);
             label7.Name = "label7";
             label7.Size = new Size(64, 15);
@@ -311,7 +323,7 @@
             // 
             // txtMessageID
             // 
-            txtMessageID.Location = new Point(22, 185);
+            txtMessageID.Location = new Point(22, 140);
             txtMessageID.Margin = new Padding(4, 3, 4, 3);
             txtMessageID.Name = "txtMessageID";
             txtMessageID.Size = new Size(233, 23);
@@ -320,7 +332,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(19, 166);
+            label6.Location = new Point(19, 121);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(70, 15);
@@ -329,7 +341,7 @@
             // 
             // txtSessionID
             // 
-            txtSessionID.Location = new Point(22, 138);
+            txtSessionID.Location = new Point(349, 92);
             txtSessionID.Margin = new Padding(4, 3, 4, 3);
             txtSessionID.Name = "txtSessionID";
             txtSessionID.Size = new Size(233, 23);
@@ -338,7 +350,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(19, 120);
+            label5.Location = new Point(345, 72);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(63, 15);
@@ -381,27 +393,9 @@
             label9.TabIndex = 4;
             label9.Text = "Source System:";
             // 
-            // txtPageType
-            // 
-            txtPageType.Location = new Point(353, 92);
-            txtPageType.Margin = new Padding(4, 3, 4, 3);
-            txtPageType.Name = "txtPageType";
-            txtPageType.Size = new Size(233, 23);
-            txtPageType.TabIndex = 3;
-            // 
-            // label10
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(349, 74);
-            label10.Margin = new Padding(4, 0, 4, 0);
-            label10.Name = "label10";
-            label10.Size = new Size(64, 15);
-            label10.TabIndex = 2;
-            label10.Text = "Page Type:";
-            // 
             // txtBatchClassName
             // 
-            txtBatchClassName.Location = new Point(353, 46);
+            txtBatchClassName.Location = new Point(349, 46);
             txtBatchClassName.Margin = new Padding(4, 3, 4, 3);
             txtBatchClassName.Name = "txtBatchClassName";
             txtBatchClassName.Size = new Size(233, 23);
@@ -410,7 +404,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(349, 28);
+            label11.Location = new Point(345, 28);
             label11.Margin = new Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new Size(105, 15);
@@ -586,6 +580,7 @@
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
@@ -610,8 +605,6 @@
         private System.Windows.Forms.Label lblDocumentStatus;
         private System.Windows.Forms.Button btnSubmitDocument;
         private System.Windows.Forms.Button btnBrowseFile;
-        private System.Windows.Forms.TextBox txtFilePath;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtUserCode;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtMessageID;
@@ -622,8 +615,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtSourceSystem;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtPageType;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox txtBatchClassName;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txtStatusResult;
@@ -644,5 +635,9 @@
         private DataGridViewTextBoxColumn FieldName;
         private DataGridViewTextBoxColumn FieldValue;
         private Label label19;
+        private Label label18;
+        private DataGridView dataGridViewDocuments;
+        private DataGridViewTextBoxColumn FilePath;
+        private DataGridViewTextBoxColumn PageType;
     }
 }
