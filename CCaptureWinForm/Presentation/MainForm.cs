@@ -81,6 +81,7 @@ namespace CCaptureWinForm
 
                 statusLabel1.Text = "Authentication successful!";
                 statusLabel1.ForeColor = Color.Green;
+                tabControl1.SelectedTab = tabPage2;
             }
             catch (Exception ex)
             {
@@ -110,7 +111,7 @@ namespace CCaptureWinForm
                     _errorProvider.SetError(txtMessageID, "Message ID is required.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "User ID is required.");
-                if (dataGridViewDocuments.RowCount == 1) // Only new row
+                if (dataGridViewDocuments.RowCount == 1)
                     _errorProvider.SetError(dataGridViewDocuments, "At least one document is required.");
 
                 if (_errorProvider.GetError(txtBatchClassName) != "" ||
@@ -166,6 +167,12 @@ namespace CCaptureWinForm
                 statusLabel2.Text = $"Document submitted successfully! Request ID: {requestGuid}";
                 statusLabel2.ForeColor = Color.Green;
                 txtStatusRequestGuid.Text = requestGuid;
+                txtStatusSourceSystem.Text = txtSourceSystem.Text;
+                txtStatusChannel.Text = txtChannel.Text;
+                txtStatusSessionID.Text = txtSessionID.Text;
+                txtStatusMessageID.Text = txtMessageID.Text;
+                txtStatusUserCode.Text = txtUserCode.Text;
+                tabControl1.SelectedTab = tabPage3;
             }
             catch (Exception ex)
             {
