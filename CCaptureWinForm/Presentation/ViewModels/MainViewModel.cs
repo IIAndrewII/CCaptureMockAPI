@@ -3,7 +3,6 @@ using CCaptureWinForm.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CCaptureWinForm.Presentation.ViewModels
@@ -46,11 +45,6 @@ namespace CCaptureWinForm.Presentation.ViewModels
         {
             try
             {
-                //if (string.IsNullOrWhiteSpace(filePath))
-                //{
-                //    throw new ArgumentException("Please select a file first");
-                //}
-
                 var documentList = documents.Select(doc => new Document
                 {
                     FileName = _fileService.GetFileName(doc.FilePath),

@@ -13,66 +13,90 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            lblTokenStatus = new Label();
+            statusStrip1 = new StatusStrip();
+            statusLabel1 = new ToolStripStatusLabel();
+            credentialsGroup = new GroupBox();
             btnGetToken = new Button();
+            chkShowPassword = new CheckBox();
             txtAppPassword = new TextBox();
-            label3 = new Label();
+            lblAppPassword = new Label();
             txtAppLogin = new TextBox();
-            label2 = new Label();
+            lblAppLogin = new Label();
             txtAppName = new TextBox();
-            label1 = new Label();
+            lblAppName = new Label();
             tabPage2 = new TabPage();
-            label18 = new Label();
-            dataGridViewDocuments = new DataGridView();
-            FilePath = new DataGridViewTextBoxColumn();
-            PageType = new DataGridViewTextBoxColumn();
-            label19 = new Label();
+            statusStrip2 = new StatusStrip();
+            statusLabel2 = new ToolStripStatusLabel();
+            dataPanel = new Panel();
+            btnSubmitDocument = new Button();
+            btnRemoveFile = new Button();
+            btnBrowseFile = new Button();
             dataGridViewFields = new DataGridView();
             FieldName = new DataGridViewTextBoxColumn();
             FieldValue = new DataGridViewTextBoxColumn();
-            lblDocumentStatus = new Label();
-            btnSubmitDocument = new Button();
-            btnBrowseFile = new Button();
-            txtUserCode = new TextBox();
-            label7 = new Label();
+            lblFields = new Label();
+            dataGridViewDocuments = new DataGridView();
+            FilePath = new DataGridViewTextBoxColumn();
+            PageType = new DataGridViewTextBoxColumn();
+            lblDocuments = new Label();
+            metadataPanel = new Panel();
+            tableLayout2 = new TableLayoutPanel();
             txtMessageID = new TextBox();
-            label6 = new Label();
+            lblMessageID = new Label();
             txtSessionID = new TextBox();
-            label5 = new Label();
+            lblSessionID = new Label();
+            txtUserCode = new TextBox();
+            lblUserCode = new Label();
             txtChannel = new TextBox();
-            label4 = new Label();
+            lblChannel = new Label();
             txtSourceSystem = new TextBox();
-            label9 = new Label();
+            lblSourceSystem = new Label();
             txtBatchClassName = new TextBox();
-            label11 = new Label();
+            lblBatchClassName = new Label();
             tabPage3 = new TabPage();
-            lblReadStatus = new Label();
-            btnCheckStatus = new Button();
-            txtStatusRequestGuid = new TextBox();
-            label12 = new Label();
-            txtStatusUserCode = new TextBox();
-            label13 = new Label();
-            txtStatusMessageID = new TextBox();
-            label14 = new Label();
-            txtStatusSessionID = new TextBox();
-            label15 = new Label();
-            txtStatusChannel = new TextBox();
-            label16 = new Label();
-            txtStatusSourceSystem = new TextBox();
-            label17 = new Label();
+            statusStrip3 = new StatusStrip();
+            statusLabel3 = new ToolStripStatusLabel();
             panelStatusViewer = new Panel();
+            progressBar = new ProgressBar();
+            btnClearResults = new Button();
+            btnCheckStatus = new Button();
+            inputPanel = new Panel();
+            tableLayout3 = new TableLayoutPanel();
+            txtStatusUserCode = new TextBox();
+            lblStatusUserCode = new Label();
+            txtStatusMessageID = new TextBox();
+            lblStatusMessageID = new Label();
+            txtStatusSessionID = new TextBox();
+            lblStatusSessionID = new Label();
+            txtStatusChannel = new TextBox();
+            lblStatusChannel = new Label();
+            txtStatusSourceSystem = new TextBox();
+            lblStatusSourceSystem = new Label();
+            txtStatusRequestGuid = new TextBox();
+            lblStatusRequestGuid = new Label();
+            toolTip1 = new ToolTip(components);
+            toolTip2 = new ToolTip(components);
+            toolTip3 = new ToolTip(components);
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            credentialsGroup.SuspendLayout();
             tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
+            statusStrip2.SuspendLayout();
+            dataPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
+            metadataPanel.SuspendLayout();
+            tableLayout2.SuspendLayout();
             tabPage3.SuspendLayout();
+            statusStrip3.SuspendLayout();
+            inputPanel.SuspendLayout();
+            tableLayout3.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -81,573 +105,780 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Font = new Font("Segoe UI", 10F);
             tabControl1.Location = new Point(0, 0);
-            tabControl1.Margin = new Padding(4, 3, 4, 3);
+            tabControl1.Margin = new Padding(3, 4, 3, 4);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(933, 519);
+            tabControl1.Size = new Size(1066, 692);
             tabControl1.TabIndex = 0;
-            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(lblTokenStatus);
-            tabPage1.Controls.Add(btnGetToken);
-            tabPage1.Controls.Add(txtAppPassword);
-            tabPage1.Controls.Add(label3);
-            tabPage1.Controls.Add(txtAppLogin);
-            tabPage1.Controls.Add(label2);
-            tabPage1.Controls.Add(txtAppName);
-            tabPage1.Controls.Add(label1);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Margin = new Padding(4, 3, 4, 3);
+            tabPage1.Controls.Add(statusStrip1);
+            tabPage1.Controls.Add(credentialsGroup);
+            tabPage1.Location = new Point(4, 32);
+            tabPage1.Margin = new Padding(3, 4, 3, 4);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(4, 3, 4, 3);
-            tabPage1.Size = new Size(925, 491);
+            tabPage1.Padding = new Padding(11, 13, 11, 13);
+            tabPage1.Size = new Size(1058, 656);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Authentication";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lblTokenStatus
+            // statusStrip1
             // 
-            lblTokenStatus.AutoSize = true;
-            lblTokenStatus.Location = new Point(26, 185);
-            lblTokenStatus.Margin = new Padding(4, 0, 4, 0);
-            lblTokenStatus.Name = "lblTokenStatus";
-            lblTokenStatus.Size = new Size(0, 15);
-            lblTokenStatus.TabIndex = 7;
+            statusStrip1.ImageScalingSize = new Size(20, 20);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusLabel1 });
+            statusStrip1.Location = new Point(11, 621);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new Padding(1, 0, 16, 0);
+            statusStrip1.Size = new Size(1036, 22);
+            statusStrip1.TabIndex = 5;
+            // 
+            // statusLabel1
+            // 
+            statusLabel1.Name = "statusLabel1";
+            statusLabel1.Size = new Size(0, 16);
+            // 
+            // credentialsGroup
+            // 
+            credentialsGroup.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            credentialsGroup.Controls.Add(btnGetToken);
+            credentialsGroup.Controls.Add(chkShowPassword);
+            credentialsGroup.Controls.Add(txtAppPassword);
+            credentialsGroup.Controls.Add(lblAppPassword);
+            credentialsGroup.Controls.Add(txtAppLogin);
+            credentialsGroup.Controls.Add(lblAppLogin);
+            credentialsGroup.Controls.Add(txtAppName);
+            credentialsGroup.Controls.Add(lblAppName);
+            credentialsGroup.Font = new Font("Segoe UI", 10F);
+            credentialsGroup.Location = new Point(338, 62);
+            credentialsGroup.Margin = new Padding(3, 4, 3, 4);
+            credentialsGroup.Name = "credentialsGroup";
+            credentialsGroup.Padding = new Padding(3, 4, 3, 4);
+            credentialsGroup.Size = new Size(343, 333);
+            credentialsGroup.TabIndex = 0;
+            credentialsGroup.TabStop = false;
+            credentialsGroup.Text = "Application Credentials";
             // 
             // btnGetToken
             // 
-            btnGetToken.Location = new Point(26, 138);
-            btnGetToken.Margin = new Padding(4, 3, 4, 3);
+            btnGetToken.BackColor = Color.FromArgb(0, 120, 215);
+            btnGetToken.FlatStyle = FlatStyle.Flat;
+            btnGetToken.ForeColor = Color.White;
+            btnGetToken.Location = new Point(11, 275);
+            btnGetToken.Margin = new Padding(3, 4, 3, 4);
             btnGetToken.Name = "btnGetToken";
-            btnGetToken.Size = new Size(233, 27);
-            btnGetToken.TabIndex = 6;
-            btnGetToken.Text = "Login";
-            btnGetToken.UseVisualStyleBackColor = true;
-            btnGetToken.Click += btnGetToken_Click;
+            btnGetToken.Size = new Size(297, 40);
+            btnGetToken.TabIndex = 5;
+            btnGetToken.Text = "Authenticate";
+            btnGetToken.UseVisualStyleBackColor = false;
+            // 
+            // chkShowPassword
+            // 
+            chkShowPassword.AutoSize = true;
+            chkShowPassword.Location = new Point(11, 240);
+            chkShowPassword.Margin = new Padding(3, 4, 3, 4);
+            chkShowPassword.Name = "chkShowPassword";
+            chkShowPassword.Size = new Size(148, 27);
+            chkShowPassword.TabIndex = 3;
+            chkShowPassword.Text = "Show Password";
             // 
             // txtAppPassword
             // 
-            txtAppPassword.Location = new Point(26, 108);
-            txtAppPassword.Margin = new Padding(4, 3, 4, 3);
+            txtAppPassword.AccessibleName = "Application Password";
+            txtAppPassword.Location = new Point(11, 200);
+            txtAppPassword.Margin = new Padding(3, 4, 3, 4);
             txtAppPassword.Name = "txtAppPassword";
-            txtAppPassword.PasswordChar = '*';
-            txtAppPassword.Size = new Size(233, 23);
-            txtAppPassword.TabIndex = 5;
+            txtAppPassword.Size = new Size(297, 30);
+            txtAppPassword.TabIndex = 2;
+            toolTip1.SetToolTip(txtAppPassword, "Enter the application password.");
+            txtAppPassword.UseSystemPasswordChar = true;
             // 
-            // label3
+            // lblAppPassword
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(22, 90);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(85, 15);
-            label3.TabIndex = 4;
-            label3.Text = "App Password:";
+            lblAppPassword.AutoSize = true;
+            lblAppPassword.Location = new Point(11, 173);
+            lblAppPassword.Name = "lblAppPassword";
+            lblAppPassword.Size = new Size(175, 23);
+            lblAppPassword.TabIndex = 0;
+            lblAppPassword.Text = "Application Password:";
             // 
             // txtAppLogin
             // 
-            txtAppLogin.Location = new Point(26, 63);
-            txtAppLogin.Margin = new Padding(4, 3, 4, 3);
+            txtAppLogin.AccessibleName = "Application Login";
+            txtAppLogin.Location = new Point(11, 133);
+            txtAppLogin.Margin = new Padding(3, 4, 3, 4);
             txtAppLogin.Name = "txtAppLogin";
-            txtAppLogin.Size = new Size(233, 23);
-            txtAppLogin.TabIndex = 3;
+            txtAppLogin.Size = new Size(297, 30);
+            txtAppLogin.TabIndex = 1;
+            toolTip1.SetToolTip(txtAppLogin, "Enter the application login ID.");
             // 
-            // label2
+            // lblAppLogin
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(22, 45);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(65, 15);
-            label2.TabIndex = 2;
-            label2.Text = "App Login:";
+            lblAppLogin.AutoSize = true;
+            lblAppLogin.Location = new Point(11, 107);
+            lblAppLogin.Name = "lblAppLogin";
+            lblAppLogin.Size = new Size(147, 23);
+            lblAppLogin.TabIndex = 0;
+            lblAppLogin.Text = "Application Login:";
             // 
             // txtAppName
             // 
-            txtAppName.Location = new Point(26, 18);
-            txtAppName.Margin = new Padding(4, 3, 4, 3);
+            txtAppName.AccessibleName = "Application Name";
+            txtAppName.Location = new Point(11, 67);
+            txtAppName.Margin = new Padding(3, 4, 3, 4);
             txtAppName.Name = "txtAppName";
-            txtAppName.Size = new Size(233, 23);
-            txtAppName.TabIndex = 1;
+            txtAppName.Size = new Size(297, 30);
+            txtAppName.TabIndex = 0;
+            toolTip1.SetToolTip(txtAppName, "Enter the name of the application.");
             // 
-            // label1
+            // lblAppName
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(22, 0);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(67, 15);
-            label1.TabIndex = 0;
-            label1.Text = "App Name:";
+            lblAppName.AutoSize = true;
+            lblAppName.Location = new Point(11, 40);
+            lblAppName.Name = "lblAppName";
+            lblAppName.Size = new Size(151, 23);
+            lblAppName.TabIndex = 0;
+            lblAppName.Text = "Application Name:";
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(label18);
-            tabPage2.Controls.Add(dataGridViewDocuments);
-            tabPage2.Controls.Add(label19);
-            tabPage2.Controls.Add(dataGridViewFields);
-            tabPage2.Controls.Add(lblDocumentStatus);
-            tabPage2.Controls.Add(btnSubmitDocument);
-            tabPage2.Controls.Add(btnBrowseFile);
-            tabPage2.Controls.Add(txtUserCode);
-            tabPage2.Controls.Add(label7);
-            tabPage2.Controls.Add(txtMessageID);
-            tabPage2.Controls.Add(label6);
-            tabPage2.Controls.Add(txtSessionID);
-            tabPage2.Controls.Add(label5);
-            tabPage2.Controls.Add(txtChannel);
-            tabPage2.Controls.Add(label4);
-            tabPage2.Controls.Add(txtSourceSystem);
-            tabPage2.Controls.Add(label9);
-            tabPage2.Controls.Add(txtBatchClassName);
-            tabPage2.Controls.Add(label11);
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Margin = new Padding(4, 3, 4, 3);
+            tabPage2.Controls.Add(statusStrip2);
+            tabPage2.Controls.Add(dataPanel);
+            tabPage2.Controls.Add(metadataPanel);
+            tabPage2.Location = new Point(4, 32);
+            tabPage2.Margin = new Padding(3, 4, 3, 4);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(4, 3, 4, 3);
-            tabPage2.Size = new Size(925, 491);
+            tabPage2.Padding = new Padding(11, 13, 11, 13);
+            tabPage2.Size = new Size(1058, 656);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Submit Document";
-            tabPage2.UseVisualStyleBackColor = true;
-            tabPage2.Click += tabPage2_Click;
             // 
-            // label18
+            // statusStrip2
             // 
-            label18.AutoSize = true;
-            label18.Location = new Point(18, 172);
-            label18.Margin = new Padding(4, 0, 4, 0);
-            label18.Name = "label18";
-            label18.Size = new Size(71, 15);
-            label18.TabIndex = 23;
-            label18.Text = "Documents:";
+            statusStrip2.ImageScalingSize = new Size(20, 20);
+            statusStrip2.Items.AddRange(new ToolStripItem[] { statusLabel2 });
+            statusStrip2.Location = new Point(11, 621);
+            statusStrip2.Name = "statusStrip2";
+            statusStrip2.Padding = new Padding(1, 0, 16, 0);
+            statusStrip2.Size = new Size(1036, 22);
+            statusStrip2.TabIndex = 11;
             // 
-            // dataGridViewDocuments
+            // statusLabel2
             // 
-            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
-            dataGridViewDocuments.Location = new Point(22, 190);
-            dataGridViewDocuments.Name = "dataGridViewDocuments";
-            dataGridViewDocuments.Size = new Size(240, 150);
-            dataGridViewDocuments.TabIndex = 22;
+            statusLabel2.Name = "statusLabel2";
+            statusLabel2.Size = new Size(0, 16);
             // 
-            // FilePath
+            // dataPanel
             // 
-            FilePath.HeaderText = "File Path";
-            FilePath.Name = "FilePath";
+            dataPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataPanel.Controls.Add(btnSubmitDocument);
+            dataPanel.Controls.Add(btnRemoveFile);
+            dataPanel.Controls.Add(btnBrowseFile);
+            dataPanel.Controls.Add(dataGridViewFields);
+            dataPanel.Controls.Add(lblFields);
+            dataPanel.Controls.Add(dataGridViewDocuments);
+            dataPanel.Controls.Add(lblDocuments);
+            dataPanel.Location = new Point(11, 227);
+            dataPanel.Margin = new Padding(3, 4, 3, 4);
+            dataPanel.Name = "dataPanel";
+            dataPanel.Size = new Size(1029, 400);
+            dataPanel.TabIndex = 10;
             // 
-            // PageType
+            // btnSubmitDocument
             // 
-            PageType.HeaderText = "Page Type";
-            PageType.Name = "PageType";
+            btnSubmitDocument.BackColor = Color.FromArgb(40, 167, 69);
+            btnSubmitDocument.FlatStyle = FlatStyle.Flat;
+            btnSubmitDocument.ForeColor = Color.White;
+            btnSubmitDocument.Location = new Point(817, 319);
+            btnSubmitDocument.Margin = new Padding(3, 4, 3, 4);
+            btnSubmitDocument.Name = "btnSubmitDocument";
+            btnSubmitDocument.Size = new Size(154, 59);
+            btnSubmitDocument.TabIndex = 10;
+            btnSubmitDocument.Text = "Submit Documents";
+            btnSubmitDocument.UseVisualStyleBackColor = false;
             // 
-            // label19
+            // btnRemoveFile
             // 
-            label19.AutoSize = true;
-            label19.Location = new Point(341, 172);
-            label19.Margin = new Padding(4, 0, 4, 0);
-            label19.Name = "label19";
-            label19.Size = new Size(40, 15);
-            label19.TabIndex = 21;
-            label19.Text = "Fields:";
+            btnRemoveFile.BackColor = Color.FromArgb(220, 53, 69);
+            btnRemoveFile.FlatStyle = FlatStyle.Flat;
+            btnRemoveFile.ForeColor = Color.White;
+            btnRemoveFile.Location = new Point(129, 302);
+            btnRemoveFile.Margin = new Padding(3, 4, 3, 4);
+            btnRemoveFile.Name = "btnRemoveFile";
+            btnRemoveFile.Size = new Size(174, 40);
+            btnRemoveFile.TabIndex = 9;
+            btnRemoveFile.Text = "Remove Selected";
+            btnRemoveFile.UseVisualStyleBackColor = false;
+            // 
+            // btnBrowseFile
+            // 
+            btnBrowseFile.BackColor = Color.FromArgb(0, 120, 215);
+            btnBrowseFile.FlatStyle = FlatStyle.Flat;
+            btnBrowseFile.ForeColor = Color.White;
+            btnBrowseFile.Location = new Point(3, 302);
+            btnBrowseFile.Margin = new Padding(3, 4, 3, 4);
+            btnBrowseFile.Name = "btnBrowseFile";
+            btnBrowseFile.Size = new Size(114, 40);
+            btnBrowseFile.TabIndex = 8;
+            btnBrowseFile.Text = "Add Files";
+            btnBrowseFile.UseVisualStyleBackColor = false;
             // 
             // dataGridViewFields
             // 
+            dataGridViewFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFields.Columns.AddRange(new DataGridViewColumn[] { FieldName, FieldValue });
-            dataGridViewFields.Location = new Point(345, 190);
+            dataGridViewFields.Location = new Point(514, 27);
+            dataGridViewFields.Margin = new Padding(3, 4, 3, 4);
             dataGridViewFields.Name = "dataGridViewFields";
-            dataGridViewFields.Size = new Size(240, 150);
-            dataGridViewFields.TabIndex = 20;
-            dataGridViewFields.CellContentClick += dataGridViewFields_CellContentClick;
+            dataGridViewFields.RowHeadersWidth = 51;
+            dataGridViewFields.RowTemplate.Height = 25;
+            dataGridViewFields.Size = new Size(457, 267);
+            dataGridViewFields.TabIndex = 7;
             // 
             // FieldName
             // 
             FieldName.HeaderText = "Field Name";
+            FieldName.MinimumWidth = 6;
             FieldName.Name = "FieldName";
             // 
             // FieldValue
             // 
             FieldValue.HeaderText = "Field Value";
+            FieldValue.MinimumWidth = 6;
             FieldValue.Name = "FieldValue";
             // 
-            // lblDocumentStatus
+            // lblFields
             // 
-            lblDocumentStatus.AutoSize = true;
-            lblDocumentStatus.Location = new Point(18, 439);
-            lblDocumentStatus.Margin = new Padding(4, 0, 4, 0);
-            lblDocumentStatus.Name = "lblDocumentStatus";
-            lblDocumentStatus.Size = new Size(0, 15);
-            lblDocumentStatus.TabIndex = 18;
+            lblFields.AutoSize = true;
+            lblFields.Location = new Point(514, 0);
+            lblFields.Name = "lblFields";
+            lblFields.Size = new Size(90, 23);
+            lblFields.TabIndex = 0;
+            lblFields.Text = "Field Data:";
             // 
-            // btnSubmitDocument
+            // dataGridViewDocuments
             // 
-            btnSubmitDocument.Location = new Point(191, 391);
-            btnSubmitDocument.Margin = new Padding(4, 3, 4, 3);
-            btnSubmitDocument.Name = "btnSubmitDocument";
-            btnSubmitDocument.Size = new Size(233, 27);
-            btnSubmitDocument.TabIndex = 17;
-            btnSubmitDocument.Text = "Submit Document";
-            btnSubmitDocument.UseVisualStyleBackColor = true;
-            btnSubmitDocument.Click += btnSubmitDocument_Click;
+            dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
+            dataGridViewDocuments.Location = new Point(0, 27);
+            dataGridViewDocuments.Margin = new Padding(3, 4, 3, 4);
+            dataGridViewDocuments.Name = "dataGridViewDocuments";
+            dataGridViewDocuments.RowHeadersWidth = 51;
+            dataGridViewDocuments.RowTemplate.Height = 25;
+            dataGridViewDocuments.Size = new Size(457, 267);
+            dataGridViewDocuments.TabIndex = 6;
             // 
-            // btnBrowseFile
+            // FilePath
             // 
-            btnBrowseFile.Location = new Point(18, 357);
-            btnBrowseFile.Margin = new Padding(4, 3, 4, 3);
-            btnBrowseFile.Name = "btnBrowseFile";
-            btnBrowseFile.Size = new Size(88, 27);
-            btnBrowseFile.TabIndex = 16;
-            btnBrowseFile.Text = "Add Files";
-            btnBrowseFile.UseVisualStyleBackColor = true;
-            btnBrowseFile.Click += btnBrowseFile_Click;
+            FilePath.HeaderText = "File Path";
+            FilePath.MinimumWidth = 6;
+            FilePath.Name = "FilePath";
             // 
-            // txtUserCode
+            // PageType
             // 
-            txtUserCode.Location = new Point(345, 92);
-            txtUserCode.Margin = new Padding(4, 3, 4, 3);
-            txtUserCode.Name = "txtUserCode";
-            txtUserCode.Size = new Size(233, 23);
-            txtUserCode.TabIndex = 13;
+            PageType.HeaderText = "Page Type";
+            PageType.MinimumWidth = 6;
+            PageType.Name = "PageType";
             // 
-            // label7
+            // lblDocuments
             // 
-            label7.AutoSize = true;
-            label7.Location = new Point(342, 73);
-            label7.Margin = new Padding(4, 0, 4, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(64, 15);
-            label7.TabIndex = 12;
-            label7.Text = "User Code:";
+            lblDocuments.AutoSize = true;
+            lblDocuments.Location = new Point(0, 0);
+            lblDocuments.Name = "lblDocuments";
+            lblDocuments.Size = new Size(124, 23);
+            lblDocuments.TabIndex = 0;
+            lblDocuments.Text = "Document List:";
+            // 
+            // metadataPanel
+            // 
+            metadataPanel.Controls.Add(tableLayout2);
+            metadataPanel.Location = new Point(11, 13);
+            metadataPanel.Margin = new Padding(3, 4, 3, 4);
+            metadataPanel.Name = "metadataPanel";
+            metadataPanel.Size = new Size(1029, 200);
+            metadataPanel.TabIndex = 9;
+            // 
+            // tableLayout2
+            // 
+            tableLayout2.ColumnCount = 3;
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout2.Controls.Add(txtMessageID, 2, 3);
+            tableLayout2.Controls.Add(lblMessageID, 2, 2);
+            tableLayout2.Controls.Add(txtSessionID, 1, 3);
+            tableLayout2.Controls.Add(lblSessionID, 1, 2);
+            tableLayout2.Controls.Add(txtUserCode, 0, 3);
+            tableLayout2.Controls.Add(lblUserCode, 0, 2);
+            tableLayout2.Controls.Add(txtChannel, 2, 1);
+            tableLayout2.Controls.Add(lblChannel, 2, 0);
+            tableLayout2.Controls.Add(txtSourceSystem, 1, 1);
+            tableLayout2.Controls.Add(lblSourceSystem, 1, 0);
+            tableLayout2.Controls.Add(txtBatchClassName, 0, 1);
+            tableLayout2.Controls.Add(lblBatchClassName, 0, 0);
+            tableLayout2.Dock = DockStyle.Fill;
+            tableLayout2.Location = new Point(0, 0);
+            tableLayout2.Margin = new Padding(3, 4, 3, 4);
+            tableLayout2.Name = "tableLayout2";
+            tableLayout2.RowCount = 4;
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.Size = new Size(1029, 200);
+            tableLayout2.TabIndex = 0;
             // 
             // txtMessageID
             // 
-            txtMessageID.Location = new Point(22, 140);
-            txtMessageID.Margin = new Padding(4, 3, 4, 3);
+            txtMessageID.AccessibleName = "Message ID";
+            txtMessageID.Location = new Point(687, 88);
+            txtMessageID.Margin = new Padding(3, 4, 3, 4);
             txtMessageID.Name = "txtMessageID";
-            txtMessageID.Size = new Size(233, 23);
-            txtMessageID.TabIndex = 11;
+            txtMessageID.Size = new Size(285, 30);
+            txtMessageID.TabIndex = 5;
+            toolTip2.SetToolTip(txtMessageID, "Enter the message ID.");
             // 
-            // label6
+            // lblMessageID
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(19, 121);
-            label6.Margin = new Padding(4, 0, 4, 0);
-            label6.Name = "label6";
-            label6.Size = new Size(70, 15);
-            label6.TabIndex = 10;
-            label6.Text = "Message ID:";
+            lblMessageID.AutoSize = true;
+            lblMessageID.Location = new Point(687, 61);
+            lblMessageID.Name = "lblMessageID";
+            lblMessageID.Size = new Size(102, 23);
+            lblMessageID.TabIndex = 0;
+            lblMessageID.Text = "Message ID:";
             // 
             // txtSessionID
             // 
-            txtSessionID.Location = new Point(345, 140);
-            txtSessionID.Margin = new Padding(4, 3, 4, 3);
+            txtSessionID.AccessibleName = "Session ID";
+            txtSessionID.Location = new Point(345, 88);
+            txtSessionID.Margin = new Padding(3, 4, 3, 4);
             txtSessionID.Name = "txtSessionID";
-            txtSessionID.Size = new Size(233, 23);
-            txtSessionID.TabIndex = 9;
+            txtSessionID.Size = new Size(285, 30);
+            txtSessionID.TabIndex = 4;
+            toolTip2.SetToolTip(txtSessionID, "Enter the session ID.");
             // 
-            // label5
+            // lblSessionID
             // 
-            label5.AutoSize = true;
-            label5.Location = new Point(341, 120);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(63, 15);
-            label5.TabIndex = 8;
-            label5.Text = "Session ID:";
+            lblSessionID.AutoSize = true;
+            lblSessionID.Location = new Point(345, 61);
+            lblSessionID.Name = "lblSessionID";
+            lblSessionID.Size = new Size(92, 23);
+            lblSessionID.TabIndex = 0;
+            lblSessionID.Text = "Session ID:";
+            // 
+            // txtUserCode
+            // 
+            txtUserCode.AccessibleName = "User ID";
+            txtUserCode.Location = new Point(3, 88);
+            txtUserCode.Margin = new Padding(3, 4, 3, 4);
+            txtUserCode.Name = "txtUserCode";
+            txtUserCode.Size = new Size(285, 30);
+            txtUserCode.TabIndex = 3;
+            toolTip2.SetToolTip(txtUserCode, "Enter the user ID.");
+            // 
+            // lblUserCode
+            // 
+            lblUserCode.AutoSize = true;
+            lblUserCode.Location = new Point(3, 61);
+            lblUserCode.Name = "lblUserCode";
+            lblUserCode.Size = new Size(70, 23);
+            lblUserCode.TabIndex = 0;
+            lblUserCode.Text = "User ID:";
             // 
             // txtChannel
             // 
-            txtChannel.Location = new Point(22, 92);
-            txtChannel.Margin = new Padding(4, 3, 4, 3);
+            txtChannel.AccessibleName = "Channel";
+            txtChannel.Location = new Point(687, 27);
+            txtChannel.Margin = new Padding(3, 4, 3, 4);
             txtChannel.Name = "txtChannel";
-            txtChannel.Size = new Size(233, 23);
-            txtChannel.TabIndex = 7;
+            txtChannel.Size = new Size(285, 30);
+            txtChannel.TabIndex = 2;
+            toolTip2.SetToolTip(txtChannel, "Enter the channel name.");
             // 
-            // label4
+            // lblChannel
             // 
-            label4.AutoSize = true;
-            label4.Location = new Point(19, 74);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(54, 15);
-            label4.TabIndex = 6;
-            label4.Text = "Channel:";
+            lblChannel.AutoSize = true;
+            lblChannel.Location = new Point(687, 0);
+            lblChannel.Name = "lblChannel";
+            lblChannel.Size = new Size(77, 23);
+            lblChannel.TabIndex = 0;
+            lblChannel.Text = "Channel:";
             // 
             // txtSourceSystem
             // 
-            txtSourceSystem.Location = new Point(22, 46);
-            txtSourceSystem.Margin = new Padding(4, 3, 4, 3);
+            txtSourceSystem.AccessibleName = "Source System";
+            txtSourceSystem.Location = new Point(345, 27);
+            txtSourceSystem.Margin = new Padding(3, 4, 3, 4);
             txtSourceSystem.Name = "txtSourceSystem";
-            txtSourceSystem.Size = new Size(233, 23);
-            txtSourceSystem.TabIndex = 5;
+            txtSourceSystem.Size = new Size(285, 30);
+            txtSourceSystem.TabIndex = 1;
+            toolTip2.SetToolTip(txtSourceSystem, "Enter the source system identifier.");
             // 
-            // label9
+            // lblSourceSystem
             // 
-            label9.AutoSize = true;
-            label9.Location = new Point(19, 28);
-            label9.Margin = new Padding(4, 0, 4, 0);
-            label9.Name = "label9";
-            label9.Size = new Size(87, 15);
-            label9.TabIndex = 4;
-            label9.Text = "Source System:";
+            lblSourceSystem.AutoSize = true;
+            lblSourceSystem.Location = new Point(345, 0);
+            lblSourceSystem.Name = "lblSourceSystem";
+            lblSourceSystem.Size = new Size(125, 23);
+            lblSourceSystem.TabIndex = 0;
+            lblSourceSystem.Text = "Source System:";
             // 
             // txtBatchClassName
             // 
-            txtBatchClassName.Location = new Point(345, 46);
-            txtBatchClassName.Margin = new Padding(4, 3, 4, 3);
+            txtBatchClassName.AccessibleName = "Batch Category";
+            txtBatchClassName.Location = new Point(3, 27);
+            txtBatchClassName.Margin = new Padding(3, 4, 3, 4);
             txtBatchClassName.Name = "txtBatchClassName";
-            txtBatchClassName.Size = new Size(233, 23);
-            txtBatchClassName.TabIndex = 1;
+            txtBatchClassName.Size = new Size(285, 30);
+            txtBatchClassName.TabIndex = 0;
+            toolTip2.SetToolTip(txtBatchClassName, "Enter the batch category.");
             // 
-            // label11
+            // lblBatchClassName
             // 
-            label11.AutoSize = true;
-            label11.Location = new Point(341, 28);
-            label11.Margin = new Padding(4, 0, 4, 0);
-            label11.Name = "label11";
-            label11.Size = new Size(105, 15);
-            label11.TabIndex = 0;
-            label11.Text = "Batch Class Name:";
+            lblBatchClassName.AutoSize = true;
+            lblBatchClassName.Location = new Point(3, 0);
+            lblBatchClassName.Name = "lblBatchClassName";
+            lblBatchClassName.Size = new Size(131, 23);
+            lblBatchClassName.TabIndex = 0;
+            lblBatchClassName.Text = "Batch Category:";
             // 
             // tabPage3
             // 
+            tabPage3.Controls.Add(statusStrip3);
             tabPage3.Controls.Add(panelStatusViewer);
-            tabPage3.Controls.Add(lblReadStatus);
+            tabPage3.Controls.Add(progressBar);
+            tabPage3.Controls.Add(btnClearResults);
             tabPage3.Controls.Add(btnCheckStatus);
-            tabPage3.Controls.Add(txtStatusRequestGuid);
-            tabPage3.Controls.Add(label12);
-            tabPage3.Controls.Add(txtStatusUserCode);
-            tabPage3.Controls.Add(label13);
-            tabPage3.Controls.Add(txtStatusMessageID);
-            tabPage3.Controls.Add(label14);
-            tabPage3.Controls.Add(txtStatusSessionID);
-            tabPage3.Controls.Add(label15);
-            tabPage3.Controls.Add(txtStatusChannel);
-            tabPage3.Controls.Add(label16);
-            tabPage3.Controls.Add(txtStatusSourceSystem);
-            tabPage3.Controls.Add(label17);
-            tabPage3.Location = new Point(4, 24);
-            tabPage3.Margin = new Padding(4, 3, 4, 3);
+            tabPage3.Controls.Add(inputPanel);
+            tabPage3.Location = new Point(4, 32);
+            tabPage3.Margin = new Padding(3, 4, 3, 4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(4, 3, 4, 3);
-            tabPage3.Size = new Size(925, 491);
+            tabPage3.Padding = new Padding(11, 13, 11, 13);
+            tabPage3.Size = new Size(1058, 656);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Check Status";
-            tabPage3.UseVisualStyleBackColor = true;
             // 
-            // lblReadStatus
+            // statusStrip3
             // 
-            lblReadStatus.AutoSize = true;
-            lblReadStatus.Location = new Point(22, 168);
-            lblReadStatus.Margin = new Padding(4, 0, 4, 0);
-            lblReadStatus.Name = "lblReadStatus";
-            lblReadStatus.Size = new Size(0, 15);
-            lblReadStatus.TabIndex = 20;
+            statusStrip3.ImageScalingSize = new Size(20, 20);
+            statusStrip3.Items.AddRange(new ToolStripItem[] { statusLabel3 });
+            statusStrip3.Location = new Point(11, 621);
+            statusStrip3.Name = "statusStrip3";
+            statusStrip3.Padding = new Padding(1, 0, 16, 0);
+            statusStrip3.Size = new Size(1036, 22);
+            statusStrip3.TabIndex = 9;
             // 
-            // btnCheckStatus
+            // statusLabel3
             // 
-            btnCheckStatus.Location = new Point(22, 127);
-            btnCheckStatus.Margin = new Padding(4, 3, 4, 3);
-            btnCheckStatus.Name = "btnCheckStatus";
-            btnCheckStatus.Size = new Size(233, 27);
-            btnCheckStatus.TabIndex = 18;
-            btnCheckStatus.Text = "Check Status";
-            btnCheckStatus.UseVisualStyleBackColor = true;
-            btnCheckStatus.Click += btnCheckStatus_Click;
-            // 
-            // txtStatusRequestGuid
-            // 
-            txtStatusRequestGuid.Location = new Point(22, 37);
-            txtStatusRequestGuid.Margin = new Padding(4, 3, 4, 3);
-            txtStatusRequestGuid.Name = "txtStatusRequestGuid";
-            txtStatusRequestGuid.Size = new Size(233, 23);
-            txtStatusRequestGuid.TabIndex = 17;
-            txtStatusRequestGuid.TextChanged += txtStatusRequestGuid_TextChanged;
-            // 
-            // label12
-            // 
-            label12.AutoSize = true;
-            label12.Location = new Point(18, 19);
-            label12.Margin = new Padding(4, 0, 4, 0);
-            label12.Name = "label12";
-            label12.Size = new Size(82, 15);
-            label12.TabIndex = 16;
-            label12.Text = "Request GUID:";
-            // 
-            // txtStatusUserCode
-            // 
-            txtStatusUserCode.Location = new Point(22, 81);
-            txtStatusUserCode.Margin = new Padding(4, 3, 4, 3);
-            txtStatusUserCode.Name = "txtStatusUserCode";
-            txtStatusUserCode.Size = new Size(233, 23);
-            txtStatusUserCode.TabIndex = 15;
-            // 
-            // label13
-            // 
-            label13.AutoSize = true;
-            label13.Location = new Point(19, 63);
-            label13.Margin = new Padding(4, 0, 4, 0);
-            label13.Name = "label13";
-            label13.Size = new Size(64, 15);
-            label13.TabIndex = 14;
-            label13.Text = "User Code:";
-            // 
-            // txtStatusMessageID
-            // 
-            txtStatusMessageID.Location = new Point(322, 37);
-            txtStatusMessageID.Margin = new Padding(4, 3, 4, 3);
-            txtStatusMessageID.Name = "txtStatusMessageID";
-            txtStatusMessageID.Size = new Size(233, 23);
-            txtStatusMessageID.TabIndex = 13;
-            // 
-            // label14
-            // 
-            label14.AutoSize = true;
-            label14.Location = new Point(322, 19);
-            label14.Margin = new Padding(4, 0, 4, 0);
-            label14.Name = "label14";
-            label14.Size = new Size(70, 15);
-            label14.TabIndex = 12;
-            label14.Text = "Message ID:";
-            // 
-            // txtStatusSessionID
-            // 
-            txtStatusSessionID.Location = new Point(583, 37);
-            txtStatusSessionID.Margin = new Padding(4, 3, 4, 3);
-            txtStatusSessionID.Name = "txtStatusSessionID";
-            txtStatusSessionID.Size = new Size(233, 23);
-            txtStatusSessionID.TabIndex = 11;
-            // 
-            // label15
-            // 
-            label15.AutoSize = true;
-            label15.Location = new Point(579, 19);
-            label15.Margin = new Padding(4, 0, 4, 0);
-            label15.Name = "label15";
-            label15.Size = new Size(63, 15);
-            label15.TabIndex = 10;
-            label15.Text = "Session ID:";
-            // 
-            // txtStatusChannel
-            // 
-            txtStatusChannel.Location = new Point(583, 81);
-            txtStatusChannel.Margin = new Padding(4, 3, 4, 3);
-            txtStatusChannel.Name = "txtStatusChannel";
-            txtStatusChannel.Size = new Size(233, 23);
-            txtStatusChannel.TabIndex = 9;
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(580, 63);
-            label16.Margin = new Padding(4, 0, 4, 0);
-            label16.Name = "label16";
-            label16.Size = new Size(54, 15);
-            label16.TabIndex = 8;
-            label16.Text = "Channel:";
-            // 
-            // txtStatusSourceSystem
-            // 
-            txtStatusSourceSystem.Location = new Point(322, 81);
-            txtStatusSourceSystem.Margin = new Padding(4, 3, 4, 3);
-            txtStatusSourceSystem.Name = "txtStatusSourceSystem";
-            txtStatusSourceSystem.Size = new Size(233, 23);
-            txtStatusSourceSystem.TabIndex = 7;
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Location = new Point(319, 63);
-            label17.Margin = new Padding(4, 0, 4, 0);
-            label17.Name = "label17";
-            label17.Size = new Size(87, 15);
-            label17.TabIndex = 6;
-            label17.Text = "Source System:";
+            statusLabel3.Name = "statusLabel3";
+            statusLabel3.Size = new Size(0, 16);
             // 
             // panelStatusViewer
             // 
-            panelStatusViewer.Location = new Point(8, 188);
+            panelStatusViewer.BorderStyle = BorderStyle.FixedSingle;
+            panelStatusViewer.Location = new Point(11, 226);
+            panelStatusViewer.Margin = new Padding(3, 4, 3, 4);
             panelStatusViewer.Name = "panelStatusViewer";
-            panelStatusViewer.Size = new Size(910, 297);
-            panelStatusViewer.TabIndex = 21;
-            panelStatusViewer.Paint += panelStatusViewer_Paint;
+            panelStatusViewer.Size = new Size(1028, 386);
+            panelStatusViewer.TabIndex = 8;
+            // 
+            // progressBar
+            // 
+            progressBar.Location = new Point(605, 167);
+            progressBar.Margin = new Padding(3, 4, 3, 4);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(378, 40);
+            progressBar.Style = ProgressBarStyle.Marquee;
+            progressBar.TabIndex = 7;
+            progressBar.Visible = false;
+            // 
+            // btnClearResults
+            // 
+            btnClearResults.BackColor = Color.FromArgb(108, 117, 125);
+            btnClearResults.FlatStyle = FlatStyle.Flat;
+            btnClearResults.ForeColor = Color.White;
+            btnClearResults.Location = new Point(298, 167);
+            btnClearResults.Margin = new Padding(3, 4, 3, 4);
+            btnClearResults.Name = "btnClearResults";
+            btnClearResults.Size = new Size(263, 40);
+            btnClearResults.TabIndex = 6;
+            btnClearResults.Text = "Clear Results";
+            btnClearResults.UseVisualStyleBackColor = false;
+            // 
+            // btnCheckStatus
+            // 
+            btnCheckStatus.BackColor = Color.FromArgb(0, 120, 215);
+            btnCheckStatus.FlatStyle = FlatStyle.Flat;
+            btnCheckStatus.ForeColor = Color.White;
+            btnCheckStatus.Location = new Point(8, 167);
+            btnCheckStatus.Margin = new Padding(3, 4, 3, 4);
+            btnCheckStatus.Name = "btnCheckStatus";
+            btnCheckStatus.Size = new Size(263, 40);
+            btnCheckStatus.TabIndex = 5;
+            btnCheckStatus.Text = "Check Status";
+            btnCheckStatus.UseVisualStyleBackColor = false;
+            // 
+            // inputPanel
+            // 
+            inputPanel.Controls.Add(tableLayout3);
+            inputPanel.Location = new Point(11, 13);
+            inputPanel.Margin = new Padding(3, 4, 3, 4);
+            inputPanel.Name = "inputPanel";
+            inputPanel.Size = new Size(1029, 133);
+            inputPanel.TabIndex = 0;
+            // 
+            // tableLayout3
+            // 
+            tableLayout3.ColumnCount = 3;
+            tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
+            tableLayout3.Controls.Add(txtStatusUserCode, 2, 3);
+            tableLayout3.Controls.Add(lblStatusUserCode, 2, 2);
+            tableLayout3.Controls.Add(txtStatusMessageID, 1, 3);
+            tableLayout3.Controls.Add(lblStatusMessageID, 1, 2);
+            tableLayout3.Controls.Add(txtStatusSessionID, 0, 3);
+            tableLayout3.Controls.Add(lblStatusSessionID, 0, 2);
+            tableLayout3.Controls.Add(txtStatusChannel, 2, 1);
+            tableLayout3.Controls.Add(lblStatusChannel, 2, 0);
+            tableLayout3.Controls.Add(txtStatusSourceSystem, 1, 1);
+            tableLayout3.Controls.Add(lblStatusSourceSystem, 1, 0);
+            tableLayout3.Controls.Add(txtStatusRequestGuid, 0, 1);
+            tableLayout3.Controls.Add(lblStatusRequestGuid, 0, 0);
+            tableLayout3.Dock = DockStyle.Fill;
+            tableLayout3.Location = new Point(0, 0);
+            tableLayout3.Margin = new Padding(3, 4, 3, 4);
+            tableLayout3.Name = "tableLayout3";
+            tableLayout3.RowCount = 4;
+            tableLayout3.RowStyles.Add(new RowStyle());
+            tableLayout3.RowStyles.Add(new RowStyle());
+            tableLayout3.RowStyles.Add(new RowStyle());
+            tableLayout3.RowStyles.Add(new RowStyle());
+            tableLayout3.Size = new Size(1029, 133);
+            tableLayout3.TabIndex = 0;
+            // 
+            // txtStatusUserCode
+            // 
+            txtStatusUserCode.AccessibleName = "User ID";
+            txtStatusUserCode.Location = new Point(687, 88);
+            txtStatusUserCode.Margin = new Padding(3, 4, 3, 4);
+            txtStatusUserCode.Name = "txtStatusUserCode";
+            txtStatusUserCode.Size = new Size(285, 30);
+            txtStatusUserCode.TabIndex = 5;
+            toolTip3.SetToolTip(txtStatusUserCode, "Enter the user ID.");
+            // 
+            // lblStatusUserCode
+            // 
+            lblStatusUserCode.AutoSize = true;
+            lblStatusUserCode.Location = new Point(687, 61);
+            lblStatusUserCode.Name = "lblStatusUserCode";
+            lblStatusUserCode.Size = new Size(70, 23);
+            lblStatusUserCode.TabIndex = 0;
+            lblStatusUserCode.Text = "User ID:";
+            // 
+            // txtStatusMessageID
+            // 
+            txtStatusMessageID.AccessibleName = "Message ID";
+            txtStatusMessageID.Location = new Point(345, 88);
+            txtStatusMessageID.Margin = new Padding(3, 4, 3, 4);
+            txtStatusMessageID.Name = "txtStatusMessageID";
+            txtStatusMessageID.Size = new Size(285, 30);
+            txtStatusMessageID.TabIndex = 4;
+            toolTip3.SetToolTip(txtStatusMessageID, "Enter the message ID.");
+            // 
+            // lblStatusMessageID
+            // 
+            lblStatusMessageID.AutoSize = true;
+            lblStatusMessageID.Location = new Point(345, 61);
+            lblStatusMessageID.Name = "lblStatusMessageID";
+            lblStatusMessageID.Size = new Size(102, 23);
+            lblStatusMessageID.TabIndex = 0;
+            lblStatusMessageID.Text = "Message ID:";
+            // 
+            // txtStatusSessionID
+            // 
+            txtStatusSessionID.AccessibleName = "Session ID";
+            txtStatusSessionID.Location = new Point(3, 88);
+            txtStatusSessionID.Margin = new Padding(3, 4, 3, 4);
+            txtStatusSessionID.Name = "txtStatusSessionID";
+            txtStatusSessionID.Size = new Size(285, 30);
+            txtStatusSessionID.TabIndex = 3;
+            toolTip3.SetToolTip(txtStatusSessionID, "Enter the session ID.");
+            // 
+            // lblStatusSessionID
+            // 
+            lblStatusSessionID.AutoSize = true;
+            lblStatusSessionID.Location = new Point(3, 61);
+            lblStatusSessionID.Name = "lblStatusSessionID";
+            lblStatusSessionID.Size = new Size(92, 23);
+            lblStatusSessionID.TabIndex = 0;
+            lblStatusSessionID.Text = "Session ID:";
+            // 
+            // txtStatusChannel
+            // 
+            txtStatusChannel.AccessibleName = "Channel";
+            txtStatusChannel.Location = new Point(687, 27);
+            txtStatusChannel.Margin = new Padding(3, 4, 3, 4);
+            txtStatusChannel.Name = "txtStatusChannel";
+            txtStatusChannel.Size = new Size(285, 30);
+            txtStatusChannel.TabIndex = 2;
+            toolTip3.SetToolTip(txtStatusChannel, "Enter the channel name.");
+            // 
+            // lblStatusChannel
+            // 
+            lblStatusChannel.AutoSize = true;
+            lblStatusChannel.Location = new Point(687, 0);
+            lblStatusChannel.Name = "lblStatusChannel";
+            lblStatusChannel.Size = new Size(77, 23);
+            lblStatusChannel.TabIndex = 0;
+            lblStatusChannel.Text = "Channel:";
+            // 
+            // txtStatusSourceSystem
+            // 
+            txtStatusSourceSystem.AccessibleName = "Source System";
+            txtStatusSourceSystem.Location = new Point(345, 27);
+            txtStatusSourceSystem.Margin = new Padding(3, 4, 3, 4);
+            txtStatusSourceSystem.Name = "txtStatusSourceSystem";
+            txtStatusSourceSystem.Size = new Size(285, 30);
+            txtStatusSourceSystem.TabIndex = 1;
+            toolTip3.SetToolTip(txtStatusSourceSystem, "Enter the source system identifier.");
+            // 
+            // lblStatusSourceSystem
+            // 
+            lblStatusSourceSystem.AutoSize = true;
+            lblStatusSourceSystem.Location = new Point(345, 0);
+            lblStatusSourceSystem.Name = "lblStatusSourceSystem";
+            lblStatusSourceSystem.Size = new Size(125, 23);
+            lblStatusSourceSystem.TabIndex = 0;
+            lblStatusSourceSystem.Text = "Source System:";
+            // 
+            // txtStatusRequestGuid
+            // 
+            txtStatusRequestGuid.AccessibleName = "Request ID";
+            txtStatusRequestGuid.Location = new Point(3, 27);
+            txtStatusRequestGuid.Margin = new Padding(3, 4, 3, 4);
+            txtStatusRequestGuid.Name = "txtStatusRequestGuid";
+            txtStatusRequestGuid.Size = new Size(285, 30);
+            txtStatusRequestGuid.TabIndex = 0;
+            toolTip3.SetToolTip(txtStatusRequestGuid, "Enter the request ID.");
+            // 
+            // lblStatusRequestGuid
+            // 
+            lblStatusRequestGuid.AutoSize = true;
+            lblStatusRequestGuid.Location = new Point(3, 0);
+            lblStatusRequestGuid.Name = "lblStatusRequestGuid";
+            lblStatusRequestGuid.Size = new Size(97, 23);
+            lblStatusRequestGuid.TabIndex = 0;
+            lblStatusRequestGuid.Text = "Request ID:";
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(933, 519);
+            BackColor = Color.FromArgb(245, 245, 245);
+            ClientSize = new Size(1066, 692);
             Controls.Add(tabControl1);
-            Margin = new Padding(4, 3, 4, 3);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
             Text = "CCapture Mock API Client";
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            credentialsGroup.ResumeLayout(false);
+            credentialsGroup.PerformLayout();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
+            statusStrip2.ResumeLayout(false);
+            statusStrip2.PerformLayout();
+            dataPanel.ResumeLayout(false);
+            dataPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
+            metadataPanel.ResumeLayout(false);
+            tableLayout2.ResumeLayout(false);
+            tableLayout2.PerformLayout();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
+            statusStrip3.ResumeLayout(false);
+            statusStrip3.PerformLayout();
+            inputPanel.ResumeLayout(false);
+            tableLayout3.ResumeLayout(false);
+            tableLayout3.PerformLayout();
             ResumeLayout(false);
-
         }
-
-        #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Label lblTokenStatus;
-        private System.Windows.Forms.Button btnGetToken;
+        private System.Windows.Forms.GroupBox credentialsGroup;
+        private System.Windows.Forms.CheckBox chkShowPassword;
         private System.Windows.Forms.TextBox txtAppPassword;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblAppPassword;
         private System.Windows.Forms.TextBox txtAppLogin;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblAppLogin;
         private System.Windows.Forms.TextBox txtAppName;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label lblDocumentStatus;
-        private System.Windows.Forms.Button btnSubmitDocument;
-        private System.Windows.Forms.Button btnBrowseFile;
-        private System.Windows.Forms.TextBox txtUserCode;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblAppName;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Panel metadataPanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayout2;
         private System.Windows.Forms.TextBox txtMessageID;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblMessageID;
         private System.Windows.Forms.TextBox txtSessionID;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblSessionID;
+        private System.Windows.Forms.TextBox txtUserCode;
+        private System.Windows.Forms.Label lblUserCode;
         private System.Windows.Forms.TextBox txtChannel;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblChannel;
         private System.Windows.Forms.TextBox txtSourceSystem;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label lblSourceSystem;
         private System.Windows.Forms.TextBox txtBatchClassName;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button btnCheckStatus;
-        private System.Windows.Forms.TextBox txtStatusRequestGuid;
-        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label lblBatchClassName;
+        private System.Windows.Forms.Panel dataPanel;
+        private System.Windows.Forms.Button btnSubmitDocument;
+        private System.Windows.Forms.Button btnRemoveFile;
+        private System.Windows.Forms.Button btnBrowseFile;
+        private System.Windows.Forms.DataGridView dataGridViewFields;
+        private System.Windows.Forms.Label lblFields;
+        private System.Windows.Forms.DataGridView dataGridViewDocuments;
+        private System.Windows.Forms.Label lblDocuments;
+        private System.Windows.Forms.StatusStrip statusStrip2;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Panel inputPanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayout3;
         private System.Windows.Forms.TextBox txtStatusUserCode;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label lblStatusUserCode;
         private System.Windows.Forms.TextBox txtStatusMessageID;
-        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lblStatusMessageID;
         private System.Windows.Forms.TextBox txtStatusSessionID;
-        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lblStatusSessionID;
         private System.Windows.Forms.TextBox txtStatusChannel;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lblStatusChannel;
         private System.Windows.Forms.TextBox txtStatusSourceSystem;
-        private System.Windows.Forms.Label label17;
-        private DataGridView dataGridViewFields;
+        private System.Windows.Forms.Label lblStatusSourceSystem;
+        private System.Windows.Forms.TextBox txtStatusRequestGuid;
+        private System.Windows.Forms.Label lblStatusRequestGuid;
+        private System.Windows.Forms.Button btnCheckStatus;
+        private System.Windows.Forms.Button btnClearResults;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Panel panelStatusViewer;
+        private System.Windows.Forms.StatusStrip statusStrip3;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel3;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTip2;
+        private System.Windows.Forms.ToolTip toolTip3;
         private DataGridViewTextBoxColumn FieldName;
         private DataGridViewTextBoxColumn FieldValue;
-        private Label label19;
-        private Label label18;
-        private DataGridView dataGridViewDocuments;
         private DataGridViewTextBoxColumn FilePath;
         private DataGridViewTextBoxColumn PageType;
-        private Label lblReadStatus;
-        private Panel panelStatusViewer;
+        private Button btnGetToken;
     }
 }
