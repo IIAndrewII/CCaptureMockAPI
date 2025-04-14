@@ -4,6 +4,7 @@ using CCaptureWinForm.Presentation;
 using CCaptureWinForm.Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,10 +20,12 @@ namespace CCaptureWinForm
 
         public MainForm()
         {
+
             InitializeComponent();
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-            var apiService = new ApiService("https://localhost:7059");
             var fileService = new FileService();
+            var apiUrl = ConfigurationManager.AppSettings["ApiUrl"];
+            var apiService = new ApiService("https://localhost:7059");
             _viewModel = new MainViewModel(apiService, fileService);
 
             // Attach event handlers
@@ -33,6 +36,10 @@ namespace CCaptureWinForm
             btnSubmitDocument.Click += btnSubmitDocument_Click;
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnClearResults.Click += btnClearResults_Click;
+
+            BackColor = Color.FromArgb(245, 245, 245);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = true;
         }
 
         private void InitializeStatusViewer()
