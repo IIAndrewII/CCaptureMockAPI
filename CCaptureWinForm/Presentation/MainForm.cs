@@ -20,7 +20,6 @@ namespace CCaptureWinForm
 
         public MainForm()
         {
-
             InitializeComponent();
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
             var fileService = new FileService();
@@ -36,10 +35,26 @@ namespace CCaptureWinForm
             btnSubmitDocument.Click += btnSubmitDocument_Click;
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnClearResults.Click += btnClearResults_Click;
+            Resize += MainForm_Resize;
 
             BackColor = Color.FromArgb(245, 245, 245);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = true;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MinimumSize = new Size(800, 500);
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            // Center the credentials group on TabPage1
+            if (tabPage1.Width > credentialsGroup.Width)
+            {
+                credentialsGroup.Left = (tabPage1.Width - credentialsGroup.Width) / 2;
+            }
+
+            // Adjust button positions in dataPanel
+            btnBrowseFile.Top = dataGridViewDocuments.Bottom + 10;
+            btnRemoveFile.Top = dataGridViewDocuments.Bottom + 10;
+            btnSubmitDocument.Top = dataGridViewDocuments.Bottom + 10;
+            btnSubmitDocument.Left = dataPanel.Width - btnSubmitDocument.Width - 10;
         }
 
         private void InitializeStatusViewer()
@@ -62,23 +77,23 @@ namespace CCaptureWinForm
             {
                 _errorProvider.Clear();
                 if (string.IsNullOrWhiteSpace(txtAppName.Text))
-                    _errorProvider.SetError(txtAppName, "Application name is required.");
+                    _errorProvider.SetError(txtAppName, "Please enter the application name.");
                 if (string.IsNullOrWhiteSpace(txtAppLogin.Text))
-                    _errorProvider.SetError(txtAppLogin, "Application login is required.");
+                    _errorProvider.SetError(txtAppLogin, "Please enter the application login.");
                 if (string.IsNullOrWhiteSpace(txtAppPassword.Text))
-                    _errorProvider.SetError(txtAppPassword, "Application password is required.");
+                    _errorProvider.SetError(txtAppPassword, "Please enter the application password.");
 
                 if (_errorProvider.GetError(txtAppName) != "" ||
                     _errorProvider.GetError(txtAppLogin) != "" ||
                     _errorProvider.GetError(txtAppPassword) != "")
                 {
-                    statusLabel1.Text = "Please correct the errors.";
+                    statusLabel1.Text = "Please fill in all required fields.";
                     statusLabel1.ForeColor = Color.Red;
                     return;
                 }
 
                 btnGetToken.Enabled = false;
-                statusLabel1.Text = "Authenticating...";
+                statusLabel1.Text = "Logging in...";
                 statusLabel1.ForeColor = Color.Blue;
 
                 var token = await _viewModel.GetAuthTokenAsync(
@@ -86,13 +101,15 @@ namespace CCaptureWinForm
                     txtAppLogin.Text,
                     txtAppPassword.Text);
 
-                statusLabel1.Text = "Authentication successful!";
+                statusLabel1.Text = "You're logged in!";
                 statusLabel1.ForeColor = Color.Green;
                 tabControl1.SelectedTab = tabPage2;
             }
             catch (Exception ex)
             {
-                statusLabel1.Text = $"Error: {ex.Message}";
+                statusLabel1.Text = ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401")
+                    ? "Login failed. Please check your credentials and try again."
+                    : "Something went wrong. Please try again.";
                 statusLabel1.ForeColor = Color.Red;
             }
             finally
@@ -107,19 +124,19 @@ namespace CCaptureWinForm
             {
                 _errorProvider.Clear();
                 if (string.IsNullOrWhiteSpace(txtBatchClassName.Text))
-                    _errorProvider.SetError(txtBatchClassName, "Batch category is required.");
+                    _errorProvider.SetError(txtBatchClassName, "Please enter the batch category.");
                 if (string.IsNullOrWhiteSpace(txtSourceSystem.Text))
-                    _errorProvider.SetError(txtSourceSystem, "Source system is required.");
+                    _errorProvider.SetError(txtSourceSystem, "Please enter the source system.");
                 if (string.IsNullOrWhiteSpace(txtChannel.Text))
-                    _errorProvider.SetError(txtChannel, "Channel is required.");
+                    _errorProvider.SetError(txtChannel, "Please enter the channel.");
                 if (string.IsNullOrWhiteSpace(txtSessionID.Text))
-                    _errorProvider.SetError(txtSessionID, "Session ID is required.");
+                    _errorProvider.SetError(txtSessionID, "Please enter the session ID.");
                 if (string.IsNullOrWhiteSpace(txtMessageID.Text))
-                    _errorProvider.SetError(txtMessageID, "Message ID is required.");
+                    _errorProvider.SetError(txtMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
-                    _errorProvider.SetError(txtUserCode, "User ID is required.");
+                    _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
                 if (dataGridViewDocuments.RowCount == 1)
-                    _errorProvider.SetError(dataGridViewDocuments, "At least one document is required.");
+                    _errorProvider.SetError(dataGridViewDocuments, "Please add at least one document.");
 
                 if (_errorProvider.GetError(txtBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
@@ -129,12 +146,12 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(txtUserCode) != "" ||
                     _errorProvider.GetError(dataGridViewDocuments) != "")
                 {
-                    statusLabel2.Text = "Please correct the errors.";
+                    statusLabel2.Text = "Please fill in all required fields.";
                     statusLabel2.ForeColor = Color.Red;
                     return;
                 }
 
-                statusLabel2.Text = "Submitting...";
+                statusLabel2.Text = "Submitting your documents...";
                 statusLabel2.ForeColor = Color.Blue;
 
                 var fields = new List<Field>();
@@ -171,7 +188,7 @@ namespace CCaptureWinForm
                     fields,
                     documents);
 
-                statusLabel2.Text = $"Document submitted successfully! Request ID: {requestGuid}";
+                statusLabel2.Text = $"Documents submitted! Your request ID is: {requestGuid}";
                 statusLabel2.ForeColor = Color.Green;
                 txtStatusRequestGuid.Text = requestGuid;
                 txtStatusSourceSystem.Text = txtSourceSystem.Text;
@@ -183,8 +200,17 @@ namespace CCaptureWinForm
             }
             catch (Exception ex)
             {
-                statusLabel2.Text = $"Error: {ex.Message}";
-                statusLabel2.ForeColor = Color.Red;
+                if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
+                {
+                    tabControl1.SelectedTab = tabPage1;
+                    statusLabel1.Text = "Your session has expired. Please log in again.";
+                    statusLabel1.ForeColor = Color.Red;
+                }
+                else
+                {
+                    statusLabel2.Text = "Something went wrong while submitting. Please try again.";
+                    statusLabel2.ForeColor = Color.Red;
+                }
             }
         }
 
@@ -194,17 +220,17 @@ namespace CCaptureWinForm
             {
                 _errorProvider.Clear();
                 if (string.IsNullOrWhiteSpace(txtStatusRequestGuid.Text))
-                    _errorProvider.SetError(txtStatusRequestGuid, "Request ID is required.");
+                    _errorProvider.SetError(txtStatusRequestGuid, "Please enter the request ID.");
                 if (string.IsNullOrWhiteSpace(txtStatusSourceSystem.Text))
-                    _errorProvider.SetError(txtStatusSourceSystem, "Source system is required.");
+                    _errorProvider.SetError(txtStatusSourceSystem, "Please enter the source system.");
                 if (string.IsNullOrWhiteSpace(txtStatusChannel.Text))
-                    _errorProvider.SetError(txtStatusChannel, "Channel is required.");
+                    _errorProvider.SetError(txtStatusChannel, "Please enter the channel.");
                 if (string.IsNullOrWhiteSpace(txtStatusSessionID.Text))
-                    _errorProvider.SetError(txtStatusSessionID, "Session ID is required.");
+                    _errorProvider.SetError(txtStatusSessionID, "Please enter the session ID.");
                 if (string.IsNullOrWhiteSpace(txtStatusMessageID.Text))
-                    _errorProvider.SetError(txtStatusMessageID, "Message ID is required.");
+                    _errorProvider.SetError(txtStatusMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtStatusUserCode.Text))
-                    _errorProvider.SetError(txtStatusUserCode, "User ID is required.");
+                    _errorProvider.SetError(txtStatusUserCode, "Please enter the user ID.");
 
                 if (_errorProvider.GetError(txtStatusRequestGuid) != "" ||
                     _errorProvider.GetError(txtStatusSourceSystem) != "" ||
@@ -213,7 +239,7 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(txtStatusMessageID) != "" ||
                     _errorProvider.GetError(txtStatusUserCode) != "")
                 {
-                    statusLabel3.Text = "Please correct the errors.";
+                    statusLabel3.Text = "Please fill in all required fields.";
                     statusLabel3.ForeColor = Color.Red;
                     return;
                 }
@@ -235,13 +261,22 @@ namespace CCaptureWinForm
                 _statusViewer.DisplayResults(result);
                 _statusViewer.Visible = true;
 
-                statusLabel3.Text = "Status retrieved successfully!";
+                statusLabel3.Text = "Status retrieved!";
                 statusLabel3.ForeColor = Color.Green;
             }
             catch (Exception ex)
             {
-                statusLabel3.Text = $"Error: {ex.Message}";
-                statusLabel3.ForeColor = Color.Red;
+                if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
+                {
+                    tabControl1.SelectedTab = tabPage1;
+                    statusLabel1.Text = "Your session has expired. Please log in again.";
+                    statusLabel1.ForeColor = Color.Red;
+                }
+                else
+                {
+                    statusLabel3.Text = "Something went wrong while checking the status. Please try again.";
+                    statusLabel3.ForeColor = Color.Red;
+                }
             }
             finally
             {
