@@ -378,6 +378,9 @@ namespace CCaptureMockApi.Controllers
 
             if (responseRecord == null)
                 return NotFound(new { Code = "-2", Message = "No response found for given requestGuid" });
+            
+            // Simulate a delay of 10 seconds
+            await Task.Delay(10000);
 
             return Content(responseRecord.ResponseJson, "application/json");
         }

@@ -588,10 +588,10 @@
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(605, 167);
+            progressBar.Location = new Point(647, 178);
             progressBar.Margin = new Padding(3, 4, 3, 4);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(378, 40);
+            progressBar.Size = new Size(327, 17);
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.TabIndex = 7;
             progressBar.Visible = false;
