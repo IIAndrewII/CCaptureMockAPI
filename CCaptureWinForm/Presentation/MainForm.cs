@@ -76,6 +76,11 @@ namespace CCaptureWinForm
             try
             {
                 _errorProvider.Clear();
+                statusLabel2.Text = string.Empty;
+                statusLabel2.ForeColor = SystemColors.ControlText;
+                statusLabel3.Text = string.Empty;
+                statusLabel3.ForeColor = SystemColors.ControlText;
+
                 if (string.IsNullOrWhiteSpace(txtAppName.Text))
                     _errorProvider.SetError(txtAppName, "Please enter the application name.");
                 if (string.IsNullOrWhiteSpace(txtAppLogin.Text))

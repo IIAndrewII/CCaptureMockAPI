@@ -166,7 +166,7 @@
             btnGetToken.Name = "btnGetToken";
             btnGetToken.Size = new Size(297, 40);
             btnGetToken.TabIndex = 5;
-            btnGetToken.Text = "Authenticate";
+            btnGetToken.Text = "LogIn";
             btnGetToken.UseVisualStyleBackColor = false;
             // 
             // chkShowPassword
@@ -717,9 +717,9 @@
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(561, 7);
+            progressBar.Location = new Point(646, 16);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(327, 40);
+            progressBar.Size = new Size(327, 22);
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.TabIndex = 7;
             progressBar.Visible = false;
