@@ -18,6 +18,7 @@ namespace CCaptureWinForm
         private bool _viewerInitialized = false;
         private readonly ErrorProvider _errorProvider;
         private readonly IConfiguration _configuration;
+        private readonly DatabaseService _databaseService;
 
         public MainForm()
         {
@@ -38,7 +39,11 @@ namespace CCaptureWinForm
             }
 
             var apiService = new ApiService(apiUrl);
+            _databaseService = new DatabaseService(_configuration);
             _viewModel = new MainViewModel(apiService, fileService);
+
+            // Populate Batch Class Names
+            PopulateBatchClassNamesAsync();
 
             // Attach event handlers
             btnBrowseFile.Click += btnBrowseFile_Click;
@@ -46,55 +51,39 @@ namespace CCaptureWinForm
             btnSubmitDocument.Click += btnSubmitDocument_Click;
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnClearResults.Click += btnClearResults_Click;
-            submitDocumentToolStripMenuItem.Click += submitDocumentToolStripMenuItem_Click;
-            checkStatusToolStripMenuItem.Click += checkStatusToolStripMenuItem_Click;
             Resize += MainForm_Resize;
+            cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
 
             // Run loginAsync automatically
             var appName = _configuration["AppName"];
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             _ = loginAsync(appName, appLogin, appPassword);
-            submitDocumentToolStripMenuItem_Click(null, EventArgs.Empty);
         }
 
-        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void PopulateBatchClassNamesAsync()
         {
-            ShowLoginForm();
+            try
+            {
+                var batchClassNames = await _databaseService.GetBatchClassNamesAsync();
+                cboBatchClassName.Items.Clear();
+                cboBatchClassName.Items.AddRange(batchClassNames.ToArray());
+                if (cboBatchClassName.Items.Count > 0)
+                    cboBatchClassName.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                statusLabel2.Text = $"Failed to load Batch Class Names: {ex.Message}";
+                statusLabel2.ForeColor = Color.Red;
+            }
         }
 
-        private void submitDocumentToolStripMenuItem_Click(object sender, EventArgs e)
+        private void cboBatchClassName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            submitPanel.Visible = true;
-            checkStatusPanel.Visible = false;
-
-            // Highlight Submit Document
-            submitDocumentToolStripMenuItem.BackColor = Color.Gray; 
-            submitDocumentToolStripMenuItem.ForeColor = Color.White;
-            submitDocumentToolStripMenuItem.Font = new Font(submitDocumentToolStripMenuItem.Font, FontStyle.Bold);
-
-            // Reset Check Status
-            checkStatusToolStripMenuItem.BackColor = SystemColors.Control;
-            checkStatusToolStripMenuItem.ForeColor = SystemColors.ControlText;
-            checkStatusToolStripMenuItem.Font = new Font(checkStatusToolStripMenuItem.Font, FontStyle.Regular);
+            // Clear error when a selection is made
+            if (cboBatchClassName.SelectedIndex != -1)
+                _errorProvider.SetError(cboBatchClassName, "");
         }
-
-        private void checkStatusToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            submitPanel.Visible = false;
-            checkStatusPanel.Visible = true;
-
-            // Highlight Check Status
-            checkStatusToolStripMenuItem.BackColor = Color.Gray; 
-            checkStatusToolStripMenuItem.ForeColor = Color.White;
-            checkStatusToolStripMenuItem.Font = new Font(checkStatusToolStripMenuItem.Font, FontStyle.Bold);
-
-            // Reset Submit Document
-            submitDocumentToolStripMenuItem.BackColor = SystemColors.Control;
-            submitDocumentToolStripMenuItem.ForeColor = SystemColors.ControlText;
-            submitDocumentToolStripMenuItem.Font = new Font(submitDocumentToolStripMenuItem.Font, FontStyle.Regular);
-        }
-
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
         {
@@ -122,8 +111,7 @@ namespace CCaptureWinForm
 
                 statusLabel2.Text = "You're logged in!";
                 statusLabel2.ForeColor = Color.Green;
-                submitPanel.Visible = true;
-                checkStatusPanel.Visible = false;
+                tabControl.SelectedTab = submitTab; // Default to Submit Document tab
             }
             catch (Exception ex)
             {
@@ -152,8 +140,9 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "You're logged in!";
                     statusLabel2.ForeColor = Color.Green;
+                    tabControl.SelectedTab = submitTab;
                     submitPanel.Visible = true;
-                    checkStatusPanel.Visible = false;
+                    checkStatusPanel.Visible = true;
                 }
                 else
                 {
@@ -203,8 +192,8 @@ namespace CCaptureWinForm
             try
             {
                 _errorProvider.Clear();
-                if (string.IsNullOrWhiteSpace(txtBatchClassName.Text))
-                    _errorProvider.SetError(txtBatchClassName, "Please enter the batch category.");
+                if (cboBatchClassName.SelectedIndex == -1)
+                    _errorProvider.SetError(cboBatchClassName, "Please select a batch category.");
                 if (string.IsNullOrWhiteSpace(txtSourceSystem.Text))
                     _errorProvider.SetError(txtSourceSystem, "Please enter the source system.");
                 if (string.IsNullOrWhiteSpace(txtChannel.Text))
@@ -218,7 +207,7 @@ namespace CCaptureWinForm
                 if (dataGridViewDocuments.RowCount == 1)
                     _errorProvider.SetError(dataGridViewDocuments, "Please add at least one document.");
 
-                if (_errorProvider.GetError(txtBatchClassName) != "" ||
+                if (_errorProvider.GetError(cboBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
                     _errorProvider.GetError(txtChannel) != "" ||
                     _errorProvider.GetError(txtSessionID) != "" ||
@@ -259,7 +248,7 @@ namespace CCaptureWinForm
                 }
 
                 var requestGuid = await _viewModel.SubmitDocumentAsync(
-                    txtBatchClassName.Text,
+                    cboBatchClassName.SelectedItem.ToString(),
                     txtSourceSystem.Text,
                     txtChannel.Text,
                     txtSessionID.Text,
@@ -276,8 +265,7 @@ namespace CCaptureWinForm
                 txtStatusSessionID.Text = txtSessionID.Text;
                 txtStatusMessageID.Text = txtMessageID.Text;
                 txtStatusUserCode.Text = txtUserCode.Text;
-                submitPanel.Visible = false;
-                checkStatusPanel.Visible = true;
+                tabControl.SelectedTab = checkStatusTab; // Switch to Check Status tab
             }
             catch (Exception ex)
             {
