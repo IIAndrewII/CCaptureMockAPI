@@ -40,30 +40,62 @@ namespace CCaptureWinForm
             var apiService = new ApiService(apiUrl);
             _viewModel = new MainViewModel(apiService, fileService);
 
-            // Remove tabPage1 and hide tabControl1 initially
-            tabControl1.TabPages.Remove(tabPage1);
-            tabControl1.Visible = true;
-
             // Attach event handlers
             btnBrowseFile.Click += btnBrowseFile_Click;
             btnRemoveFile.Click += btnRemoveFile_Click;
             btnSubmitDocument.Click += btnSubmitDocument_Click;
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnClearResults.Click += btnClearResults_Click;
+            submitDocumentToolStripMenuItem.Click += submitDocumentToolStripMenuItem_Click;
+            checkStatusToolStripMenuItem.Click += checkStatusToolStripMenuItem_Click;
             Resize += MainForm_Resize;
-
-            BackColor = Color.FromArgb(245, 245, 245);
-            FormBorderStyle = FormBorderStyle.Sizable;
-            MinimumSize = new Size(800, 500);
 
             // Run loginAsync automatically
             var appName = _configuration["AppName"];
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             _ = loginAsync(appName, appLogin, appPassword);
+            submitDocumentToolStripMenuItem_Click(null, EventArgs.Empty);
         }
 
-        // Perform login using app settings
+        private void loginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowLoginForm();
+        }
+
+        private void submitDocumentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            submitPanel.Visible = true;
+            checkStatusPanel.Visible = false;
+
+            // Highlight Submit Document
+            submitDocumentToolStripMenuItem.BackColor = Color.Gray; 
+            submitDocumentToolStripMenuItem.ForeColor = Color.White;
+            submitDocumentToolStripMenuItem.Font = new Font(submitDocumentToolStripMenuItem.Font, FontStyle.Bold);
+
+            // Reset Check Status
+            checkStatusToolStripMenuItem.BackColor = SystemColors.Control;
+            checkStatusToolStripMenuItem.ForeColor = SystemColors.ControlText;
+            checkStatusToolStripMenuItem.Font = new Font(checkStatusToolStripMenuItem.Font, FontStyle.Regular);
+        }
+
+        private void checkStatusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            submitPanel.Visible = false;
+            checkStatusPanel.Visible = true;
+
+            // Highlight Check Status
+            checkStatusToolStripMenuItem.BackColor = Color.Gray; 
+            checkStatusToolStripMenuItem.ForeColor = Color.White;
+            checkStatusToolStripMenuItem.Font = new Font(checkStatusToolStripMenuItem.Font, FontStyle.Bold);
+
+            // Reset Submit Document
+            submitDocumentToolStripMenuItem.BackColor = SystemColors.Control;
+            submitDocumentToolStripMenuItem.ForeColor = SystemColors.ControlText;
+            submitDocumentToolStripMenuItem.Font = new Font(submitDocumentToolStripMenuItem.Font, FontStyle.Regular);
+        }
+
+
         private async Task loginAsync(string appName, string appLogin, string appPassword)
         {
             try
@@ -82,6 +114,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Configuration settings are missing.";
                     statusLabel2.ForeColor = Color.Red;
+                    ShowLoginForm();
                     return;
                 }
 
@@ -89,7 +122,8 @@ namespace CCaptureWinForm
 
                 statusLabel2.Text = "You're logged in!";
                 statusLabel2.ForeColor = Color.Green;
-                tabControl1.SelectedTab = tabPage2;
+                submitPanel.Visible = true;
+                checkStatusPanel.Visible = false;
             }
             catch (Exception ex)
             {
@@ -97,38 +131,57 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Unauthorized configuration settings.";
                     statusLabel2.ForeColor = Color.Red;
-
-                    // Show login dialog instead of switching to tab
-                    using (var loginForm = new LoginForm(_viewModel))
-                    {
-                        if (loginForm.ShowDialog() == DialogResult.OK)
-                        {
-                            statusLabel2.Text = "You're logged in!";
-                            statusLabel2.ForeColor = Color.Green;
-                            tabControl1.SelectedTab = tabPage2;
-                        }
-                        else
-                        {
-                            statusLabel2.Text = "Login failed. Please try again.";
-                            statusLabel2.ForeColor = Color.Red;
-                        }
-                    }
+                    ShowLoginForm();
                 }
                 else
                 {
                     statusLabel2.Text = "Something went wrong. Please try again.";
                     statusLabel2.ForeColor = Color.Red;
+                    ShowLoginForm();
+                }
+            }
+        }
+
+        private void ShowLoginForm()
+        {
+            submitPanel.Visible = false;
+            checkStatusPanel.Visible = false;
+            using (var loginForm = new LoginForm(_viewModel))
+            {
+                if (loginForm.ShowDialog() == DialogResult.OK)
+                {
+                    statusLabel2.Text = "You're logged in!";
+                    statusLabel2.ForeColor = Color.Green;
+                    submitPanel.Visible = true;
+                    checkStatusPanel.Visible = false;
+                }
+                else
+                {
+                    statusLabel2.Text = "Login failed. Please try again.";
+                    statusLabel2.ForeColor = Color.Red;
+                    submitPanel.Visible = false;
+                    checkStatusPanel.Visible = false;
                 }
             }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            // Adjust button positions in dataPanel
+            // Adjust button positions in submitPanel
             btnBrowseFile.Top = dataGridViewDocuments.Bottom + 10;
             btnRemoveFile.Top = dataGridViewDocuments.Bottom + 10;
             btnSubmitDocument.Top = dataGridViewDocuments.Bottom + 10;
-            btnSubmitDocument.Left = dataPanel.Width - btnSubmitDocument.Width - 10;
+
+            // Ensure tableLayout2 and tableLayout3 scale correctly
+            tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
+            tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical;
+
+            tableLayout3.Width = checkStatusPanel.ClientSize.Width - tableLayout3.Margin.Horizontal;
+            tableLayout3.Height = checkStatusPanel.ClientSize.Height - tableLayout3.Margin.Vertical;
+
+            // Adjust DataGridView sizes
+            dataGridViewDocuments.Width = tableLayout2.GetColumnWidths()[0] - 10;
+            dataGridViewFields.Width = tableLayout2.GetColumnWidths()[1] - 10;
         }
 
         private void InitializeStatusViewer()
@@ -223,12 +276,15 @@ namespace CCaptureWinForm
                 txtStatusSessionID.Text = txtSessionID.Text;
                 txtStatusMessageID.Text = txtMessageID.Text;
                 txtStatusUserCode.Text = txtUserCode.Text;
-                tabControl1.SelectedTab = tabPage3;
+                submitPanel.Visible = false;
+                checkStatusPanel.Visible = true;
             }
             catch (Exception ex)
             {
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                 {
+                    submitPanel.Visible = false;
+                    checkStatusPanel.Visible = false;
                     using (var loginForm = new LoginForm(_viewModel))
                     {
                         if (loginForm.ShowDialog() == DialogResult.OK)
@@ -305,6 +361,8 @@ namespace CCaptureWinForm
             {
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                 {
+                    submitPanel.Visible = false;
+                    checkStatusPanel.Visible = false;
                     using (var loginForm = new LoginForm(_viewModel))
                     {
                         if (loginForm.ShowDialog() == DialogResult.OK)
@@ -337,8 +395,8 @@ namespace CCaptureWinForm
             var openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "PDF Files (*.pdf)|*.pdf",
-                Title = "Select PDF Files"
+                Filter = "PDF and Image Files (*.pdf;*.jpg;*.jpeg;*.png;*.bmp)|*.pdf;*.jpg;*.jpeg;*.png;*.bmp|PDF Files (*.pdf)|*.pdf|Image Files (*.jpg;*.jpeg;*.png;*.bmp)|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "Select PDF or Image Files"
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)

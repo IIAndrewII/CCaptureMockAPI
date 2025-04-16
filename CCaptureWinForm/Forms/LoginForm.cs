@@ -9,118 +9,22 @@ namespace CCaptureWinForm
     {
         private readonly MainViewModel _viewModel;
         private readonly ErrorProvider _errorProvider;
-        private TextBox txtAppName;
-        private TextBox txtAppLogin;
-        private TextBox txtAppPassword;
-        private CheckBox chkShowPassword;
-        private Button btnGetToken;
-        private Button btnCancel;
-        private Label statusLabel;
 
         public LoginForm(MainViewModel viewModel)
         {
             _viewModel = viewModel;
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-            InitializeComponents();
+            InitializeComponent();
         }
 
-        private void InitializeComponents()
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
-            Text = "Login";
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            StartPosition = FormStartPosition.CenterParent;
-            Size = new Size(400, 300);
-            BackColor = Color.FromArgb(245, 245, 245);
+            txtAppPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
+        }
 
-            var panel = new Panel
-            {
-                Location = new Point(20, 20),
-                Size = new Size(360, 260)
-            };
-            Controls.Add(panel);
-
-            var lblAppName = new Label
-            {
-                Text = "Application Name:",
-                Location = new Point(10, 20),
-                Size = new Size(100, 20)
-            };
-            panel.Controls.Add(lblAppName);
-
-            txtAppName = new TextBox
-            {
-                Location = new Point(120, 20),
-                Size = new Size(200, 20)
-            };
-            panel.Controls.Add(txtAppName);
-
-            var lblAppLogin = new Label
-            {
-                Text = "Application Login:",
-                Location = new Point(10, 50),
-                Size = new Size(100, 20)
-            };
-            panel.Controls.Add(lblAppLogin);
-
-            txtAppLogin = new TextBox
-            {
-                Location = new Point(120, 50),
-                Size = new Size(200, 20)
-            };
-            panel.Controls.Add(txtAppLogin);
-
-            var lblAppPassword = new Label
-            {
-                Text = "Password:",
-                Location = new Point(10, 80),
-                Size = new Size(100, 20)
-            };
-            panel.Controls.Add(lblAppPassword);
-
-            txtAppPassword = new TextBox
-            {
-                Location = new Point(120, 80),
-                Size = new Size(200, 20),
-                UseSystemPasswordChar = true
-            };
-            panel.Controls.Add(txtAppPassword);
-
-            chkShowPassword = new CheckBox
-            {
-                Text = "Show Password",
-                Location = new Point(120, 110),
-                Size = new Size(100, 20)
-            };
-            chkShowPassword.CheckedChanged += (s, e) => txtAppPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
-            panel.Controls.Add(chkShowPassword);
-
-            statusLabel = new Label
-            {
-                Location = new Point(10, 140),
-                Size = new Size(300, 40),
-                ForeColor = SystemColors.ControlText
-            };
-            panel.Controls.Add(statusLabel);
-
-            btnGetToken = new Button
-            {
-                Text = "Login",
-                Location = new Point(120, 190),
-                Size = new Size(80, 30)
-            };
-            btnGetToken.Click += btnGetToken_Click;
-            panel.Controls.Add(btnGetToken);
-
-            btnCancel = new Button
-            {
-                Text = "Cancel",
-                Location = new Point(210, 190),
-                Size = new Size(80, 30)
-            };
-            btnCancel.Click += (s, e) => DialogResult = DialogResult.Cancel;
-            panel.Controls.Add(btnCancel);
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
         }
 
         private async void btnGetToken_Click(object sender, EventArgs e)
