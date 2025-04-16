@@ -228,6 +228,9 @@ namespace CCaptureMockApi.Controllers
             var message = JsonSerializer.Serialize(request);
             Console.WriteLine($"Simulated Queue Message: {message}");
 
+            // Simulate a delay of 10 seconds
+            await Task.Delay(10000);
+
             // Return the RequestGuid as part of the response
             return Ok(new { RequestGuid = requestGuid });
         }

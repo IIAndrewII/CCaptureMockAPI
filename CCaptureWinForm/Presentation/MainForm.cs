@@ -193,7 +193,7 @@ namespace CCaptureWinForm
                     fields,
                     documents);
 
-                statusLabel2.Text = $"Documents submitted! Your request ID is: {requestGuid}";
+                statusLabel2.Text = $"Documents submitted! Your request Guid is: {requestGuid}";
                 statusLabel2.ForeColor = Color.Green;
                 txtStatusRequestGuid.Text = requestGuid;
                 txtStatusSourceSystem.Text = txtSourceSystem.Text;

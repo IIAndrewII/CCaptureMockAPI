@@ -88,11 +88,6 @@ namespace CCaptureWinForm.Infrastructure.Services
             response.EnsureSuccessStatusCode();
 
             // Read the response content
-
-            //var responseContent = await response.Content.ReadAsStringAsync();
-            //dynamic result = JsonConvert.DeserializeObject(responseContent);
-            //return result.RequestGuid;
-
             var responseContent = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<JObject>(responseContent);
             string requestGuid = result["requestGuid"]?.ToString();
