@@ -2,9 +2,9 @@ using CCaptureWinForm.Core.Entities;
 using CCaptureWinForm.Infrastructure.Services;
 using CCaptureWinForm.Presentation;
 using CCaptureWinForm.Presentation.ViewModels;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,19 +17,34 @@ namespace CCaptureWinForm
         private VerificationStatusViewer _statusViewer;
         private bool _viewerInitialized = false;
         private readonly ErrorProvider _errorProvider;
+        private readonly IConfiguration _configuration;
 
         public MainForm()
         {
             InitializeComponent();
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+
+            // Load configuration from appsettings.json
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
             var fileService = new FileService();
-            var apiUrl = ConfigurationManager.AppSettings["ApiUrl"];
-            var apiService = new ApiService("https://localhost:7059");
+            var apiUrl = _configuration["ApiUrl"];
+            if (string.IsNullOrEmpty(apiUrl))
+            {
+                throw new InvalidOperationException("ApiUrl is not configured in appsettings.json");
+            }
+
+            var apiService = new ApiService(apiUrl);
             _viewModel = new MainViewModel(apiService, fileService);
 
+            // Remove tabPage1 and hide tabControl1 initially
+            tabControl1.TabPages.Remove(tabPage1);
+            tabControl1.Visible = true;
+
             // Attach event handlers
-            btnGetToken.Click += btnGetToken_Click;
-            chkShowPassword.CheckedChanged += (s, e) => txtAppPassword.UseSystemPasswordChar = !chkShowPassword.Checked;
             btnBrowseFile.Click += btnBrowseFile_Click;
             btnRemoveFile.Click += btnRemoveFile_Click;
             btnSubmitDocument.Click += btnSubmitDocument_Click;
@@ -40,16 +55,75 @@ namespace CCaptureWinForm
             BackColor = Color.FromArgb(245, 245, 245);
             FormBorderStyle = FormBorderStyle.Sizable;
             MinimumSize = new Size(800, 500);
+
+            // Run loginAsync automatically
+            var appName = _configuration["AppName"];
+            var appLogin = _configuration["AppLogin"];
+            var appPassword = _configuration["AppPassword"];
+            _ = loginAsync(appName, appLogin, appPassword);
+        }
+
+        // Perform login using app settings
+        private async Task loginAsync(string appName, string appLogin, string appPassword)
+        {
+            try
+            {
+                _errorProvider.Clear();
+                statusLabel2.Text = string.Empty;
+                statusLabel2.ForeColor = SystemColors.ControlText;
+                statusLabel3.Text = string.Empty;
+                statusLabel3.ForeColor = SystemColors.ControlText;
+
+                statusLabel2.Text = "Logging in...";
+                statusLabel2.ForeColor = Color.Blue;
+
+                // Validate configuration
+                if (string.IsNullOrEmpty(appName) || string.IsNullOrEmpty(appLogin) || string.IsNullOrEmpty(appPassword))
+                {
+                    statusLabel2.Text = "Configuration settings are missing.";
+                    statusLabel2.ForeColor = Color.Red;
+                    return;
+                }
+
+                var token = await _viewModel.GetAuthTokenAsync(appName, appLogin, appPassword);
+
+                statusLabel2.Text = "You're logged in!";
+                statusLabel2.ForeColor = Color.Green;
+                tabControl1.SelectedTab = tabPage2;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
+                {
+                    statusLabel2.Text = "Unauthorized configuration settings.";
+                    statusLabel2.ForeColor = Color.Red;
+
+                    // Show login dialog instead of switching to tab
+                    using (var loginForm = new LoginForm(_viewModel))
+                    {
+                        if (loginForm.ShowDialog() == DialogResult.OK)
+                        {
+                            statusLabel2.Text = "You're logged in!";
+                            statusLabel2.ForeColor = Color.Green;
+                            tabControl1.SelectedTab = tabPage2;
+                        }
+                        else
+                        {
+                            statusLabel2.Text = "Login failed. Please try again.";
+                            statusLabel2.ForeColor = Color.Red;
+                        }
+                    }
+                }
+                else
+                {
+                    statusLabel2.Text = "Something went wrong. Please try again.";
+                    statusLabel2.ForeColor = Color.Red;
+                }
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            // Center the credentials group on TabPage1
-            if (tabPage1.Width > credentialsGroup.Width)
-            {
-                credentialsGroup.Left = (tabPage1.Width - credentialsGroup.Width) / 2;
-            }
-
             // Adjust button positions in dataPanel
             btnBrowseFile.Top = dataGridViewDocuments.Bottom + 10;
             btnRemoveFile.Top = dataGridViewDocuments.Bottom + 10;
@@ -68,58 +142,6 @@ namespace CCaptureWinForm
                 };
                 panelStatusViewer.Controls.Add(_statusViewer);
                 _viewerInitialized = true;
-            }
-        }
-
-        private async void btnGetToken_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                _errorProvider.Clear();
-                statusLabel2.Text = string.Empty;
-                statusLabel2.ForeColor = SystemColors.ControlText;
-                statusLabel3.Text = string.Empty;
-                statusLabel3.ForeColor = SystemColors.ControlText;
-
-                if (string.IsNullOrWhiteSpace(txtAppName.Text))
-                    _errorProvider.SetError(txtAppName, "Please enter the application name.");
-                if (string.IsNullOrWhiteSpace(txtAppLogin.Text))
-                    _errorProvider.SetError(txtAppLogin, "Please enter the application login.");
-                if (string.IsNullOrWhiteSpace(txtAppPassword.Text))
-                    _errorProvider.SetError(txtAppPassword, "Please enter the application password.");
-
-                if (_errorProvider.GetError(txtAppName) != "" ||
-                    _errorProvider.GetError(txtAppLogin) != "" ||
-                    _errorProvider.GetError(txtAppPassword) != "")
-                {
-                    statusLabel1.Text = "Please fill in all required fields.";
-                    statusLabel1.ForeColor = Color.Red;
-                    return;
-                }
-
-                btnGetToken.Enabled = false;
-                statusLabel1.Text = "Logging in...";
-                statusLabel1.ForeColor = Color.Blue;
-
-                var token = await _viewModel.GetAuthTokenAsync(
-                    txtAppName.Text,
-                    txtAppLogin.Text,
-                    txtAppPassword.Text);
-
-                statusLabel1.Text = "You're logged in!";
-                statusLabel1.ForeColor = Color.Green;
-                tabControl1.SelectedTab = tabPage2;
-            }
-            catch (Exception ex)
-            {
-                statusLabel1.Text = ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401")
-                    ? "Login failed. Please check your credentials and try again."
-                    : "Something went wrong. Please try again.";
-                statusLabel1.ForeColor = Color.Red;
-            }
-            finally
-            {
-                btnGetToken.Enabled = true;
             }
         }
 
@@ -207,9 +229,19 @@ namespace CCaptureWinForm
             {
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                 {
-                    tabControl1.SelectedTab = tabPage1;
-                    statusLabel1.Text = "Your session has expired. Please log in again.";
-                    statusLabel1.ForeColor = Color.Red;
+                    using (var loginForm = new LoginForm(_viewModel))
+                    {
+                        if (loginForm.ShowDialog() == DialogResult.OK)
+                        {
+                            // Retry submission after successful login
+                            btnSubmitDocument_Click(sender, e);
+                        }
+                        else
+                        {
+                            statusLabel2.Text = "Login failed. Please try again.";
+                            statusLabel2.ForeColor = Color.Red;
+                        }
+                    }
                 }
                 else
                 {
@@ -273,9 +305,19 @@ namespace CCaptureWinForm
             {
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                 {
-                    tabControl1.SelectedTab = tabPage1;
-                    statusLabel1.Text = "Your session has expired. Please log in again.";
-                    statusLabel1.ForeColor = Color.Red;
+                    using (var loginForm = new LoginForm(_viewModel))
+                    {
+                        if (loginForm.ShowDialog() == DialogResult.OK)
+                        {
+                            // Retry status check after successful login
+                            btnCheckStatus_Click(sender, e);
+                        }
+                        else
+                        {
+                            statusLabel3.Text = "Login failed. Please try again.";
+                            statusLabel3.ForeColor = Color.Red;
+                        }
+                    }
                 }
                 else
                 {
