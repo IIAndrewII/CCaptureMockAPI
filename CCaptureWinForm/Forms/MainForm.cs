@@ -19,6 +19,8 @@ namespace CCaptureWinForm
         private readonly ErrorProvider _errorProvider;
         private readonly IConfiguration _configuration;
         private readonly DatabaseService _databaseService;
+        private Dictionary<string, List<Document_Row>> _groups; // Store groups and their documents
+        private int _groupCounter = 1; // For generating unique group names
 
         public MainForm()
         {
@@ -42,6 +44,10 @@ namespace CCaptureWinForm
             _databaseService = new DatabaseService(_configuration);
             _viewModel = new MainViewModel(apiService, fileService);
 
+            // Initialize groups
+            _groups = new Dictionary<string, List<Document_Row>>();
+            AddNewGroup(); // Add the first group by default
+
             // Populate Batch Class Names
             PopulateBatchClassNamesAsync();
 
@@ -51,6 +57,9 @@ namespace CCaptureWinForm
             btnSubmitDocument.Click += btnSubmitDocument_Click;
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnClearResults.Click += btnClearResults_Click;
+            btnAddGroup.Click += btnAddGroup_Click;
+            btnRemoveGroup.Click += btnRemoveGroup_Click;
+            cboGroups.SelectedIndexChanged += cboGroups_SelectedIndexChanged;
             Resize += MainForm_Resize;
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
 
@@ -59,6 +68,15 @@ namespace CCaptureWinForm
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             _ = loginAsync(appName, appLogin, appPassword);
+        }
+
+        private void AddNewGroup()
+        {
+            var groupName = $"Group {_groupCounter++}";
+            _groups.Add(groupName, new List<Document_Row>());
+            cboGroups.Items.Add(groupName);
+            if (cboGroups.Items.Count == 1)
+                cboGroups.SelectedIndex = 0;
         }
 
         private async void PopulateBatchClassNamesAsync()
@@ -80,9 +98,22 @@ namespace CCaptureWinForm
 
         private void cboBatchClassName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Clear error when a selection is made
             if (cboBatchClassName.SelectedIndex != -1)
                 _errorProvider.SetError(cboBatchClassName, "");
+        }
+
+        private void cboGroups_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboGroups.SelectedIndex != -1)
+            {
+                // Update dataGridViewDocuments with the selected group's documents
+                var selectedGroup = cboGroups.SelectedItem.ToString();
+                dataGridViewDocuments.Rows.Clear();
+                foreach (var doc in _groups[selectedGroup])
+                {
+                    dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
+                }
+            }
         }
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
@@ -98,7 +129,6 @@ namespace CCaptureWinForm
                 statusLabel2.Text = "Logging in...";
                 statusLabel2.ForeColor = Color.Blue;
 
-                // Validate configuration
                 if (string.IsNullOrEmpty(appName) || string.IsNullOrEmpty(appLogin) || string.IsNullOrEmpty(appPassword))
                 {
                     statusLabel2.Text = "Configuration settings are missing.";
@@ -111,7 +141,7 @@ namespace CCaptureWinForm
 
                 statusLabel2.Text = "You're logged in!";
                 statusLabel2.ForeColor = Color.Green;
-                tabControl.SelectedTab = submitTab; // Default to Submit Document tab
+                tabControl.SelectedTab = submitTab;
             }
             catch (Exception ex)
             {
@@ -156,19 +186,18 @@ namespace CCaptureWinForm
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            // Adjust button positions in submitPanel
             btnBrowseFile.Top = dataGridViewDocuments.Bottom + 10;
             btnRemoveFile.Top = dataGridViewDocuments.Bottom + 10;
             btnSubmitDocument.Top = dataGridViewDocuments.Bottom + 10;
+            btnAddGroup.Top = cboGroups.Top;
+            btnRemoveGroup.Top = cboGroups.Top;
 
-            // Ensure tableLayout2 and tableLayout3 scale correctly
             tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
             tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical;
 
             tableLayout3.Width = checkStatusPanel.ClientSize.Width - tableLayout3.Margin.Horizontal;
             tableLayout3.Height = checkStatusPanel.ClientSize.Height - tableLayout3.Margin.Vertical;
 
-            // Adjust DataGridView sizes
             dataGridViewDocuments.Width = tableLayout2.GetColumnWidths()[0] - 10;
             dataGridViewFields.Width = tableLayout2.GetColumnWidths()[1] - 10;
         }
@@ -204,8 +233,8 @@ namespace CCaptureWinForm
                     _errorProvider.SetError(txtMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
-                if (dataGridViewDocuments.RowCount == 1)
-                    _errorProvider.SetError(dataGridViewDocuments, "Please add at least one document.");
+                if (!_groups.Any(g => g.Value.Any()))
+                    _errorProvider.SetError(dataGridViewDocuments, "Please add at least one document to any group.");
 
                 if (_errorProvider.GetError(cboBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
@@ -235,37 +264,33 @@ namespace CCaptureWinForm
                     }
                 }
 
-                var documents = new List<Document_Row>();
-                foreach (DataGridViewRow row in dataGridViewDocuments.Rows)
+                // Loop through each group and submit documents
+                foreach (var group in _groups.Where(g => g.Value.Any()))
                 {
-                    if (row.IsNewRow) continue;
-                    var key = row.Cells["FilePath"].Value?.ToString();
-                    var value = row.Cells["PageType"].Value?.ToString();
-                    if (!string.IsNullOrWhiteSpace(key))
-                    {
-                        documents.Add(new Document_Row { FilePath = key, PageType = value });
-                    }
+                    var documents = group.Value;
+                    var requestGuid = await _viewModel.SubmitDocumentAsync(
+                        cboBatchClassName.SelectedItem.ToString(),
+                        txtSourceSystem.Text,
+                        txtChannel.Text,
+                        txtSessionID.Text,
+                        txtMessageID.Text,
+                        txtUserCode.Text,
+                        fields,
+                        documents);
+
+                    statusLabel2.Text = $"Documents for {group.Key} submitted! Request Guid: {requestGuid}";
+                    statusLabel2.ForeColor = Color.Green;
+
+                    // Update status fields for the last group submitted
+                    txtStatusRequestGuid.Text = requestGuid;
+                    txtStatusSourceSystem.Text = txtSourceSystem.Text;
+                    txtStatusChannel.Text = txtChannel.Text;
+                    txtStatusSessionID.Text = txtSessionID.Text;
+                    txtStatusMessageID.Text = txtMessageID.Text;
+                    txtStatusUserCode.Text = txtUserCode.Text;
                 }
 
-                var requestGuid = await _viewModel.SubmitDocumentAsync(
-                    cboBatchClassName.SelectedItem.ToString(),
-                    txtSourceSystem.Text,
-                    txtChannel.Text,
-                    txtSessionID.Text,
-                    txtMessageID.Text,
-                    txtUserCode.Text,
-                    fields,
-                    documents);
-
-                statusLabel2.Text = $"Documents submitted! Your request Guid is: {requestGuid}";
-                statusLabel2.ForeColor = Color.Green;
-                txtStatusRequestGuid.Text = requestGuid;
-                txtStatusSourceSystem.Text = txtSourceSystem.Text;
-                txtStatusChannel.Text = txtChannel.Text;
-                txtStatusSessionID.Text = txtSessionID.Text;
-                txtStatusMessageID.Text = txtMessageID.Text;
-                txtStatusUserCode.Text = txtUserCode.Text;
-                tabControl.SelectedTab = checkStatusTab; // Switch to Check Status tab
+                tabControl.SelectedTab = checkStatusTab;
             }
             catch (Exception ex)
             {
@@ -277,7 +302,6 @@ namespace CCaptureWinForm
                     {
                         if (loginForm.ShowDialog() == DialogResult.OK)
                         {
-                            // Retry submission after successful login
                             btnSubmitDocument_Click(sender, e);
                         }
                         else
@@ -355,7 +379,6 @@ namespace CCaptureWinForm
                     {
                         if (loginForm.ShowDialog() == DialogResult.OK)
                         {
-                            // Retry status check after successful login
                             btnCheckStatus_Click(sender, e);
                         }
                         else
@@ -380,6 +403,12 @@ namespace CCaptureWinForm
 
         private void btnBrowseFile_Click(object sender, EventArgs e)
         {
+            if (cboGroups.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
@@ -389,8 +418,11 @@ namespace CCaptureWinForm
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                var selectedGroup = cboGroups.SelectedItem.ToString();
                 foreach (var filePath in openFileDialog.FileNames)
                 {
+                    var doc = new Document_Row { FilePath = filePath, PageType = string.Empty };
+                    _groups[selectedGroup].Add(doc);
                     dataGridViewDocuments.Rows.Add(filePath, string.Empty);
                 }
             }
@@ -398,10 +430,37 @@ namespace CCaptureWinForm
 
         private void btnRemoveFile_Click(object sender, EventArgs e)
         {
+            if (cboGroups.SelectedIndex == -1)
+                return;
+
+            var selectedGroup = cboGroups.SelectedItem.ToString();
             foreach (DataGridViewRow row in dataGridViewDocuments.SelectedRows)
             {
                 if (!row.IsNewRow)
+                {
+                    var filePath = row.Cells["FilePath"].Value?.ToString();
+                    _groups[selectedGroup].RemoveAll(doc => doc.FilePath == filePath);
                     dataGridViewDocuments.Rows.Remove(row);
+                }
+            }
+        }
+
+        private void btnAddGroup_Click(object sender, EventArgs e)
+        {
+            AddNewGroup();
+        }
+
+        private void btnRemoveGroup_Click(object sender, EventArgs e)
+        {
+            if (cboGroups.SelectedIndex != -1)
+            {
+                var selectedGroup = cboGroups.SelectedItem.ToString();
+                _groups.Remove(selectedGroup);
+                cboGroups.Items.Remove(selectedGroup);
+                if (cboGroups.Items.Count > 0)
+                    cboGroups.SelectedIndex = 0;
+                else
+                    AddNewGroup(); // Ensure at least one group exists
             }
         }
 
