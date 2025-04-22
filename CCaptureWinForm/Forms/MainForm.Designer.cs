@@ -19,25 +19,6 @@
         private System.Windows.Forms.ComboBox cboBatchClassName;
         private System.Windows.Forms.Label lblBatchClassName;
         private System.Windows.Forms.Panel checkStatusPanel;
-        private System.Windows.Forms.TableLayoutPanel tableLayout3;
-        private System.Windows.Forms.Panel inputPanel;
-        private System.Windows.Forms.TextBox txtStatusUserCode;
-        private System.Windows.Forms.Label lblStatusUserCode;
-        private System.Windows.Forms.TextBox txtStatusMessageID;
-        private System.Windows.Forms.Label lblStatusMessageID;
-        private System.Windows.Forms.TextBox txtStatusSessionID;
-        private System.Windows.Forms.Label lblStatusSessionID;
-        private System.Windows.Forms.TextBox txtStatusChannel;
-        private System.Windows.Forms.Label lblStatusChannel;
-        private System.Windows.Forms.TextBox txtStatusSourceSystem;
-        private System.Windows.Forms.Label lblStatusSourceSystem;
-        private System.Windows.Forms.TextBox txtStatusRequestGuid;
-        private System.Windows.Forms.Label lblStatusRequestGuid;
-        private System.Windows.Forms.Panel buttonPanel;
-        private System.Windows.Forms.Button btnCheckStatus;
-        private System.Windows.Forms.Button btnClearResults;
-        private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.Panel panelStatusViewer;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage submitTab;
@@ -61,12 +42,6 @@
             txtUserCode = new TextBox();
             txtMessageID = new TextBox();
             txtSessionID = new TextBox();
-            txtStatusUserCode = new TextBox();
-            txtStatusMessageID = new TextBox();
-            txtStatusSessionID = new TextBox();
-            txtStatusChannel = new TextBox();
-            txtStatusSourceSystem = new TextBox();
-            txtStatusRequestGuid = new TextBox();
             errorProvider = new ErrorProvider(components);
             submitPanel = new Panel();
             statusStrip2 = new StatusStrip();
@@ -74,191 +49,130 @@
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             metadataPanel = new Panel();
             tableLayout2 = new TableLayoutPanel();
+            lblInteractionDate = new Label();
             lblChannel = new Label();
             lblSourceSystem = new Label();
             lblBatchClassName = new Label();
             lblUserCode = new Label();
             lblSessionID = new Label();
             lblMessageID = new Label();
-            btnSubmitDocument = new Button();
-            btnRemoveFile = new Button();
             btnBrowseFile = new Button();
-            dataGridViewDocuments = new DataGridView();
-            FilePath = new DataGridViewTextBoxColumn();
-            PageType = new DataGridViewTextBoxColumn();
+            lblFields = new Label();
             lblDocuments = new Label();
+            textBox1 = new TextBox();
+            btnRemoveFile = new Button();
+            btnSubmitDocument = new Button();
             dataGridViewFields = new DataGridView();
             FieldName = new DataGridViewTextBoxColumn();
             FieldValue = new DataGridViewTextBoxColumn();
-            lblFields = new Label();
+            dataGridViewDocuments = new DataGridView();
+            FilePath = new DataGridViewTextBoxColumn();
+            PageType = new DataGridViewTextBoxColumn();
             checkStatusPanel = new Panel();
             tableLayout3 = new TableLayoutPanel();
-            inputPanel = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            txtStatusUserCode = new TextBox();
+            txtStatusMessageID = new TextBox();
             lblStatusUserCode = new Label();
+            txtStatusSessionID = new TextBox();
             lblStatusMessageID = new Label();
-            lblStatusSessionID = new Label();
             lblStatusChannel = new Label();
+            lblStatusSessionID = new Label();
+            txtStatusChannel = new TextBox();
+            txtStatusSourceSystem = new TextBox();
             lblStatusSourceSystem = new Label();
             lblStatusRequestGuid = new Label();
+            txtStatusRequestGuid = new TextBox();
+            label1 = new Label();
+            textBox2 = new TextBox();
             buttonPanel = new Panel();
             btnCheckStatus = new Button();
             btnClearResults = new Button();
             progressBar = new ProgressBar();
             panelStatusViewer = new Panel();
-            statusStrip3 = new StatusStrip();
-            statusLabel3 = new ToolStripStatusLabel();
             tabControl = new TabControl();
             submitTab = new TabPage();
             checkStatusTab = new TabPage();
+            miniToolStrip = new StatusStrip();
+            statusLabel3 = new ToolStripStatusLabel();
+            statusStrip3 = new StatusStrip();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
             metadataPanel.SuspendLayout();
             tableLayout2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
             checkStatusPanel.SuspendLayout();
             tableLayout3.SuspendLayout();
-            inputPanel.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             buttonPanel.SuspendLayout();
-            statusStrip3.SuspendLayout();
             tabControl.SuspendLayout();
             submitTab.SuspendLayout();
             checkStatusTab.SuspendLayout();
+            statusStrip3.SuspendLayout();
             SuspendLayout();
             // 
             // txtChannel
             // 
             txtChannel.AccessibleName = "Channel";
-            txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(800, 24);
-            txtChannel.Margin = new Padding(3, 2, 3, 2);
-            txtChannel.Name = "txtChannel";
-            txtChannel.Size = new Size(219, 29);
-            txtChannel.TabIndex = 2;
             txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtChannel.Font = new Font("Segoe UI", 12F);
+            txtChannel.Location = new Point(915, 32);
+            txtChannel.Name = "txtChannel";
+            txtChannel.Size = new Size(405, 34);
+            txtChannel.TabIndex = 2;
             // 
             // txtSourceSystem
             // 
             txtSourceSystem.AccessibleName = "Source System";
-            txtSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtSourceSystem.Location = new Point(387, 24);
-            txtSourceSystem.Margin = new Padding(3, 2, 3, 2);
-            txtSourceSystem.Name = "txtSourceSystem";
-            txtSourceSystem.Size = new Size(219, 29);
-            txtSourceSystem.TabIndex = 1;
             txtSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtSourceSystem.Font = new Font("Segoe UI", 12F);
+            txtSourceSystem.Location = new Point(459, 32);
+            txtSourceSystem.Name = "txtSourceSystem";
+            txtSourceSystem.Size = new Size(405, 34);
+            txtSourceSystem.TabIndex = 1;
             // 
             // cboBatchClassName
             // 
             cboBatchClassName.AccessibleName = "Batch Category";
+            cboBatchClassName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             cboBatchClassName.Font = new Font("Segoe UI", 12F);
             cboBatchClassName.FormattingEnabled = true;
-            cboBatchClassName.Location = new Point(3, 24);
-            cboBatchClassName.Margin = new Padding(3, 2, 3, 2);
+            cboBatchClassName.Location = new Point(3, 31);
             cboBatchClassName.Name = "cboBatchClassName";
-            cboBatchClassName.Size = new Size(219, 29);
+            cboBatchClassName.Size = new Size(405, 36);
             cboBatchClassName.TabIndex = 0;
-            cboBatchClassName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             // 
             // txtUserCode
             // 
             txtUserCode.AccessibleName = "User ID";
-            txtUserCode.Font = new Font("Segoe UI", 12F);
-            txtUserCode.Location = new Point(3, 90);
-            txtUserCode.Margin = new Padding(3, 2, 3, 2);
-            txtUserCode.Name = "txtUserCode";
-            txtUserCode.Size = new Size(219, 29);
-            txtUserCode.TabIndex = 3;
             txtUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtUserCode.Font = new Font("Segoe UI", 12F);
+            txtUserCode.Location = new Point(3, 101);
+            txtUserCode.Name = "txtUserCode";
+            txtUserCode.Size = new Size(405, 34);
+            txtUserCode.TabIndex = 3;
             // 
             // txtMessageID
             // 
             txtMessageID.AccessibleName = "Message ID";
-            txtMessageID.Font = new Font("Segoe UI", 12F);
-            txtMessageID.Location = new Point(800, 90);
-            txtMessageID.Margin = new Padding(3, 2, 3, 2);
-            txtMessageID.Name = "txtMessageID";
-            txtMessageID.Size = new Size(219, 29);
-            txtMessageID.TabIndex = 5;
             txtMessageID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtMessageID.Font = new Font("Segoe UI", 12F);
+            txtMessageID.Location = new Point(915, 101);
+            txtMessageID.Name = "txtMessageID";
+            txtMessageID.Size = new Size(405, 34);
+            txtMessageID.TabIndex = 5;
             // 
             // txtSessionID
             // 
             txtSessionID.AccessibleName = "Session ID";
-            txtSessionID.Font = new Font("Segoe UI", 12F);
-            txtSessionID.Location = new Point(387, 90);
-            txtSessionID.Margin = new Padding(3, 2, 3, 2);
-            txtSessionID.Name = "txtSessionID";
-            txtSessionID.Size = new Size(219, 29);
-            txtSessionID.TabIndex = 4;
             txtSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusUserCode
-            // 
-            txtStatusUserCode.AccessibleName = "User ID";
-            txtStatusUserCode.Font = new Font("Segoe UI", 12F);
-            txtStatusUserCode.Location = new Point(545, 65);
-            txtStatusUserCode.Margin = new Padding(3, 2, 3, 2);
-            txtStatusUserCode.Name = "txtStatusUserCode";
-            txtStatusUserCode.Size = new Size(219, 29);
-            txtStatusUserCode.TabIndex = 5;
-            txtStatusUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusMessageID
-            // 
-            txtStatusMessageID.AccessibleName = "Message ID";
-            txtStatusMessageID.Font = new Font("Segoe UI", 12F);
-            txtStatusMessageID.Location = new Point(279, 65);
-            txtStatusMessageID.Margin = new Padding(3, 2, 3, 2);
-            txtStatusMessageID.Name = "txtStatusMessageID";
-            txtStatusMessageID.Size = new Size(219, 29);
-            txtStatusMessageID.TabIndex = 4;
-            txtStatusMessageID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusSessionID
-            // 
-            txtStatusSessionID.AccessibleName = "Session ID";
-            txtStatusSessionID.Font = new Font("Segoe UI", 12F);
-            txtStatusSessionID.Location = new Point(18, 65);
-            txtStatusSessionID.Margin = new Padding(3, 2, 3, 2);
-            txtStatusSessionID.Name = "txtStatusSessionID";
-            txtStatusSessionID.Size = new Size(219, 29);
-            txtStatusSessionID.TabIndex = 3;
-            txtStatusSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusChannel
-            // 
-            txtStatusChannel.AccessibleName = "Channel";
-            txtStatusChannel.Font = new Font("Segoe UI", 12F);
-            txtStatusChannel.Location = new Point(545, 24);
-            txtStatusChannel.Margin = new Padding(3, 2, 3, 2);
-            txtStatusChannel.Name = "txtStatusChannel";
-            txtStatusChannel.Size = new Size(219, 29);
-            txtStatusChannel.TabIndex = 2;
-            txtStatusChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusSourceSystem
-            // 
-            txtStatusSourceSystem.AccessibleName = "Source System";
-            txtStatusSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtStatusSourceSystem.Location = new Point(279, 24);
-            txtStatusSourceSystem.Margin = new Padding(3, 2, 3, 2);
-            txtStatusSourceSystem.Name = "txtStatusSourceSystem";
-            txtStatusSourceSystem.Size = new Size(219, 29);
-            txtStatusSourceSystem.TabIndex = 1;
-            txtStatusSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            // 
-            // txtStatusRequestGuid
-            // 
-            txtStatusRequestGuid.AccessibleName = "Request ID";
-            txtStatusRequestGuid.Font = new Font("Segoe UI", 12F);
-            txtStatusRequestGuid.Location = new Point(18, 24);
-            txtStatusRequestGuid.Margin = new Padding(3, 2, 3, 2);
-            txtStatusRequestGuid.Name = "txtStatusRequestGuid";
-            txtStatusRequestGuid.Size = new Size(219, 29);
-            txtStatusRequestGuid.TabIndex = 0;
-            txtStatusRequestGuid.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtSessionID.Font = new Font("Segoe UI", 12F);
+            txtSessionID.Location = new Point(459, 101);
+            txtSessionID.Name = "txtSessionID";
+            txtSessionID.Size = new Size(405, 34);
+            txtSessionID.TabIndex = 4;
             // 
             // errorProvider
             // 
@@ -271,10 +185,9 @@
             submitPanel.Controls.Add(metadataPanel);
             submitPanel.Dock = DockStyle.Fill;
             submitPanel.Font = new Font("Segoe UI", 12F);
-            submitPanel.Location = new Point(0, 0);
-            submitPanel.Margin = new Padding(3, 2, 3, 2);
+            submitPanel.Location = new Point(3, 4);
             submitPanel.Name = "submitPanel";
-            submitPanel.Size = new Size(1208, 559);
+            submitPanel.Size = new Size(1373, 781);
             submitPanel.TabIndex = 1;
             // 
             // statusStrip2
@@ -282,80 +195,97 @@
             statusStrip2.Font = new Font("Segoe UI", 10F);
             statusStrip2.ImageScalingSize = new Size(20, 20);
             statusStrip2.Items.AddRange(new ToolStripItem[] { statusLabel2, toolStripStatusLabel1 });
-            statusStrip2.Location = new Point(0, 537);
+            statusStrip2.Location = new Point(0, 759);
             statusStrip2.Name = "statusStrip2";
-            statusStrip2.Padding = new Padding(1, 0, 10, 0);
-            statusStrip2.Size = new Size(1208, 22);
+            statusStrip2.Padding = new Padding(1, 0, 11, 0);
+            statusStrip2.Size = new Size(1373, 22);
             statusStrip2.TabIndex = 11;
             // 
             // statusLabel2
             // 
             statusLabel2.Name = "statusLabel2";
-            statusLabel2.Size = new Size(0, 17);
+            statusLabel2.Size = new Size(0, 16);
             // 
             // toolStripStatusLabel1
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(0, 17);
+            toolStripStatusLabel1.Size = new Size(0, 16);
             // 
             // metadataPanel
             // 
             metadataPanel.Controls.Add(tableLayout2);
             metadataPanel.Dock = DockStyle.Top;
             metadataPanel.Location = new Point(0, 0);
-            metadataPanel.Margin = new Padding(12, 8, 12, 2);
+            metadataPanel.Margin = new Padding(14, 11, 14, 3);
             metadataPanel.Name = "metadataPanel";
-            metadataPanel.Size = new Size(1208, 609);
+            metadataPanel.Size = new Size(1373, 812);
             metadataPanel.TabIndex = 9;
             // 
             // tableLayout2
             // 
-            tableLayout2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tableLayout2.ColumnCount = 3;
-            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
-            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
-            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
-            tableLayout2.Controls.Add(lblChannel, 2, 0);
-            tableLayout2.Controls.Add(txtSourceSystem, 1, 1);
-            tableLayout2.Controls.Add(lblSourceSystem, 1, 0);
+            tableLayout2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            tableLayout2.ColumnCount = 6;
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.0030022F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.330333F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.003F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.330333F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.003F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.330333F));
+            tableLayout2.Controls.Add(lblInteractionDate, 0, 4);
+            tableLayout2.Controls.Add(lblChannel, 4, 0);
+            tableLayout2.Controls.Add(txtSourceSystem, 2, 1);
+            tableLayout2.Controls.Add(lblSourceSystem, 2, 0);
             tableLayout2.Controls.Add(cboBatchClassName, 0, 1);
             tableLayout2.Controls.Add(lblBatchClassName, 0, 0);
             tableLayout2.Controls.Add(lblUserCode, 0, 2);
-            tableLayout2.Controls.Add(txtSessionID, 1, 3);
-            tableLayout2.Controls.Add(lblSessionID, 1, 2);
-            tableLayout2.Controls.Add(txtMessageID, 2, 3);
+            tableLayout2.Controls.Add(txtSessionID, 2, 3);
+            tableLayout2.Controls.Add(lblSessionID, 2, 2);
+            tableLayout2.Controls.Add(txtMessageID, 4, 3);
             tableLayout2.Controls.Add(txtUserCode, 0, 3);
-            tableLayout2.Controls.Add(txtChannel, 2, 1);
-            tableLayout2.Controls.Add(lblMessageID, 2, 2);
-            tableLayout2.Controls.Add(btnSubmitDocument, 2, 7);
-            tableLayout2.Controls.Add(btnRemoveFile, 0, 7);
-            tableLayout2.Controls.Add(btnBrowseFile, 0, 6);
-            tableLayout2.Controls.Add(dataGridViewDocuments, 0, 5);
-            tableLayout2.Controls.Add(lblDocuments, 0, 4);
-            tableLayout2.Controls.Add(dataGridViewFields, 1, 5);
-            tableLayout2.Controls.Add(lblFields, 1, 4);
+            tableLayout2.Controls.Add(txtChannel, 4, 1);
+            tableLayout2.Controls.Add(lblMessageID, 4, 2);
+            tableLayout2.Controls.Add(btnBrowseFile, 0, 8);
+            tableLayout2.Controls.Add(lblFields, 2, 6);
+            tableLayout2.Controls.Add(lblDocuments, 0, 6);
+            tableLayout2.Controls.Add(textBox1, 0, 5);
+            tableLayout2.Controls.Add(btnRemoveFile, 0, 9);
+            tableLayout2.Controls.Add(btnSubmitDocument, 4, 9);
+            tableLayout2.Controls.Add(dataGridViewFields, 2, 7);
+            tableLayout2.Controls.Add(dataGridViewDocuments, 0, 7);
             tableLayout2.Location = new Point(0, 0);
-            tableLayout2.Margin = new Padding(3, 2, 3, 2);
             tableLayout2.Name = "tableLayout2";
-            tableLayout2.RowCount = 8;
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 4.051565F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 8.471455F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 3.68324137F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 7.73480654F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 5.34069967F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 45.48803F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 15.1012888F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 10.1289139F));
-            tableLayout2.Size = new Size(1205, 518);
+            tableLayout2.RowCount = 11;
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 8F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 19.13915F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 65.14423F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 15.7166166F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 56F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 69F));
+            tableLayout2.Size = new Size(1370, 756);
             tableLayout2.TabIndex = 0;
+            // 
+            // lblInteractionDate
+            // 
+            lblInteractionDate.AutoSize = true;
+            lblInteractionDate.Font = new Font("Segoe UI", 12F);
+            lblInteractionDate.Location = new Point(3, 138);
+            lblInteractionDate.Name = "lblInteractionDate";
+            lblInteractionDate.Size = new Size(206, 28);
+            lblInteractionDate.TabIndex = 19;
+            lblInteractionDate.Text = "Interaction Date-Time:";
             // 
             // lblChannel
             // 
             lblChannel.AutoSize = true;
             lblChannel.Font = new Font("Segoe UI", 12F);
-            lblChannel.Location = new Point(800, 0);
+            lblChannel.Location = new Point(915, 0);
             lblChannel.Name = "lblChannel";
-            lblChannel.Size = new Size(70, 21);
+            lblChannel.Size = new Size(86, 28);
             lblChannel.TabIndex = 0;
             lblChannel.Text = "Channel:";
             // 
@@ -363,9 +293,9 @@
             // 
             lblSourceSystem.AutoSize = true;
             lblSourceSystem.Font = new Font("Segoe UI", 12F);
-            lblSourceSystem.Location = new Point(387, 0);
+            lblSourceSystem.Location = new Point(459, 0);
             lblSourceSystem.Name = "lblSourceSystem";
-            lblSourceSystem.Size = new Size(116, 21);
+            lblSourceSystem.Size = new Size(143, 28);
             lblSourceSystem.TabIndex = 0;
             lblSourceSystem.Text = "Source System:";
             // 
@@ -375,7 +305,7 @@
             lblBatchClassName.Font = new Font("Segoe UI", 12F);
             lblBatchClassName.Location = new Point(3, 0);
             lblBatchClassName.Name = "lblBatchClassName";
-            lblBatchClassName.Size = new Size(137, 21);
+            lblBatchClassName.Size = new Size(149, 28);
             lblBatchClassName.TabIndex = 0;
             lblBatchClassName.Text = "Batch Category:";
             // 
@@ -383,9 +313,9 @@
             // 
             lblUserCode.AutoSize = true;
             lblUserCode.Font = new Font("Segoe UI", 12F);
-            lblUserCode.Location = new Point(3, 68);
+            lblUserCode.Location = new Point(3, 70);
             lblUserCode.Name = "lblUserCode";
-            lblUserCode.Size = new Size(64, 20);
+            lblUserCode.Size = new Size(79, 28);
             lblUserCode.TabIndex = 0;
             lblUserCode.Text = "User ID:";
             // 
@@ -393,9 +323,9 @@
             // 
             lblSessionID.AutoSize = true;
             lblSessionID.Font = new Font("Segoe UI", 12F);
-            lblSessionID.Location = new Point(387, 68);
+            lblSessionID.Location = new Point(459, 70);
             lblSessionID.Name = "lblSessionID";
-            lblSessionID.Size = new Size(85, 20);
+            lblSessionID.Size = new Size(105, 28);
             lblSessionID.TabIndex = 0;
             lblSessionID.Text = "Session ID:";
             // 
@@ -403,39 +333,11 @@
             // 
             lblMessageID.AutoSize = true;
             lblMessageID.Font = new Font("Segoe UI", 12F);
-            lblMessageID.Location = new Point(800, 68);
+            lblMessageID.Location = new Point(915, 70);
             lblMessageID.Name = "lblMessageID";
-            lblMessageID.Size = new Size(93, 20);
+            lblMessageID.Size = new Size(116, 28);
             lblMessageID.TabIndex = 0;
             lblMessageID.Text = "Message ID:";
-            // 
-            // btnSubmitDocument
-            // 
-            btnSubmitDocument.BackColor = Color.FromArgb(40, 167, 69);
-            btnSubmitDocument.FlatStyle = FlatStyle.Flat;
-            btnSubmitDocument.Font = new Font("Segoe UI", 12F);
-            btnSubmitDocument.ForeColor = Color.White;
-            btnSubmitDocument.Location = new Point(800, 461);
-            btnSubmitDocument.Margin = new Padding(3, 2, 3, 2);
-            btnSubmitDocument.Name = "btnSubmitDocument";
-            btnSubmitDocument.Size = new Size(183, 32);
-            btnSubmitDocument.TabIndex = 17;
-            btnSubmitDocument.Text = "Submit Documents";
-            btnSubmitDocument.UseVisualStyleBackColor = false;
-            // 
-            // btnRemoveFile
-            // 
-            btnRemoveFile.BackColor = Color.FromArgb(220, 53, 69);
-            btnRemoveFile.FlatStyle = FlatStyle.Flat;
-            btnRemoveFile.Font = new Font("Segoe UI", 12F);
-            btnRemoveFile.ForeColor = Color.White;
-            btnRemoveFile.Location = new Point(3, 461);
-            btnRemoveFile.Margin = new Padding(3, 2, 3, 2);
-            btnRemoveFile.Name = "btnRemoveFile";
-            btnRemoveFile.Size = new Size(143, 32);
-            btnRemoveFile.TabIndex = 16;
-            btnRemoveFile.Text = "Remove Selected";
-            btnRemoveFile.UseVisualStyleBackColor = false;
             // 
             // btnBrowseFile
             // 
@@ -444,61 +346,83 @@
             btnBrowseFile.FlatStyle = FlatStyle.Flat;
             btnBrowseFile.Font = new Font("Segoe UI", 12F);
             btnBrowseFile.ForeColor = Color.White;
-            btnBrowseFile.Location = new Point(3, 425);
-            btnBrowseFile.Margin = new Padding(3, 2, 3, 2);
+            btnBrowseFile.Location = new Point(3, 583);
             btnBrowseFile.Name = "btnBrowseFile";
-            btnBrowseFile.Size = new Size(154, 32);
+            btnBrowseFile.Size = new Size(176, 43);
             btnBrowseFile.TabIndex = 15;
             btnBrowseFile.Text = "Add Files";
             btnBrowseFile.UseVisualStyleBackColor = false;
             // 
-            // dataGridViewDocuments
+            // lblFields
             // 
-            dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
-            dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
-            dataGridViewDocuments.Location = new Point(3, 161);
-            dataGridViewDocuments.Margin = new Padding(3, 2, 3, 2);
-            dataGridViewDocuments.Name = "dataGridViewDocuments";
-            dataGridViewDocuments.RowHeadersWidth = 51;
-            dataGridViewDocuments.Size = new Size(378, 212);
-            dataGridViewDocuments.TabIndex = 13;
-            // 
-            // FilePath
-            // 
-            FilePath.HeaderText = "File Path";
-            FilePath.MinimumWidth = 6;
-            FilePath.Name = "FilePath";
-            // 
-            // PageType
-            // 
-            PageType.HeaderText = "Page Type";
-            PageType.MinimumWidth = 6;
-            PageType.Name = "PageType";
+            lblFields.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblFields.AutoSize = true;
+            lblFields.Font = new Font("Segoe UI", 12F);
+            lblFields.Location = new Point(459, 233);
+            lblFields.Name = "lblFields";
+            lblFields.Size = new Size(104, 28);
+            lblFields.TabIndex = 11;
+            lblFields.Text = "Field Data:";
             // 
             // lblDocuments
             // 
             lblDocuments.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblDocuments.AutoSize = true;
             lblDocuments.Font = new Font("Segoe UI", 12F);
-            lblDocuments.Location = new Point(3, 138);
+            lblDocuments.Location = new Point(3, 233);
             lblDocuments.Name = "lblDocuments";
-            lblDocuments.Size = new Size(113, 21);
+            lblDocuments.Size = new Size(141, 28);
             lblDocuments.TabIndex = 12;
             lblDocuments.Text = "Document List:";
             // 
+            // textBox1
+            // 
+            textBox1.AccessibleName = "Message ID";
+            textBox1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            textBox1.Font = new Font("Segoe UI", 12F);
+            textBox1.Location = new Point(3, 169);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(405, 34);
+            textBox1.TabIndex = 18;
+            // 
+            // btnRemoveFile
+            // 
+            btnRemoveFile.BackColor = Color.FromArgb(220, 53, 69);
+            btnRemoveFile.FlatStyle = FlatStyle.Flat;
+            btnRemoveFile.Font = new Font("Segoe UI", 12F);
+            btnRemoveFile.ForeColor = Color.White;
+            btnRemoveFile.Location = new Point(3, 632);
+            btnRemoveFile.Name = "btnRemoveFile";
+            btnRemoveFile.Size = new Size(163, 43);
+            btnRemoveFile.TabIndex = 16;
+            btnRemoveFile.Text = "Remove Selected";
+            btnRemoveFile.UseVisualStyleBackColor = false;
+            // 
+            // btnSubmitDocument
+            // 
+            btnSubmitDocument.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSubmitDocument.BackColor = Color.FromArgb(40, 167, 69);
+            btnSubmitDocument.FlatStyle = FlatStyle.Flat;
+            btnSubmitDocument.Font = new Font("Segoe UI", 12F);
+            btnSubmitDocument.ForeColor = Color.White;
+            btnSubmitDocument.Location = new Point(1047, 632);
+            btnSubmitDocument.Name = "btnSubmitDocument";
+            btnSubmitDocument.Size = new Size(273, 50);
+            btnSubmitDocument.TabIndex = 17;
+            btnSubmitDocument.Text = "Submit Documents";
+            btnSubmitDocument.UseVisualStyleBackColor = false;
+            // 
             // dataGridViewFields
             // 
+            dataGridViewFields.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFields.Columns.AddRange(new DataGridViewColumn[] { FieldName, FieldValue });
             dataGridViewFields.Font = new Font("Segoe UI", 12F);
-            dataGridViewFields.Location = new Point(387, 161);
-            dataGridViewFields.Margin = new Padding(3, 2, 3, 2);
+            dataGridViewFields.Location = new Point(459, 264);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.RowHeadersWidth = 51;
-            dataGridViewFields.Size = new Size(379, 212);
+            dataGridViewFields.Size = new Size(405, 291);
             dataGridViewFields.TabIndex = 14;
             // 
             // FieldName
@@ -513,116 +437,192 @@
             FieldValue.MinimumWidth = 6;
             FieldValue.Name = "FieldValue";
             // 
-            // lblFields
+            // dataGridViewDocuments
             // 
-            lblFields.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            lblFields.AutoSize = true;
-            lblFields.Font = new Font("Segoe UI", 12F);
-            lblFields.Location = new Point(387, 138);
-            lblFields.Name = "lblFields";
-            lblFields.Size = new Size(82, 21);
-            lblFields.TabIndex = 11;
-            lblFields.Text = "Field Data:";
+            dataGridViewDocuments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
+            dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
+            dataGridViewDocuments.Location = new Point(3, 264);
+            dataGridViewDocuments.Name = "dataGridViewDocuments";
+            dataGridViewDocuments.RowHeadersWidth = 51;
+            dataGridViewDocuments.Size = new Size(405, 291);
+            dataGridViewDocuments.TabIndex = 13;
+            // 
+            // FilePath
+            // 
+            FilePath.HeaderText = "File Path";
+            FilePath.MinimumWidth = 6;
+            FilePath.Name = "FilePath";
+            // 
+            // PageType
+            // 
+            PageType.HeaderText = "Page Type";
+            PageType.MinimumWidth = 6;
+            PageType.Name = "PageType";
             // 
             // checkStatusPanel
             // 
             checkStatusPanel.Controls.Add(tableLayout3);
             checkStatusPanel.Dock = DockStyle.Fill;
             checkStatusPanel.Font = new Font("Segoe UI", 12F);
-            checkStatusPanel.Location = new Point(0, 0);
-            checkStatusPanel.Margin = new Padding(3, 2, 3, 2);
+            checkStatusPanel.Location = new Point(3, 4);
             checkStatusPanel.Name = "checkStatusPanel";
-            checkStatusPanel.Size = new Size(1208, 559);
+            checkStatusPanel.Size = new Size(1373, 781);
             checkStatusPanel.TabIndex = 2;
             // 
             // tableLayout3
             // 
             tableLayout3.ColumnCount = 1;
             tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayout3.Controls.Add(inputPanel, 0, 0);
+            tableLayout3.Controls.Add(tableLayoutPanel1, 0, 0);
             tableLayout3.Controls.Add(buttonPanel, 0, 1);
             tableLayout3.Controls.Add(panelStatusViewer, 0, 2);
-            tableLayout3.Controls.Add(statusStrip3, 0, 3);
             tableLayout3.Dock = DockStyle.Fill;
             tableLayout3.Location = new Point(0, 0);
-            tableLayout3.Margin = new Padding(3, 2, 3, 2);
             tableLayout3.Name = "tableLayout3";
             tableLayout3.RowCount = 4;
-            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 90F));
-            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 38F));
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 226F));
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 88F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
-            tableLayout3.Size = new Size(1208, 559);
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 29F));
+            tableLayout3.Size = new Size(1373, 781);
             tableLayout3.TabIndex = 0;
             // 
-            // inputPanel
+            // tableLayoutPanel1
             // 
-            inputPanel.Controls.Add(txtStatusUserCode);
-            inputPanel.Controls.Add(lblStatusUserCode);
-            inputPanel.Controls.Add(txtStatusMessageID);
-            inputPanel.Controls.Add(lblStatusMessageID);
-            inputPanel.Controls.Add(txtStatusSessionID);
-            inputPanel.Controls.Add(lblStatusSessionID);
-            inputPanel.Controls.Add(txtStatusChannel);
-            inputPanel.Controls.Add(lblStatusChannel);
-            inputPanel.Controls.Add(txtStatusSourceSystem);
-            inputPanel.Controls.Add(lblStatusSourceSystem);
-            inputPanel.Controls.Add(txtStatusRequestGuid);
-            inputPanel.Controls.Add(lblStatusRequestGuid);
-            inputPanel.Dock = DockStyle.Fill;
-            inputPanel.Location = new Point(3, 2);
-            inputPanel.Margin = new Padding(3, 2, 3, 2);
-            inputPanel.Name = "inputPanel";
-            inputPanel.Size = new Size(1202, 86);
-            inputPanel.TabIndex = 0;
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.ColumnCount = 6;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.0015659F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.330174F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.00157F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.330174F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.00157F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.334944F));
+            tableLayoutPanel1.Controls.Add(txtStatusUserCode, 4, 3);
+            tableLayoutPanel1.Controls.Add(txtStatusMessageID, 2, 3);
+            tableLayoutPanel1.Controls.Add(lblStatusUserCode, 4, 2);
+            tableLayoutPanel1.Controls.Add(txtStatusSessionID, 0, 3);
+            tableLayoutPanel1.Controls.Add(lblStatusMessageID, 2, 2);
+            tableLayoutPanel1.Controls.Add(lblStatusChannel, 4, 0);
+            tableLayoutPanel1.Controls.Add(lblStatusSessionID, 0, 2);
+            tableLayoutPanel1.Controls.Add(txtStatusChannel, 4, 1);
+            tableLayoutPanel1.Controls.Add(txtStatusSourceSystem, 2, 1);
+            tableLayoutPanel1.Controls.Add(lblStatusSourceSystem, 2, 0);
+            tableLayoutPanel1.Controls.Add(lblStatusRequestGuid, 0, 0);
+            tableLayoutPanel1.Controls.Add(txtStatusRequestGuid, 0, 1);
+            tableLayoutPanel1.Controls.Add(label1, 0, 4);
+            tableLayoutPanel1.Controls.Add(textBox2, 0, 5);
+            tableLayoutPanel1.Location = new Point(3, 3);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.Size = new Size(1367, 220);
+            tableLayoutPanel1.TabIndex = 9;
+            // 
+            // txtStatusUserCode
+            // 
+            txtStatusUserCode.AccessibleName = "User ID";
+            txtStatusUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusUserCode.Font = new Font("Segoe UI", 12F);
+            txtStatusUserCode.Location = new Point(913, 99);
+            txtStatusUserCode.Name = "txtStatusUserCode";
+            txtStatusUserCode.Size = new Size(404, 34);
+            txtStatusUserCode.TabIndex = 5;
+            // 
+            // txtStatusMessageID
+            // 
+            txtStatusMessageID.AccessibleName = "Message ID";
+            txtStatusMessageID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusMessageID.Font = new Font("Segoe UI", 12F);
+            txtStatusMessageID.Location = new Point(458, 99);
+            txtStatusMessageID.Name = "txtStatusMessageID";
+            txtStatusMessageID.Size = new Size(404, 34);
+            txtStatusMessageID.TabIndex = 4;
             // 
             // lblStatusUserCode
             // 
             lblStatusUserCode.AutoSize = true;
             lblStatusUserCode.Font = new Font("Segoe UI", 12F);
-            lblStatusUserCode.Location = new Point(545, 43);
+            lblStatusUserCode.Location = new Point(913, 68);
             lblStatusUserCode.Name = "lblStatusUserCode";
-            lblStatusUserCode.Size = new Size(64, 21);
+            lblStatusUserCode.Size = new Size(79, 28);
             lblStatusUserCode.TabIndex = 0;
             lblStatusUserCode.Text = "User ID:";
+            // 
+            // txtStatusSessionID
+            // 
+            txtStatusSessionID.AccessibleName = "Session ID";
+            txtStatusSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusSessionID.Font = new Font("Segoe UI", 12F);
+            txtStatusSessionID.Location = new Point(3, 99);
+            txtStatusSessionID.Name = "txtStatusSessionID";
+            txtStatusSessionID.Size = new Size(404, 34);
+            txtStatusSessionID.TabIndex = 3;
             // 
             // lblStatusMessageID
             // 
             lblStatusMessageID.AutoSize = true;
             lblStatusMessageID.Font = new Font("Segoe UI", 12F);
-            lblStatusMessageID.Location = new Point(279, 43);
+            lblStatusMessageID.Location = new Point(458, 68);
             lblStatusMessageID.Name = "lblStatusMessageID";
-            lblStatusMessageID.Size = new Size(93, 21);
+            lblStatusMessageID.Size = new Size(116, 28);
             lblStatusMessageID.TabIndex = 0;
             lblStatusMessageID.Text = "Message ID:";
-            // 
-            // lblStatusSessionID
-            // 
-            lblStatusSessionID.AutoSize = true;
-            lblStatusSessionID.Font = new Font("Segoe UI", 12F);
-            lblStatusSessionID.Location = new Point(18, 43);
-            lblStatusSessionID.Name = "lblStatusSessionID";
-            lblStatusSessionID.Size = new Size(85, 21);
-            lblStatusSessionID.TabIndex = 0;
-            lblStatusSessionID.Text = "Session ID:";
             // 
             // lblStatusChannel
             // 
             lblStatusChannel.AutoSize = true;
             lblStatusChannel.Font = new Font("Segoe UI", 12F);
-            lblStatusChannel.Location = new Point(545, 5);
+            lblStatusChannel.Location = new Point(913, 0);
             lblStatusChannel.Name = "lblStatusChannel";
-            lblStatusChannel.Size = new Size(70, 21);
+            lblStatusChannel.Size = new Size(86, 28);
             lblStatusChannel.TabIndex = 0;
             lblStatusChannel.Text = "Channel:";
+            // 
+            // lblStatusSessionID
+            // 
+            lblStatusSessionID.AutoSize = true;
+            lblStatusSessionID.Font = new Font("Segoe UI", 12F);
+            lblStatusSessionID.Location = new Point(3, 68);
+            lblStatusSessionID.Name = "lblStatusSessionID";
+            lblStatusSessionID.Size = new Size(105, 28);
+            lblStatusSessionID.TabIndex = 0;
+            lblStatusSessionID.Text = "Session ID:";
+            // 
+            // txtStatusChannel
+            // 
+            txtStatusChannel.AccessibleName = "Channel";
+            txtStatusChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusChannel.Font = new Font("Segoe UI", 12F);
+            txtStatusChannel.Location = new Point(913, 31);
+            txtStatusChannel.Name = "txtStatusChannel";
+            txtStatusChannel.Size = new Size(404, 34);
+            txtStatusChannel.TabIndex = 2;
+            // 
+            // txtStatusSourceSystem
+            // 
+            txtStatusSourceSystem.AccessibleName = "Source System";
+            txtStatusSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusSourceSystem.Font = new Font("Segoe UI", 12F);
+            txtStatusSourceSystem.Location = new Point(458, 31);
+            txtStatusSourceSystem.Name = "txtStatusSourceSystem";
+            txtStatusSourceSystem.Size = new Size(404, 34);
+            txtStatusSourceSystem.TabIndex = 1;
             // 
             // lblStatusSourceSystem
             // 
             lblStatusSourceSystem.AutoSize = true;
             lblStatusSourceSystem.Font = new Font("Segoe UI", 12F);
-            lblStatusSourceSystem.Location = new Point(279, 5);
+            lblStatusSourceSystem.Location = new Point(458, 0);
             lblStatusSourceSystem.Name = "lblStatusSourceSystem";
-            lblStatusSourceSystem.Size = new Size(116, 21);
+            lblStatusSourceSystem.Size = new Size(143, 28);
             lblStatusSourceSystem.TabIndex = 0;
             lblStatusSourceSystem.Text = "Source System:";
             // 
@@ -630,11 +630,41 @@
             // 
             lblStatusRequestGuid.AutoSize = true;
             lblStatusRequestGuid.Font = new Font("Segoe UI", 12F);
-            lblStatusRequestGuid.Location = new Point(18, 5);
+            lblStatusRequestGuid.Location = new Point(3, 0);
             lblStatusRequestGuid.Name = "lblStatusRequestGuid";
-            lblStatusRequestGuid.Size = new Size(88, 21);
+            lblStatusRequestGuid.Size = new Size(109, 28);
             lblStatusRequestGuid.TabIndex = 0;
             lblStatusRequestGuid.Text = "Request ID:";
+            // 
+            // txtStatusRequestGuid
+            // 
+            txtStatusRequestGuid.AccessibleName = "Request ID";
+            txtStatusRequestGuid.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtStatusRequestGuid.Font = new Font("Segoe UI", 12F);
+            txtStatusRequestGuid.Location = new Point(3, 31);
+            txtStatusRequestGuid.Name = "txtStatusRequestGuid";
+            txtStatusRequestGuid.Size = new Size(404, 34);
+            txtStatusRequestGuid.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F);
+            label1.Location = new Point(3, 136);
+            label1.Name = "label1";
+            label1.Size = new Size(206, 28);
+            label1.TabIndex = 19;
+            label1.Text = "Interaction Date-Time:";
+            // 
+            // textBox2
+            // 
+            textBox2.AccessibleName = "User ID";
+            textBox2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            textBox2.Font = new Font("Segoe UI", 12F);
+            textBox2.Location = new Point(3, 175);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(404, 34);
+            textBox2.TabIndex = 20;
             // 
             // buttonPanel
             // 
@@ -642,10 +672,9 @@
             buttonPanel.Controls.Add(btnClearResults);
             buttonPanel.Controls.Add(progressBar);
             buttonPanel.Dock = DockStyle.Fill;
-            buttonPanel.Location = new Point(3, 92);
-            buttonPanel.Margin = new Padding(3, 2, 3, 2);
+            buttonPanel.Location = new Point(3, 229);
             buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(1202, 34);
+            buttonPanel.Size = new Size(1367, 82);
             buttonPanel.TabIndex = 1;
             // 
             // btnCheckStatus
@@ -654,10 +683,9 @@
             btnCheckStatus.FlatStyle = FlatStyle.Flat;
             btnCheckStatus.Font = new Font("Segoe UI", 12F);
             btnCheckStatus.ForeColor = Color.White;
-            btnCheckStatus.Location = new Point(18, 9);
-            btnCheckStatus.Margin = new Padding(3, 2, 3, 2);
+            btnCheckStatus.Location = new Point(21, 12);
             btnCheckStatus.Name = "btnCheckStatus";
-            btnCheckStatus.Size = new Size(201, 27);
+            btnCheckStatus.Size = new Size(230, 47);
             btnCheckStatus.TabIndex = 5;
             btnCheckStatus.Text = "Check Status";
             btnCheckStatus.UseVisualStyleBackColor = false;
@@ -668,20 +696,18 @@
             btnClearResults.FlatStyle = FlatStyle.Flat;
             btnClearResults.Font = new Font("Segoe UI", 12F);
             btnClearResults.ForeColor = Color.White;
-            btnClearResults.Location = new Point(224, 9);
-            btnClearResults.Margin = new Padding(3, 2, 3, 2);
+            btnClearResults.Location = new Point(256, 12);
             btnClearResults.Name = "btnClearResults";
-            btnClearResults.Size = new Size(201, 27);
+            btnClearResults.Size = new Size(230, 47);
             btnClearResults.TabIndex = 6;
             btnClearResults.Text = "Clear Results";
             btnClearResults.UseVisualStyleBackColor = false;
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(494, 14);
-            progressBar.Margin = new Padding(3, 2, 3, 2);
+            progressBar.Location = new Point(565, 26);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(250, 15);
+            progressBar.Size = new Size(286, 20);
             progressBar.Style = ProgressBarStyle.Marquee;
             progressBar.TabIndex = 7;
             progressBar.Visible = false;
@@ -690,27 +716,10 @@
             // 
             panelStatusViewer.BorderStyle = BorderStyle.FixedSingle;
             panelStatusViewer.Dock = DockStyle.Fill;
-            panelStatusViewer.Location = new Point(3, 130);
-            panelStatusViewer.Margin = new Padding(3, 2, 3, 2);
+            panelStatusViewer.Location = new Point(3, 317);
             panelStatusViewer.Name = "panelStatusViewer";
-            panelStatusViewer.Size = new Size(1202, 405);
+            panelStatusViewer.Size = new Size(1367, 432);
             panelStatusViewer.TabIndex = 8;
-            // 
-            // statusStrip3
-            // 
-            statusStrip3.Font = new Font("Segoe UI", 10F);
-            statusStrip3.ImageScalingSize = new Size(20, 20);
-            statusStrip3.Items.AddRange(new ToolStripItem[] { statusLabel3 });
-            statusStrip3.Location = new Point(0, 537);
-            statusStrip3.Name = "statusStrip3";
-            statusStrip3.Padding = new Padding(1, 0, 10, 0);
-            statusStrip3.Size = new Size(1208, 22);
-            statusStrip3.TabIndex = 9;
-            // 
-            // statusLabel3
-            // 
-            statusLabel3.Name = "statusLabel3";
-            statusLabel3.Size = new Size(0, 17);
             // 
             // tabControl
             // 
@@ -719,18 +728,20 @@
             tabControl.Dock = DockStyle.Fill;
             tabControl.Font = new Font("Segoe UI", 10F);
             tabControl.Location = new Point(0, 0);
+            tabControl.Margin = new Padding(3, 4, 3, 4);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1214, 619);
+            tabControl.Size = new Size(1387, 825);
             tabControl.TabIndex = 0;
             // 
             // submitTab
             // 
             submitTab.Controls.Add(submitPanel);
-            submitTab.Location = new Point(4, 29);
+            submitTab.Location = new Point(4, 32);
+            submitTab.Margin = new Padding(3, 4, 3, 4);
             submitTab.Name = "submitTab";
-            submitTab.Padding = new Padding(3);
-            submitTab.Size = new Size(1206, 586);
+            submitTab.Padding = new Padding(3, 4, 3, 4);
+            submitTab.Size = new Size(1379, 789);
             submitTab.TabIndex = 0;
             submitTab.Text = "Submit Document";
             submitTab.UseVisualStyleBackColor = true;
@@ -738,23 +749,53 @@
             // checkStatusTab
             // 
             checkStatusTab.Controls.Add(checkStatusPanel);
-            checkStatusTab.Location = new Point(4, 29);
+            checkStatusTab.Location = new Point(4, 32);
+            checkStatusTab.Margin = new Padding(3, 4, 3, 4);
             checkStatusTab.Name = "checkStatusTab";
-            checkStatusTab.Padding = new Padding(3);
-            checkStatusTab.Size = new Size(1206, 586);
+            checkStatusTab.Padding = new Padding(3, 4, 3, 4);
+            checkStatusTab.Size = new Size(1379, 789);
             checkStatusTab.TabIndex = 1;
             checkStatusTab.Text = "Check Status";
             checkStatusTab.UseVisualStyleBackColor = true;
             // 
+            // miniToolStrip
+            // 
+            miniToolStrip.AccessibleName = "New item selection";
+            miniToolStrip.AccessibleRole = AccessibleRole.ButtonDropDown;
+            miniToolStrip.AutoSize = false;
+            miniToolStrip.Dock = DockStyle.None;
+            miniToolStrip.Font = new Font("Segoe UI", 10F);
+            miniToolStrip.ImageScalingSize = new Size(20, 20);
+            miniToolStrip.Location = new Point(1375, 23);
+            miniToolStrip.Name = "miniToolStrip";
+            miniToolStrip.Padding = new Padding(1, 0, 11, 0);
+            miniToolStrip.Size = new Size(1373, 22);
+            miniToolStrip.TabIndex = 9;
+            // 
+            // statusLabel3
+            // 
+            statusLabel3.Name = "statusLabel3";
+            statusLabel3.Size = new Size(0, 16);
+            // 
+            // statusStrip3
+            // 
+            statusStrip3.Font = new Font("Segoe UI", 10F);
+            statusStrip3.ImageScalingSize = new Size(20, 20);
+            statusStrip3.Items.AddRange(new ToolStripItem[] { statusLabel3 });
+            statusStrip3.Location = new Point(0, 759);
+            statusStrip3.Name = "statusStrip3";
+            statusStrip3.Padding = new Padding(1, 0, 11, 0);
+            statusStrip3.Size = new Size(1373, 22);
+            statusStrip3.TabIndex = 9;
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 245, 245);
-            ClientSize = new Size(1214, 619);
+            ClientSize = new Size(1387, 825);
             Controls.Add(tabControl);
-            Margin = new Padding(3, 2, 3, 2);
-            MinimumSize = new Size(702, 385);
+            MinimumSize = new Size(800, 498);
             Name = "MainForm";
             Text = "CCapture Mock API Client";
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
@@ -765,23 +806,20 @@
             metadataPanel.ResumeLayout(false);
             tableLayout2.ResumeLayout(false);
             tableLayout2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
             checkStatusPanel.ResumeLayout(false);
             tableLayout3.ResumeLayout(false);
-            tableLayout3.PerformLayout();
-            inputPanel.ResumeLayout(false);
-            inputPanel.PerformLayout();
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             buttonPanel.ResumeLayout(false);
-            statusStrip3.ResumeLayout(false);
-            statusStrip3.PerformLayout();
             tabControl.ResumeLayout(false);
             submitTab.ResumeLayout(false);
             checkStatusTab.ResumeLayout(false);
+            statusStrip3.ResumeLayout(false);
+            statusStrip3.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
-        private Button btnBrowseFile;
         private DataGridView dataGridViewFields;
         private DataGridViewTextBoxColumn FieldName;
         private DataGridViewTextBoxColumn FieldValue;
@@ -793,9 +831,34 @@
         private StatusStrip statusStrip2;
         private ToolStripStatusLabel statusLabel2;
         private ToolStripStatusLabel toolStripStatusLabel1;
-        private StatusStrip statusStrip3;
-        private ToolStripStatusLabel statusLabel3;
         private Button btnSubmitDocument;
         private Button btnRemoveFile;
+        private Label lblInteractionDate;
+        private Button btnBrowseFile;
+        private TextBox textBox1;
+        private TableLayoutPanel tableLayout3;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TextBox txtStatusUserCode;
+        private TextBox txtStatusMessageID;
+        private Label lblStatusUserCode;
+        private TextBox txtStatusSessionID;
+        private Label lblStatusMessageID;
+        private Label lblStatusChannel;
+        private Label lblStatusSessionID;
+        private TextBox txtStatusChannel;
+        private TextBox txtStatusSourceSystem;
+        private Label lblStatusSourceSystem;
+        private Label lblStatusRequestGuid;
+        private TextBox txtStatusRequestGuid;
+        private Label label1;
+        private TextBox textBox2;
+        private Panel buttonPanel;
+        private Button btnCheckStatus;
+        private Button btnClearResults;
+        private ProgressBar progressBar;
+        private Panel panelStatusViewer;
+        private StatusStrip miniToolStrip;
+        private ToolStripStatusLabel statusLabel3;
+        private StatusStrip statusStrip3;
     }
 }
