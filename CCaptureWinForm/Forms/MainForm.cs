@@ -51,6 +51,9 @@ namespace CCaptureWinForm
             // Populate Batch Class Names
             PopulateBatchClassNamesAsync();
 
+            // Configure DataGridView columns
+            ConfigureDataGridViewColumns();
+
             // Attach event handlers
             btnBrowseFile.Click += btnBrowseFile_Click;
             btnRemoveFile.Click += btnRemoveFile_Click;
@@ -62,12 +65,52 @@ namespace CCaptureWinForm
             lstSubmitGroups.SelectedIndexChanged += lstSubmitGroups_SelectedIndexChanged;
             Resize += MainForm_Resize;
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
+            dataGridViewDocuments.CellValueChanged += dataGridViewDocuments_CellValueChanged;
+            dataGridViewFields.CellValueChanged += dataGridViewFields_CellValueChanged;
 
             // Run loginAsync automatically
             var appName = _configuration["AppName"];
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             _ = loginAsync(appName, appLogin, appPassword);
+        }
+
+        private void ConfigureDataGridViewColumns()
+        {
+            // Configure Documents DataGridView
+            dataGridViewDocuments.Columns.Clear();
+            dataGridViewDocuments.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "File Path",
+                Name = "FilePath",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
+
+            var pageTypeColumn = new DataGridViewComboBoxColumn
+            {
+                HeaderText = "Page Type",
+                Name = "PageType",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FlatStyle = FlatStyle.Flat
+            };
+            dataGridViewDocuments.Columns.Add(pageTypeColumn);
+
+            // Configure Fields DataGridView
+            dataGridViewFields.Columns.Clear();
+            var fieldNameColumn = new DataGridViewComboBoxColumn
+            {
+                HeaderText = "Field Name",
+                Name = "FieldName",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FlatStyle = FlatStyle.Flat
+            };
+            dataGridViewFields.Columns.Add(fieldNameColumn);
+            dataGridViewFields.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Field Value",
+                Name = "FieldValue",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            });
         }
 
         private void AddNewGroup()
@@ -95,10 +138,38 @@ namespace CCaptureWinForm
             }
         }
 
-        private void cboBatchClassName_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cboBatchClassName_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cboBatchClassName.SelectedIndex != -1)
+            {
                 _errorProvider.SetError(cboBatchClassName, "");
+                string selectedBatchClass = cboBatchClassName.SelectedItem.ToString();
+
+                try
+                {
+                    // Fetch page types and field names
+                    var pageTypes = await _databaseService.GetPageTypesAsync(selectedBatchClass);
+                    var fieldNames = await _databaseService.GetFieldNamesAsync(selectedBatchClass);
+
+                    // Update PageType dropdown in dataGridViewDocuments
+                    var pageTypeColumn = (DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"];
+                    pageTypeColumn.Items.Clear();
+                    pageTypeColumn.Items.AddRange(pageTypes.ToArray());
+
+                    // Update FieldName dropdown in dataGridViewFields
+                    var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
+                    fieldNameColumn.Items.Clear();
+                    fieldNameColumn.Items.AddRange(fieldNames.ToArray());
+
+                    // Refresh the document grid to ensure dropdowns reflect the new options
+                    UpdateDocumentGrid();
+                }
+                catch (Exception ex)
+                {
+                    statusLabel2.Text = $"Failed to load page types or field names: {ex.Message}";
+                    statusLabel2.ForeColor = Color.Red;
+                }
+            }
         }
 
         private void lstSubmitGroups_SelectedIndexChanged(object sender, EventArgs e)
@@ -114,7 +185,16 @@ namespace CCaptureWinForm
                 string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
                 foreach (var doc in _groups[selectedGroup])
                 {
-                    dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
+                    int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
+                    // Ensure the PageType is selected if it exists in the dropdown
+                    if (!string.IsNullOrEmpty(doc.PageType))
+                    {
+                        var pageTypeCell = dataGridViewDocuments.Rows[rowIndex].Cells["PageType"];
+                        if (((DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"]).Items.Contains(doc.PageType))
+                        {
+                            pageTypeCell.Value = doc.PageType;
+                        }
+                    }
                 }
             }
         }
@@ -246,7 +326,6 @@ namespace CCaptureWinForm
                     return;
                 }
 
-
                 var fields = new List<Field>();
                 foreach (DataGridViewRow row in dataGridViewFields.Rows)
                 {
@@ -259,10 +338,22 @@ namespace CCaptureWinForm
                     }
                 }
 
-                // Loop through checked groups and submit documents
+                // Update PageType in _groups based on DataGridView
                 foreach (string group in lstSubmitGroups.CheckedItems.Cast<string>().Where(g => _groups[g].Any()))
                 {
                     var documents = _groups[group];
+                    foreach (DataGridViewRow row in dataGridViewDocuments.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        var filePath = row.Cells["FilePath"].Value?.ToString();
+                        var pageType = row.Cells["PageType"].Value?.ToString();
+                        var doc = documents.FirstOrDefault(d => d.FilePath == filePath);
+                        if (doc != null)
+                        {
+                            doc.PageType = pageType ?? string.Empty;
+                        }
+                    }
+
                     statusLabel2.Text = $"Submitting {group} documents...";
                     statusLabel2.ForeColor = Color.Blue;
                     var requestGuid = await _viewModel.SubmitDocumentAsync(
@@ -482,6 +573,29 @@ namespace CCaptureWinForm
             _statusViewer?.Dispose();
             _viewerInitialized = false;
             panelStatusViewer.Controls.Clear();
+        }
+
+        private void dataGridViewDocuments_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridViewDocuments.Columns["PageType"].Index && e.RowIndex >= 0)
+            {
+                string selectedGroup = lstSubmitGroups.SelectedItem?.ToString();
+                if (selectedGroup != null)
+                {
+                    var filePath = dataGridViewDocuments.Rows[e.RowIndex].Cells["FilePath"].Value?.ToString();
+                    var pageType = dataGridViewDocuments.Rows[e.RowIndex].Cells["PageType"].Value?.ToString();
+                    var doc = _groups[selectedGroup].FirstOrDefault(d => d.FilePath == filePath);
+                    if (doc != null)
+                    {
+                        doc.PageType = pageType ?? string.Empty;
+                    }
+                }
+            }
+        }
+
+        private void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

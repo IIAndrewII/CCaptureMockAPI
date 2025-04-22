@@ -63,11 +63,7 @@
             lblDocuments = new Label();
             btnAddGroup = new Button();
             dataGridViewDocuments = new DataGridView();
-            FilePath = new DataGridViewTextBoxColumn();
-            PageType = new DataGridViewTextBoxColumn();
             dataGridViewFields = new DataGridView();
-            FieldName = new DataGridViewTextBoxColumn();
-            FieldValue = new DataGridViewTextBoxColumn();
             lblFields = new Label();
             btnSubmitDocument = new Button();
             lblInteractionDate = new Label();
@@ -100,9 +96,8 @@
             tabControl = new TabControl();
             submitTab = new TabPage();
             checkStatusTab = new TabPage();
-            miniToolStrip = new StatusStrip();
-            statusLabel3 = new ToolStripStatusLabel();
             statusStrip3 = new StatusStrip();
+            statusLabel3 = new ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
@@ -243,7 +238,7 @@
             // toolStripStatusLabel1
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(0, 16);
+            statusLabel2.Size = new Size(0, 16);
             // 
             // metadataPanel
             // 
@@ -379,7 +374,6 @@
             tableLayoutPanel2.RowCount = 2;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 37.179493F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 62.820507F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(405, 86);
             tableLayoutPanel2.TabIndex = 22;
             // 
@@ -413,7 +407,6 @@
             dataGridViewDocuments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewDocuments.Columns.AddRange(new DataGridViewColumn[] { FilePath, PageType });
             dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
             dataGridViewDocuments.Location = new Point(3, 333);
             dataGridViewDocuments.Name = "dataGridViewDocuments";
@@ -421,42 +414,17 @@
             dataGridViewDocuments.Size = new Size(405, 242);
             dataGridViewDocuments.TabIndex = 13;
             // 
-            // FilePath
-            // 
-            FilePath.HeaderText = "File Path";
-            FilePath.MinimumWidth = 6;
-            FilePath.Name = "FilePath";
-            // 
-            // PageType
-            // 
-            PageType.HeaderText = "Page Type";
-            PageType.MinimumWidth = 6;
-            PageType.Name = "PageType";
-            // 
             // dataGridViewFields
             // 
             dataGridViewFields.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewFields.Columns.AddRange(new DataGridViewColumn[] { FieldName, FieldValue });
             dataGridViewFields.Font = new Font("Segoe UI", 12F);
             dataGridViewFields.Location = new Point(915, 333);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.RowHeadersWidth = 51;
             dataGridViewFields.Size = new Size(405, 242);
             dataGridViewFields.TabIndex = 14;
-            // 
-            // FieldName
-            // 
-            FieldName.HeaderText = "Field Name";
-            FieldName.MinimumWidth = 6;
-            FieldName.Name = "FieldName";
-            // 
-            // FieldValue
-            // 
-            FieldValue.HeaderText = "Field Value";
-            FieldValue.MinimumWidth = 6;
-            FieldValue.Name = "FieldValue";
             // 
             // lblFields
             // 
@@ -505,7 +473,6 @@
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel3.Size = new Size(382, 49);
             tableLayoutPanel3.TabIndex = 23;
             // 
@@ -546,6 +513,7 @@
             // checkStatusPanel
             // 
             checkStatusPanel.Controls.Add(tableLayout3);
+            checkStatusPanel.Controls.Add(statusStrip3);
             checkStatusPanel.Dock = DockStyle.Fill;
             checkStatusPanel.Font = new Font("Segoe UI", 12F);
             checkStatusPanel.Location = new Point(3, 4);
@@ -568,7 +536,7 @@
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 88F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 29F));
-            tableLayout3.Size = new Size(1373, 781);
+            tableLayout3.Size = new Size(1373, 759);
             tableLayout3.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -799,7 +767,7 @@
             panelStatusViewer.Dock = DockStyle.Fill;
             panelStatusViewer.Location = new Point(3, 317);
             panelStatusViewer.Name = "panelStatusViewer";
-            panelStatusViewer.Size = new Size(1367, 432);
+            panelStatusViewer.Size = new Size(1367, 413);
             panelStatusViewer.TabIndex = 8;
             // 
             // tabControl
@@ -839,25 +807,6 @@
             checkStatusTab.Text = "Check Status";
             checkStatusTab.UseVisualStyleBackColor = true;
             // 
-            // miniToolStrip
-            // 
-            miniToolStrip.AccessibleName = "New item selection";
-            miniToolStrip.AccessibleRole = AccessibleRole.ButtonDropDown;
-            miniToolStrip.AutoSize = false;
-            miniToolStrip.Dock = DockStyle.None;
-            miniToolStrip.Font = new Font("Segoe UI", 10F);
-            miniToolStrip.ImageScalingSize = new Size(20, 20);
-            miniToolStrip.Location = new Point(1375, 23);
-            miniToolStrip.Name = "miniToolStrip";
-            miniToolStrip.Padding = new Padding(1, 0, 11, 0);
-            miniToolStrip.Size = new Size(1373, 22);
-            miniToolStrip.TabIndex = 9;
-            // 
-            // statusLabel3
-            // 
-            statusLabel3.Name = "statusLabel3";
-            statusLabel3.Size = new Size(0, 16);
-            // 
             // statusStrip3
             // 
             statusStrip3.Font = new Font("Segoe UI", 10F);
@@ -868,6 +817,11 @@
             statusStrip3.Padding = new Padding(1, 0, 11, 0);
             statusStrip3.Size = new Size(1373, 22);
             statusStrip3.TabIndex = 9;
+            // 
+            // statusLabel3
+            // 
+            statusLabel3.Name = "statusLabel3";
+            statusLabel3.Size = new Size(0, 16);
             // 
             // MainForm
             // 
@@ -893,6 +847,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).EndInit();
             tableLayoutPanel3.ResumeLayout(false);
             checkStatusPanel.ResumeLayout(false);
+            checkStatusPanel.PerformLayout();
             tableLayout3.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
@@ -905,12 +860,8 @@
             ResumeLayout(false);
         }
         private DataGridView dataGridViewFields;
-        private DataGridViewTextBoxColumn FieldName;
-        private DataGridViewTextBoxColumn FieldValue;
         private Label lblFields;
         private DataGridView dataGridViewDocuments;
-        private DataGridViewTextBoxColumn FilePath;
-        private DataGridViewTextBoxColumn PageType;
         private Label lblDocuments;
         private StatusStrip statusStrip2;
         private ToolStripStatusLabel statusLabel2;
@@ -939,13 +890,12 @@
         private Button btnClearResults;
         private ProgressBar progressBar;
         private Panel panelStatusViewer;
-        private StatusStrip miniToolStrip;
-        private ToolStripStatusLabel statusLabel3;
-        private StatusStrip statusStrip3;
         private Button btnAddGroup;
         private TableLayoutPanel tableLayoutPanel3;
         private TableLayoutPanel tableLayoutPanel2;
         private Label lblInteractionDate;
         private DateTimePicker pickerInteractionDateTime;
+        private StatusStrip statusStrip3;
+        private ToolStripStatusLabel statusLabel3;
     }
 }
