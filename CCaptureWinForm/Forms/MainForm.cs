@@ -59,7 +59,7 @@ namespace CCaptureWinForm
             btnClearResults.Click += btnClearResults_Click;
             btnAddGroup.Click += btnAddGroup_Click;
             btnRemoveGroup.Click += btnRemoveGroup_Click;
-            cboGroups.SelectedIndexChanged += cboGroups_SelectedIndexChanged;
+            lstSubmitGroups.SelectedIndexChanged += lstSubmitGroups_SelectedIndexChanged;
             Resize += MainForm_Resize;
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
 
@@ -74,9 +74,8 @@ namespace CCaptureWinForm
         {
             var groupName = $"Group {_groupCounter++}";
             _groups.Add(groupName, new List<Document_Row>());
-            cboGroups.Items.Add(groupName);
-            if (cboGroups.Items.Count == 1)
-                cboGroups.SelectedIndex = 0;
+            lstSubmitGroups.Items.Add(groupName, false); // Add unchecked
+            lstSubmitGroups.SelectedItem = groupName; // Select the new group
         }
 
         private async void PopulateBatchClassNamesAsync()
@@ -102,13 +101,17 @@ namespace CCaptureWinForm
                 _errorProvider.SetError(cboBatchClassName, "");
         }
 
-        private void cboGroups_SelectedIndexChanged(object sender, EventArgs e)
+        private void lstSubmitGroups_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cboGroups.SelectedIndex != -1)
+            UpdateDocumentGrid();
+        }
+
+        private void UpdateDocumentGrid()
+        {
+            dataGridViewDocuments.Rows.Clear();
+            if (lstSubmitGroups.SelectedItem != null)
             {
-                // Update dataGridViewDocuments with the selected group's documents
-                var selectedGroup = cboGroups.SelectedItem.ToString();
-                dataGridViewDocuments.Rows.Clear();
+                string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
                 foreach (var doc in _groups[selectedGroup])
                 {
                     dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
@@ -186,12 +189,6 @@ namespace CCaptureWinForm
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            btnBrowseFile.Top = dataGridViewDocuments.Bottom + 10;
-            btnRemoveFile.Top = dataGridViewDocuments.Bottom + 10;
-            btnSubmitDocument.Top = dataGridViewDocuments.Bottom + 10;
-            btnAddGroup.Top = cboGroups.Top;
-            btnRemoveGroup.Top = cboGroups.Top;
-
             tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
             tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical;
 
@@ -199,7 +196,7 @@ namespace CCaptureWinForm
             tableLayout3.Height = checkStatusPanel.ClientSize.Height - tableLayout3.Margin.Vertical;
 
             dataGridViewDocuments.Width = tableLayout2.GetColumnWidths()[0] - 10;
-            dataGridViewFields.Width = tableLayout2.GetColumnWidths()[1] - 10;
+            dataGridViewFields.Width = tableLayout2.GetColumnWidths()[4] - 10;
         }
 
         private void InitializeStatusViewer()
@@ -233,8 +230,8 @@ namespace CCaptureWinForm
                     _errorProvider.SetError(txtMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
-                if (!_groups.Any(g => g.Value.Any()))
-                    _errorProvider.SetError(dataGridViewDocuments, "Please add at least one document to any group.");
+                if (!lstSubmitGroups.CheckedItems.Cast<string>().Any(group => _groups[group].Any()))
+                    _errorProvider.SetError(lstSubmitGroups, "Please check at least one group with documents.");
 
                 if (_errorProvider.GetError(cboBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
@@ -242,9 +239,9 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(txtSessionID) != "" ||
                     _errorProvider.GetError(txtMessageID) != "" ||
                     _errorProvider.GetError(txtUserCode) != "" ||
-                    _errorProvider.GetError(dataGridViewDocuments) != "")
+                    _errorProvider.GetError(lstSubmitGroups) != "")
                 {
-                    statusLabel2.Text = "Please fill in all required fields.";
+                    statusLabel2.Text = "Please fill in all required fields and check at least one group with documents.";
                     statusLabel2.ForeColor = Color.Red;
                     return;
                 }
@@ -264,10 +261,10 @@ namespace CCaptureWinForm
                     }
                 }
 
-                // Loop through each group and submit documents
-                foreach (var group in _groups.Where(g => g.Value.Any()))
+                // Loop through checked groups and submit documents
+                foreach (string group in lstSubmitGroups.CheckedItems.Cast<string>().Where(g => _groups[g].Any()))
                 {
-                    var documents = group.Value;
+                    var documents = _groups[group];
                     var requestGuid = await _viewModel.SubmitDocumentAsync(
                         cboBatchClassName.SelectedItem.ToString(),
                         txtSourceSystem.Text,
@@ -275,10 +272,11 @@ namespace CCaptureWinForm
                         txtSessionID.Text,
                         txtMessageID.Text,
                         txtUserCode.Text,
+                        pickerInteractionDateTime.Value.ToString("o"),
                         fields,
                         documents);
 
-                    statusLabel2.Text = $"Documents for {group.Key} submitted! Request Guid: {requestGuid}";
+                    statusLabel2.Text = $"Documents for {group} submitted! Request Guid: {requestGuid}";
                     statusLabel2.ForeColor = Color.Green;
 
                     // Update status fields for the last group submitted
@@ -403,12 +401,13 @@ namespace CCaptureWinForm
 
         private void btnBrowseFile_Click(object sender, EventArgs e)
         {
-            if (cboGroups.SelectedIndex == -1)
+            if (lstSubmitGroups.SelectedItem == null)
             {
                 MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
             var openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
@@ -418,22 +417,28 @@ namespace CCaptureWinForm
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var selectedGroup = cboGroups.SelectedItem.ToString();
                 foreach (var filePath in openFileDialog.FileNames)
                 {
                     var doc = new Document_Row { FilePath = filePath, PageType = string.Empty };
                     _groups[selectedGroup].Add(doc);
-                    dataGridViewDocuments.Rows.Add(filePath, string.Empty);
+                    // Update grid only if the selected group is still selected
+                    if (lstSubmitGroups.SelectedItem?.ToString() == selectedGroup)
+                    {
+                        dataGridViewDocuments.Rows.Add(filePath, string.Empty);
+                    }
                 }
             }
         }
 
         private void btnRemoveFile_Click(object sender, EventArgs e)
         {
-            if (cboGroups.SelectedIndex == -1)
+            if (lstSubmitGroups.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
 
-            var selectedGroup = cboGroups.SelectedItem.ToString();
+            string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
             foreach (DataGridViewRow row in dataGridViewDocuments.SelectedRows)
             {
                 if (!row.IsNewRow)
@@ -452,15 +457,22 @@ namespace CCaptureWinForm
 
         private void btnRemoveGroup_Click(object sender, EventArgs e)
         {
-            if (cboGroups.SelectedIndex != -1)
+            if (lstSubmitGroups.SelectedItem != null)
             {
-                var selectedGroup = cboGroups.SelectedItem.ToString();
+                var selectedGroup = lstSubmitGroups.SelectedItem.ToString();
                 _groups.Remove(selectedGroup);
-                cboGroups.Items.Remove(selectedGroup);
-                if (cboGroups.Items.Count > 0)
-                    cboGroups.SelectedIndex = 0;
+                int prevIndex = lstSubmitGroups.SelectedIndex;
+                lstSubmitGroups.Items.Remove(selectedGroup);
+                if (lstSubmitGroups.Items.Count > 0)
+                {
+                    // Select the next or previous item
+                    lstSubmitGroups.SelectedIndex = Math.Min(prevIndex, lstSubmitGroups.Items.Count - 1);
+                }
                 else
+                {
                     AddNewGroup(); // Ensure at least one group exists
+                }
+                UpdateDocumentGrid();
             }
         }
 

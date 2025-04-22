@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace CCaptureWinForm.Presentation.ViewModels
 {
@@ -40,6 +41,7 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string sessionId,
             string messageId,
             string userCode,
+            string interactionDateTime,
             List<Field> fields,
             List<Document_Row> documents)
         {
@@ -58,7 +60,7 @@ namespace CCaptureWinForm.Presentation.ViewModels
                     Documents = documentList,
                     SourceSystem = sourceSystem,
                     Channel = channel,
-                    InteractionDateTime = DateTime.Now.ToString("o"),
+                    InteractionDateTime = interactionDateTime,
                     SessionID = sessionId,
                     MessageID = messageId,
                     UserCode = userCode,
