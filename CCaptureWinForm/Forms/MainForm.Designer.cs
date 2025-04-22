@@ -93,11 +93,11 @@
             btnClearResults = new Button();
             progressBar = new ProgressBar();
             panelStatusViewer = new Panel();
+            statusStrip3 = new StatusStrip();
+            statusLabel3 = new ToolStripStatusLabel();
             tabControl = new TabControl();
             submitTab = new TabPage();
             checkStatusTab = new TabPage();
-            statusStrip3 = new StatusStrip();
-            statusLabel3 = new ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
@@ -111,10 +111,10 @@
             tableLayout3.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             buttonPanel.SuspendLayout();
+            statusStrip3.SuspendLayout();
             tabControl.SuspendLayout();
             submitTab.SuspendLayout();
             checkStatusTab.SuspendLayout();
-            statusStrip3.SuspendLayout();
             SuspendLayout();
             // 
             // txtChannel
@@ -238,7 +238,7 @@
             // toolStripStatusLabel1
             // 
             toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            statusLabel2.Size = new Size(0, 16);
+            toolStripStatusLabel1.Size = new Size(0, 16);
             // 
             // metadataPanel
             // 
@@ -324,9 +324,9 @@
             lblBatchClassName.Font = new Font("Segoe UI", 12F);
             lblBatchClassName.Location = new Point(3, 0);
             lblBatchClassName.Name = "lblBatchClassName";
-            lblBatchClassName.Size = new Size(149, 28);
+            lblBatchClassName.Size = new Size(112, 28);
             lblBatchClassName.TabIndex = 0;
-            lblBatchClassName.Text = "Batch Category:";
+            lblBatchClassName.Text = "Batch Class:";
             // 
             // lblUserCode
             // 
@@ -767,8 +767,24 @@
             panelStatusViewer.Dock = DockStyle.Fill;
             panelStatusViewer.Location = new Point(3, 317);
             panelStatusViewer.Name = "panelStatusViewer";
-            panelStatusViewer.Size = new Size(1367, 413);
+            panelStatusViewer.Size = new Size(1367, 410);
             panelStatusViewer.TabIndex = 8;
+            // 
+            // statusStrip3
+            // 
+            statusStrip3.Font = new Font("Segoe UI", 10F);
+            statusStrip3.ImageScalingSize = new Size(20, 20);
+            statusStrip3.Items.AddRange(new ToolStripItem[] { statusLabel3 });
+            statusStrip3.Location = new Point(0, 759);
+            statusStrip3.Name = "statusStrip3";
+            statusStrip3.Padding = new Padding(1, 0, 11, 0);
+            statusStrip3.Size = new Size(1373, 22);
+            statusStrip3.TabIndex = 9;
+            // 
+            // statusLabel3
+            // 
+            statusLabel3.Name = "statusLabel3";
+            statusLabel3.Size = new Size(0, 16);
             // 
             // tabControl
             // 
@@ -807,22 +823,6 @@
             checkStatusTab.Text = "Check Status";
             checkStatusTab.UseVisualStyleBackColor = true;
             // 
-            // statusStrip3
-            // 
-            statusStrip3.Font = new Font("Segoe UI", 10F);
-            statusStrip3.ImageScalingSize = new Size(20, 20);
-            statusStrip3.Items.AddRange(new ToolStripItem[] { statusLabel3 });
-            statusStrip3.Location = new Point(0, 759);
-            statusStrip3.Name = "statusStrip3";
-            statusStrip3.Padding = new Padding(1, 0, 11, 0);
-            statusStrip3.Size = new Size(1373, 22);
-            statusStrip3.TabIndex = 9;
-            // 
-            // statusLabel3
-            // 
-            statusLabel3.Name = "statusLabel3";
-            statusLabel3.Size = new Size(0, 16);
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -852,11 +852,11 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             buttonPanel.ResumeLayout(false);
+            statusStrip3.ResumeLayout(false);
+            statusStrip3.PerformLayout();
             tabControl.ResumeLayout(false);
             submitTab.ResumeLayout(false);
             checkStatusTab.ResumeLayout(false);
-            statusStrip3.ResumeLayout(false);
-            statusStrip3.PerformLayout();
             ResumeLayout(false);
         }
         private DataGridView dataGridViewFields;
