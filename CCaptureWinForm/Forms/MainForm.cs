@@ -74,7 +74,7 @@ namespace CCaptureWinForm
         {
             var groupName = $"Group {_groupCounter++}";
             _groups.Add(groupName, new List<Document_Row>());
-            lstSubmitGroups.Items.Add(groupName, false); // Add unchecked
+            lstSubmitGroups.Items.Add(groupName, true); // Add + checked
             lstSubmitGroups.SelectedItem = groupName; // Select the new group
         }
 
@@ -246,8 +246,6 @@ namespace CCaptureWinForm
                     return;
                 }
 
-                statusLabel2.Text = "Submitting your documents...";
-                statusLabel2.ForeColor = Color.Blue;
 
                 var fields = new List<Field>();
                 foreach (DataGridViewRow row in dataGridViewFields.Rows)
@@ -265,6 +263,8 @@ namespace CCaptureWinForm
                 foreach (string group in lstSubmitGroups.CheckedItems.Cast<string>().Where(g => _groups[g].Any()))
                 {
                     var documents = _groups[group];
+                    statusLabel2.Text = $"Submitting {group} documents...";
+                    statusLabel2.ForeColor = Color.Blue;
                     var requestGuid = await _viewModel.SubmitDocumentAsync(
                         cboBatchClassName.SelectedItem.ToString(),
                         txtSourceSystem.Text,
