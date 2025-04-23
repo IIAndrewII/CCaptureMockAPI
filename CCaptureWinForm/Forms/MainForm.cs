@@ -1,4 +1,5 @@
 using CCaptureWinForm.Core.Entities;
+using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Infrastructure.Services;
 using CCaptureWinForm.Presentation;
 using CCaptureWinForm.Presentation.ViewModels;
@@ -18,14 +19,15 @@ namespace CCaptureWinForm
         private bool _viewerInitialized = false;
         private readonly ErrorProvider _errorProvider;
         private readonly IConfiguration _configuration;
-        private readonly DatabaseService _databaseService;
+        private readonly IDatabaseService _databaseService;
+
         private Dictionary<string, List<Document_Row>> _groups; // Store groups and their documents
         private int _groupCounter = 1; // For generating unique group names
 
-        public MainForm()
+        public MainForm(IDatabaseService databaseService)
         {
-            InitializeComponent();
-            _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+            _databaseService = databaseService;
+            InitializeComponent(); _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
 
             // Load configuration from appsettings.json
             _configuration = new ConfigurationBuilder()

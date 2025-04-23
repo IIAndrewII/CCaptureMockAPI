@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CCaptureWinForm.Core.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CCaptureWinForm.Infrastructure.Services
 {
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
         private readonly string _connectionString;
 
@@ -21,81 +22,53 @@ namespace CCaptureWinForm.Infrastructure.Services
 
         public async Task<List<string>> GetBatchClassNamesAsync()
         {
-            var batchClassNames = new List<string>();
-            try
-            {
-                using (var conn = new NpgsqlConnection(_connectionString))
-                {
-                    await conn.OpenAsync();
-                    using (var cmd = new NpgsqlCommand("SELECT name FROM batch_class ORDER BY name", conn))
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            batchClassNames.Add(reader.GetString(0));
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to retrieve Batch Class Names from the database.", ex);
-            }
-            return batchClassNames;
+            return await ExecuteQueryAsync("SELECT name FROM batch_class ORDER BY name", reader => reader.GetString(0));
         }
+
         public async Task<List<string>> GetFieldNamesAsync(string batchClassName)
         {
-            var pageTypes = new List<string>();
-            try
-            {
-                using (var conn = new NpgsqlConnection(_connectionString))
-                {
-                    await conn.OpenAsync();
-                    using (var cmd = new NpgsqlCommand(
-                        "SELECT field_name FROM public.batch_field_def " +
-                        "WHERE id_batch_class = (SELECT id_batch_class FROM public.batch_class WHERE name = @batchClassName) " +
-                        "ORDER BY field_name ASC", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@batchClassName", batchClassName); 
-                        using (var reader = await cmd.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                pageTypes.Add(reader.GetString(0));
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to retrieve Field Names from the database.", ex);
-            }
-            return pageTypes;
+            var query = @"
+                SELECT field_name 
+                FROM public.batch_field_def 
+                WHERE id_batch_class = (SELECT id_batch_class FROM public.batch_class WHERE name = @batchClassName) 
+                ORDER BY field_name ASC";
+
+            return await ExecuteQueryAsync(query, reader => reader.GetString(0), ("@batchClassName", batchClassName));
         }
 
         public async Task<List<string>> GetPageTypesAsync(string batchClassName)
         {
-            var pageTypes = new List<string>();
+            var query = @"
+                SELECT pt.name 
+                FROM public.batch_class bc 
+                JOIN public.document_class dc ON dc.id_batch_class = bc.id_batch_class 
+                JOIN public.page_type pt ON pt.id_document_class = dc.id_document_class 
+                WHERE bc.name = @batchClassName 
+                ORDER BY pt.name ASC";
+
+            return await ExecuteQueryAsync(query, reader => reader.GetString(0), ("@batchClassName", batchClassName));
+        }
+
+        private async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<NpgsqlDataReader, T> map, params (string, object)[] parameters)
+        {
+            var results = new List<T>();
             try
             {
                 using (var conn = new NpgsqlConnection(_connectionString))
                 {
                     await conn.OpenAsync();
-                    using (var cmd = new NpgsqlCommand(
-                        "SELECT pt.name " +
-                        "FROM public.batch_class bc " +
-                        "JOIN public.document_class dc ON dc.id_batch_class = bc.id_batch_class " +
-                        "JOIN public.page_type pt ON pt.id_document_class = dc.id_document_class " +
-                        "WHERE bc.name = @batchClassName " +
-                        "ORDER BY pt.name ASC", conn))
+                    using (var cmd = new NpgsqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@batchClassName", batchClassName);
+                        foreach (var (name, value) in parameters)
+                        {
+                            cmd.Parameters.AddWithValue(name, value);
+                        }
+
                         using (var reader = await cmd.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
-                                pageTypes.Add(reader.GetString(0));
+                                results.Add(map(reader));
                             }
                         }
                     }
@@ -103,11 +76,9 @@ namespace CCaptureWinForm.Infrastructure.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to retrieve page types from the database.", ex);
+                throw new Exception("Database query execution failed.", ex);
             }
-            return pageTypes;
+            return results;
         }
-
-
     }
 }
