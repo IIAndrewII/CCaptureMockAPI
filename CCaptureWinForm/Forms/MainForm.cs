@@ -27,7 +27,8 @@ namespace CCaptureWinForm
         public MainForm(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
-            InitializeComponent(); _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+            InitializeComponent();
+            _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
 
             // Load configuration from appsettings.json
             _configuration = new ConfigurationBuilder()
@@ -113,6 +114,13 @@ namespace CCaptureWinForm
                 Name = "FieldValue",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
+            dataGridViewFields.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Field Type",
+                Name = "FieldType",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                ReadOnly = true // Make the column read-only
+            });
         }
 
         private void AddNewGroup()
@@ -131,7 +139,21 @@ namespace CCaptureWinForm
                 cboBatchClassName.Items.Clear();
                 cboBatchClassName.Items.AddRange(batchClassNames.ToArray());
                 if (cboBatchClassName.Items.Count > 0)
+                {
                     cboBatchClassName.SelectedIndex = 0;
+
+                    // Trigger field type population for existing rows
+                    foreach (DataGridViewRow row in dataGridViewFields.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        var fieldName = row.Cells["FieldName"].Value?.ToString();
+                        if (!string.IsNullOrEmpty(fieldName))
+                        {
+                            var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+                            row.Cells["FieldType"].Value = fieldType;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -162,6 +184,22 @@ namespace CCaptureWinForm
                     var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
                     fieldNameColumn.Items.Clear();
                     fieldNameColumn.Items.AddRange(fieldNames.ToArray());
+
+                    // Update FieldType for existing rows
+                    foreach (DataGridViewRow row in dataGridViewFields.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        var fieldName = row.Cells["FieldName"].Value?.ToString();
+                        if (!string.IsNullOrEmpty(fieldName) && fieldNames.Contains(fieldName))
+                        {
+                            var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+                            row.Cells["FieldType"].Value = fieldType;
+                        }
+                        else
+                        {
+                            row.Cells["FieldType"].Value = string.Empty;
+                        }
+                    }
 
                     // Refresh the document grid to ensure dropdowns reflect the new options
                     UpdateDocumentGrid();
@@ -595,9 +633,38 @@ namespace CCaptureWinForm
             }
         }
 
-        private void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private async void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
+            // Handle FieldName column changes
+            if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index)
+            {
+                var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
+                var batchClassName = cboBatchClassName.SelectedItem?.ToString();
+
+                if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(batchClassName))
+                {
+                    try
+                    {
+                        // Fetch the field type
+                        var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+
+                        // Update the FieldType cell
+                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
+                    }
+                    catch (Exception ex)
+                    {
+                        statusLabel2.Text = $"Failed to load field type: {ex.Message}";
+                        statusLabel2.ForeColor = Color.Red;
+                    }
+                }
+                else
+                {
+                    // Clear FieldType if FieldName is empty
+                    dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
+                }
+            }
         }
     }
 }

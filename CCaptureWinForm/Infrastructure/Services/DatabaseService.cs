@@ -49,6 +49,25 @@ namespace CCaptureWinForm.Infrastructure.Services
             return await ExecuteQueryAsync(query, reader => reader.GetString(0), ("@batchClassName", batchClassName));
         }
 
+        public async Task<string> GetFieldTypeAsync(string fieldName)
+        {
+            var query = @"
+                SELECT ft.type_name 
+                FROM public.batch_field_def fd
+                JOIN public.field_type ft ON ft.id_field_type = fd.id_field_type
+                WHERE fd.field_name = @fieldName 
+                ORDER BY ft.type_name ASC
+                LIMIT 1";
+
+            var results = await ExecuteQueryAsync(
+                query,
+                reader => reader.GetString(0),
+                ("@fieldName", fieldName)
+            );
+
+            return results.FirstOrDefault() ?? string.Empty;
+        }
+
         private async Task<List<T>> ExecuteQueryAsync<T>(string query, Func<NpgsqlDataReader, T> map, params (string, object)[] parameters)
         {
             var results = new List<T>();
