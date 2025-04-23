@@ -18,13 +18,47 @@
         private System.Windows.Forms.Label lblSourceSystem;
         private System.Windows.Forms.ComboBox cboBatchClassName;
         private System.Windows.Forms.Label lblBatchClassName;
-        private System.Windows.Forms.CheckedListBox lstSubmitGroups;
+        private System.Windows.Forms.DataGridView dataGridViewGroups;
         private System.Windows.Forms.Button btnRemoveGroup;
         private System.Windows.Forms.Panel checkStatusPanel;
         private System.Windows.Forms.ErrorProvider errorProvider;
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage submitTab;
         private System.Windows.Forms.TabPage checkStatusTab;
+        private System.Windows.Forms.StatusStrip statusStrip2;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
+        private System.Windows.Forms.DataGridView dataGridViewDocuments;
+        private System.Windows.Forms.DataGridView dataGridViewFields;
+        private System.Windows.Forms.Label lblDocuments;
+        private System.Windows.Forms.Label lblFields;
+        private System.Windows.Forms.Button btnAddGroup;
+        private System.Windows.Forms.Button btnSubmitDocument;
+        private System.Windows.Forms.Button btnBrowseFile;
+        private System.Windows.Forms.Button btnRemoveFile;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label lblInteractionDate;
+        private System.Windows.Forms.DateTimePicker pickerInteractionDateTime;
+        private System.Windows.Forms.TableLayoutPanel tableLayout3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TextBox txtStatusRequestGuid;
+        private System.Windows.Forms.Label lblStatusRequestGuid;
+        private System.Windows.Forms.TextBox txtStatusSourceSystem;
+        private System.Windows.Forms.Label lblStatusSourceSystem;
+        private System.Windows.Forms.TextBox txtStatusChannel;
+        private System.Windows.Forms.Label lblStatusChannel;
+        private System.Windows.Forms.TextBox txtStatusSessionID;
+        private System.Windows.Forms.Label lblStatusSessionID;
+        private System.Windows.Forms.TextBox txtStatusMessageID;
+        private System.Windows.Forms.Label lblStatusMessageID;
+        private System.Windows.Forms.TextBox txtStatusUserCode;
+        private System.Windows.Forms.Label lblStatusUserCode;
+        private System.Windows.Forms.Panel buttonPanel;
+        private System.Windows.Forms.Button btnCheckStatus;
+        private System.Windows.Forms.Button btnClearResults;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Panel panelStatusViewer;
+        private System.Windows.Forms.StatusStrip statusStrip3;
+        private System.Windows.Forms.ToolStripStatusLabel statusLabel3;
 
         protected override void Dispose(bool disposing)
         {
@@ -44,33 +78,33 @@
             txtUserCode = new TextBox();
             txtMessageID = new TextBox();
             txtSessionID = new TextBox();
-            lstSubmitGroups = new CheckedListBox();
+            dataGridViewGroups = new DataGridView();
             btnRemoveGroup = new Button();
             errorProvider = new ErrorProvider(components);
             submitPanel = new Panel();
             statusStrip2 = new StatusStrip();
             statusLabel2 = new ToolStripStatusLabel();
-            toolStripStatusLabel1 = new ToolStripStatusLabel();
             metadataPanel = new Panel();
             tableLayout2 = new TableLayoutPanel();
+            lblDocuments = new Label();
             lblChannel = new Label();
             lblSourceSystem = new Label();
             lblBatchClassName = new Label();
             lblUserCode = new Label();
             lblSessionID = new Label();
             lblMessageID = new Label();
-            tableLayoutPanel2 = new TableLayoutPanel();
-            lblDocuments = new Label();
-            btnAddGroup = new Button();
-            dataGridViewDocuments = new DataGridView();
             dataGridViewFields = new DataGridView();
             lblFields = new Label();
             btnSubmitDocument = new Button();
             lblInteractionDate = new Label();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            btnBrowseFile = new Button();
-            btnRemoveFile = new Button();
             pickerInteractionDateTime = new DateTimePicker();
+            tableLayoutPanel3 = new TableLayoutPanel();
+            btnRemoveFile = new Button();
+            btnBrowseFile = new Button();
+            dataGridViewDocuments = new DataGridView();
+            tableLayoutPanel4 = new TableLayoutPanel();
+            btnAddGroup = new Button();
+            label1 = new Label();
             checkStatusPanel = new Panel();
             tableLayout3 = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -86,8 +120,6 @@
             lblStatusSourceSystem = new Label();
             lblStatusRequestGuid = new Label();
             txtStatusRequestGuid = new TextBox();
-            label1 = new Label();
-            textBox2 = new TextBox();
             buttonPanel = new Panel();
             btnCheckStatus = new Button();
             btnClearResults = new Button();
@@ -98,15 +130,16 @@
             tabControl = new TabControl();
             submitTab = new TabPage();
             checkStatusTab = new TabPage();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewGroups).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
             metadataPanel.SuspendLayout();
             tableLayout2.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).BeginInit();
             tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).BeginInit();
+            tableLayoutPanel4.SuspendLayout();
             checkStatusPanel.SuspendLayout();
             tableLayout3.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -178,16 +211,21 @@
             txtSessionID.Size = new Size(405, 34);
             txtSessionID.TabIndex = 4;
             // 
-            // lstSubmitGroups
+            // dataGridViewGroups
             // 
-            lstSubmitGroups.AccessibleName = "Submit Groups";
-            lstSubmitGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lstSubmitGroups.Font = new Font("Segoe UI", 12F);
-            lstSubmitGroups.FormattingEnabled = true;
-            lstSubmitGroups.Location = new Point(3, 42);
-            lstSubmitGroups.Name = "lstSubmitGroups";
-            lstSubmitGroups.Size = new Size(187, 33);
-            lstSubmitGroups.TabIndex = 11;
+            dataGridViewGroups.AccessibleName = "Submit Groups";
+            dataGridViewGroups.AllowUserToAddRows = false;
+            dataGridViewGroups.AllowUserToDeleteRows = false;
+            dataGridViewGroups.Anchor = AnchorStyles.Left;
+            dataGridViewGroups.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewGroups.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewGroups.Font = new Font("Segoe UI", 12F);
+            dataGridViewGroups.Location = new Point(3, 333);
+            dataGridViewGroups.Name = "dataGridViewGroups";
+            dataGridViewGroups.RowHeadersVisible = false;
+            dataGridViewGroups.RowHeadersWidth = 51;
+            dataGridViewGroups.Size = new Size(277, 242);
+            dataGridViewGroups.TabIndex = 11;
             // 
             // btnRemoveGroup
             // 
@@ -196,9 +234,9 @@
             btnRemoveGroup.FlatStyle = FlatStyle.Flat;
             btnRemoveGroup.Font = new Font("Segoe UI", 12F);
             btnRemoveGroup.ForeColor = Color.White;
-            btnRemoveGroup.Location = new Point(308, 40);
+            btnRemoveGroup.Location = new Point(143, 3);
             btnRemoveGroup.Name = "btnRemoveGroup";
-            btnRemoveGroup.Size = new Size(94, 36);
+            btnRemoveGroup.Size = new Size(134, 40);
             btnRemoveGroup.TabIndex = 12;
             btnRemoveGroup.Text = "Remove";
             btnRemoveGroup.UseVisualStyleBackColor = false;
@@ -223,7 +261,7 @@
             // 
             statusStrip2.Font = new Font("Segoe UI", 10F);
             statusStrip2.ImageScalingSize = new Size(20, 20);
-            statusStrip2.Items.AddRange(new ToolStripItem[] { statusLabel2, toolStripStatusLabel1 });
+            statusStrip2.Items.AddRange(new ToolStripItem[] { statusLabel2 });
             statusStrip2.Location = new Point(0, 759);
             statusStrip2.Name = "statusStrip2";
             statusStrip2.Padding = new Padding(1, 0, 11, 0);
@@ -234,11 +272,6 @@
             // 
             statusLabel2.Name = "statusLabel2";
             statusLabel2.Size = new Size(0, 16);
-            // 
-            // toolStripStatusLabel1
-            // 
-            toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            toolStripStatusLabel1.Size = new Size(0, 16);
             // 
             // metadataPanel
             // 
@@ -260,6 +293,7 @@
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33033323F));
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.0030022F));
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33033323F));
+            tableLayout2.Controls.Add(lblDocuments, 0, 7);
             tableLayout2.Controls.Add(lblChannel, 4, 0);
             tableLayout2.Controls.Add(txtSourceSystem, 2, 1);
             tableLayout2.Controls.Add(lblSourceSystem, 2, 0);
@@ -272,14 +306,16 @@
             tableLayout2.Controls.Add(txtUserCode, 0, 3);
             tableLayout2.Controls.Add(txtChannel, 4, 1);
             tableLayout2.Controls.Add(lblMessageID, 4, 2);
-            tableLayout2.Controls.Add(tableLayoutPanel2, 0, 7);
-            tableLayout2.Controls.Add(dataGridViewDocuments, 0, 8);
             tableLayout2.Controls.Add(dataGridViewFields, 4, 8);
             tableLayout2.Controls.Add(lblFields, 4, 7);
             tableLayout2.Controls.Add(btnSubmitDocument, 4, 10);
             tableLayout2.Controls.Add(lblInteractionDate, 0, 5);
-            tableLayout2.Controls.Add(tableLayoutPanel3, 0, 9);
             tableLayout2.Controls.Add(pickerInteractionDateTime, 0, 6);
+            tableLayout2.Controls.Add(tableLayoutPanel3, 2, 9);
+            tableLayout2.Controls.Add(dataGridViewDocuments, 2, 8);
+            tableLayout2.Controls.Add(tableLayoutPanel4, 0, 9);
+            tableLayout2.Controls.Add(label1, 2, 7);
+            tableLayout2.Controls.Add(dataGridViewGroups, 0, 8);
             tableLayout2.Location = new Point(0, 0);
             tableLayout2.Name = "tableLayout2";
             tableLayout2.RowCount = 12;
@@ -297,6 +333,17 @@
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 56F));
             tableLayout2.Size = new Size(1370, 756);
             tableLayout2.TabIndex = 0;
+            // 
+            // lblDocuments
+            // 
+            lblDocuments.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblDocuments.AutoSize = true;
+            lblDocuments.Font = new Font("Segoe UI", 12F);
+            lblDocuments.Location = new Point(3, 302);
+            lblDocuments.Name = "lblDocuments";
+            lblDocuments.Size = new Size(176, 28);
+            lblDocuments.TabIndex = 12;
+            lblDocuments.Text = "Document Groups:";
             // 
             // lblChannel
             // 
@@ -358,62 +405,6 @@
             lblMessageID.TabIndex = 0;
             lblMessageID.Text = "Message ID:";
             // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            tableLayoutPanel2.ColumnCount = 3;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 193F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.Controls.Add(lblDocuments, 0, 0);
-            tableLayoutPanel2.Controls.Add(lstSubmitGroups, 0, 1);
-            tableLayoutPanel2.Controls.Add(btnRemoveGroup, 2, 1);
-            tableLayoutPanel2.Controls.Add(btnAddGroup, 1, 1);
-            tableLayoutPanel2.Location = new Point(3, 241);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 37.179493F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 62.820507F));
-            tableLayoutPanel2.Size = new Size(405, 86);
-            tableLayoutPanel2.TabIndex = 22;
-            // 
-            // lblDocuments
-            // 
-            lblDocuments.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            lblDocuments.AutoSize = true;
-            lblDocuments.Font = new Font("Segoe UI", 12F);
-            lblDocuments.Location = new Point(3, 3);
-            lblDocuments.Name = "lblDocuments";
-            lblDocuments.Size = new Size(168, 28);
-            lblDocuments.TabIndex = 12;
-            lblDocuments.Text = "Document Group:";
-            // 
-            // btnAddGroup
-            // 
-            btnAddGroup.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            btnAddGroup.BackColor = Color.Green;
-            btnAddGroup.FlatStyle = FlatStyle.Flat;
-            btnAddGroup.Font = new Font("Segoe UI", 12F);
-            btnAddGroup.ForeColor = Color.White;
-            btnAddGroup.Location = new Point(196, 40);
-            btnAddGroup.Name = "btnAddGroup";
-            btnAddGroup.Size = new Size(106, 36);
-            btnAddGroup.TabIndex = 20;
-            btnAddGroup.Text = "Add";
-            btnAddGroup.UseVisualStyleBackColor = false;
-            // 
-            // dataGridViewDocuments
-            // 
-            dataGridViewDocuments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
-            dataGridViewDocuments.Location = new Point(3, 333);
-            dataGridViewDocuments.Name = "dataGridViewDocuments";
-            dataGridViewDocuments.RowHeadersWidth = 51;
-            dataGridViewDocuments.Size = new Size(405, 242);
-            dataGridViewDocuments.TabIndex = 13;
-            // 
             // dataGridViewFields
             // 
             dataGridViewFields.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -462,32 +453,27 @@
             lblInteractionDate.TabIndex = 24;
             lblInteractionDate.Text = "Interaction Date Time:";
             // 
+            // pickerInteractionDateTime
+            // 
+            pickerInteractionDateTime.Format = DateTimePickerFormat.Time;
+            pickerInteractionDateTime.Location = new Point(3, 191);
+            pickerInteractionDateTime.Name = "pickerInteractionDateTime";
+            pickerInteractionDateTime.Size = new Size(203, 34);
+            pickerInteractionDateTime.TabIndex = 25;
+            // 
             // tableLayoutPanel3
             // 
             tableLayoutPanel3.ColumnCount = 2;
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Controls.Add(btnBrowseFile, 0, 0);
             tableLayoutPanel3.Controls.Add(btnRemoveFile, 1, 0);
-            tableLayoutPanel3.Location = new Point(3, 581);
+            tableLayoutPanel3.Controls.Add(btnBrowseFile, 0, 0);
+            tableLayoutPanel3.Location = new Point(459, 581);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel3.Size = new Size(382, 49);
             tableLayoutPanel3.TabIndex = 23;
-            // 
-            // btnBrowseFile
-            // 
-            btnBrowseFile.BackColor = Color.Green;
-            btnBrowseFile.FlatStyle = FlatStyle.Flat;
-            btnBrowseFile.Font = new Font("Segoe UI", 12F);
-            btnBrowseFile.ForeColor = Color.White;
-            btnBrowseFile.Location = new Point(3, 3);
-            btnBrowseFile.Name = "btnBrowseFile";
-            btnBrowseFile.Size = new Size(185, 43);
-            btnBrowseFile.TabIndex = 15;
-            btnBrowseFile.Text = "Add Files";
-            btnBrowseFile.UseVisualStyleBackColor = false;
             // 
             // btnRemoveFile
             // 
@@ -502,13 +488,69 @@
             btnRemoveFile.Text = "Remove File";
             btnRemoveFile.UseVisualStyleBackColor = false;
             // 
-            // pickerInteractionDateTime
+            // btnBrowseFile
             // 
-            pickerInteractionDateTime.Format = DateTimePickerFormat.Time;
-            pickerInteractionDateTime.Location = new Point(3, 191);
-            pickerInteractionDateTime.Name = "pickerInteractionDateTime";
-            pickerInteractionDateTime.Size = new Size(203, 34);
-            pickerInteractionDateTime.TabIndex = 25;
+            btnBrowseFile.BackColor = Color.Green;
+            btnBrowseFile.FlatStyle = FlatStyle.Flat;
+            btnBrowseFile.Font = new Font("Segoe UI", 12F);
+            btnBrowseFile.ForeColor = Color.White;
+            btnBrowseFile.Location = new Point(3, 3);
+            btnBrowseFile.Name = "btnBrowseFile";
+            btnBrowseFile.Size = new Size(185, 43);
+            btnBrowseFile.TabIndex = 15;
+            btnBrowseFile.Text = "Add Files";
+            btnBrowseFile.UseVisualStyleBackColor = false;
+            // 
+            // dataGridViewDocuments
+            // 
+            dataGridViewDocuments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewDocuments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
+            dataGridViewDocuments.Location = new Point(459, 333);
+            dataGridViewDocuments.Name = "dataGridViewDocuments";
+            dataGridViewDocuments.RowHeadersWidth = 51;
+            dataGridViewDocuments.Size = new Size(405, 242);
+            dataGridViewDocuments.TabIndex = 13;
+            // 
+            // tableLayoutPanel4
+            // 
+            tableLayoutPanel4.ColumnCount = 2;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel4.Controls.Add(btnAddGroup, 0, 0);
+            tableLayoutPanel4.Controls.Add(btnRemoveGroup, 1, 0);
+            tableLayoutPanel4.Location = new Point(3, 581);
+            tableLayoutPanel4.Name = "tableLayoutPanel4";
+            tableLayoutPanel4.RowCount = 1;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel4.Size = new Size(280, 46);
+            tableLayoutPanel4.TabIndex = 26;
+            // 
+            // btnAddGroup
+            // 
+            btnAddGroup.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            btnAddGroup.BackColor = Color.Green;
+            btnAddGroup.FlatStyle = FlatStyle.Flat;
+            btnAddGroup.Font = new Font("Segoe UI", 12F);
+            btnAddGroup.ForeColor = Color.White;
+            btnAddGroup.Location = new Point(3, 3);
+            btnAddGroup.Name = "btnAddGroup";
+            btnAddGroup.Size = new Size(134, 40);
+            btnAddGroup.TabIndex = 20;
+            btnAddGroup.Text = "Add";
+            btnAddGroup.UseVisualStyleBackColor = false;
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 12F);
+            label1.Location = new Point(459, 302);
+            label1.Name = "label1";
+            label1.Size = new Size(115, 28);
+            label1.TabIndex = 27;
+            label1.Text = "Documents:";
             // 
             // checkStatusPanel
             // 
@@ -561,13 +603,9 @@
             tableLayoutPanel1.Controls.Add(lblStatusSourceSystem, 2, 0);
             tableLayoutPanel1.Controls.Add(lblStatusRequestGuid, 0, 0);
             tableLayoutPanel1.Controls.Add(txtStatusRequestGuid, 0, 1);
-            tableLayoutPanel1.Controls.Add(label1, 0, 4);
-            tableLayoutPanel1.Controls.Add(textBox2, 0, 5);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 6;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowCount = 4;
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
@@ -580,7 +618,7 @@
             txtStatusUserCode.AccessibleName = "User ID";
             txtStatusUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtStatusUserCode.Font = new Font("Segoe UI", 12F);
-            txtStatusUserCode.Location = new Point(913, 99);
+            txtStatusUserCode.Location = new Point(913, 141);
             txtStatusUserCode.Name = "txtStatusUserCode";
             txtStatusUserCode.Size = new Size(404, 34);
             txtStatusUserCode.TabIndex = 5;
@@ -590,7 +628,7 @@
             txtStatusMessageID.AccessibleName = "Message ID";
             txtStatusMessageID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtStatusMessageID.Font = new Font("Segoe UI", 12F);
-            txtStatusMessageID.Location = new Point(458, 99);
+            txtStatusMessageID.Location = new Point(458, 141);
             txtStatusMessageID.Name = "txtStatusMessageID";
             txtStatusMessageID.Size = new Size(404, 34);
             txtStatusMessageID.TabIndex = 4;
@@ -610,7 +648,7 @@
             txtStatusSessionID.AccessibleName = "Session ID";
             txtStatusSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtStatusSessionID.Font = new Font("Segoe UI", 12F);
-            txtStatusSessionID.Location = new Point(3, 99);
+            txtStatusSessionID.Location = new Point(3, 141);
             txtStatusSessionID.Name = "txtStatusSessionID";
             txtStatusSessionID.Size = new Size(404, 34);
             txtStatusSessionID.TabIndex = 3;
@@ -694,26 +732,6 @@
             txtStatusRequestGuid.Name = "txtStatusRequestGuid";
             txtStatusRequestGuid.Size = new Size(404, 34);
             txtStatusRequestGuid.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(3, 136);
-            label1.Name = "label1";
-            label1.Size = new Size(206, 28);
-            label1.TabIndex = 19;
-            label1.Text = "Interaction Date-Time:";
-            // 
-            // textBox2
-            // 
-            textBox2.AccessibleName = "User ID";
-            textBox2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Font = new Font("Segoe UI", 12F);
-            textBox2.Location = new Point(3, 175);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(404, 34);
-            textBox2.TabIndex = 20;
             // 
             // buttonPanel
             // 
@@ -833,6 +851,7 @@
             MinimumSize = new Size(800, 498);
             Name = "MainForm";
             Text = "CCapture Mock API Client";
+            ((System.ComponentModel.ISupportInitialize)dataGridViewGroups).EndInit();
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             submitPanel.ResumeLayout(false);
             submitPanel.PerformLayout();
@@ -841,11 +860,10 @@
             metadataPanel.ResumeLayout(false);
             tableLayout2.ResumeLayout(false);
             tableLayout2.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).EndInit();
             tableLayoutPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewDocuments).EndInit();
+            tableLayoutPanel4.ResumeLayout(false);
             checkStatusPanel.ResumeLayout(false);
             checkStatusPanel.PerformLayout();
             tableLayout3.ResumeLayout(false);
@@ -859,43 +877,7 @@
             checkStatusTab.ResumeLayout(false);
             ResumeLayout(false);
         }
-        private DataGridView dataGridViewFields;
-        private Label lblFields;
-        private DataGridView dataGridViewDocuments;
-        private Label lblDocuments;
-        private StatusStrip statusStrip2;
-        private ToolStripStatusLabel statusLabel2;
-        private ToolStripStatusLabel toolStripStatusLabel1;
-        private Button btnSubmitDocument;
-        private Button btnRemoveFile;
-        private Button btnBrowseFile;
-        private TableLayoutPanel tableLayout3;
-        private TableLayoutPanel tableLayoutPanel1;
-        private TextBox txtStatusUserCode;
-        private TextBox txtStatusMessageID;
-        private Label lblStatusUserCode;
-        private TextBox txtStatusSessionID;
-        private Label lblStatusMessageID;
-        private Label lblStatusChannel;
-        private Label lblStatusSessionID;
-        private TextBox txtStatusChannel;
-        private TextBox txtStatusSourceSystem;
-        private Label lblStatusSourceSystem;
-        private Label lblStatusRequestGuid;
-        private TextBox txtStatusRequestGuid;
+        private TableLayoutPanel tableLayoutPanel4;
         private Label label1;
-        private TextBox textBox2;
-        private Panel buttonPanel;
-        private Button btnCheckStatus;
-        private Button btnClearResults;
-        private ProgressBar progressBar;
-        private Panel panelStatusViewer;
-        private Button btnAddGroup;
-        private TableLayoutPanel tableLayoutPanel3;
-        private TableLayoutPanel tableLayoutPanel2;
-        private Label lblInteractionDate;
-        private DateTimePicker pickerInteractionDateTime;
-        private StatusStrip statusStrip3;
-        private ToolStripStatusLabel statusLabel3;
     }
 }

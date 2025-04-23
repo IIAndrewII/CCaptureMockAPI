@@ -49,7 +49,12 @@ namespace CCaptureWinForm
 
             // Initialize groups
             _groups = new Dictionary<string, List<Document_Row>>();
-            AddNewGroup(); // Add the first group by default
+
+            // Configure DataGridViewGroups columns *before* adding groups
+            ConfigureDataGridViewGroupsColumns();
+
+            // Add the first group
+            AddNewGroup();
 
             // Populate Batch Class Names
             PopulateBatchClassNamesAsync();
@@ -65,7 +70,8 @@ namespace CCaptureWinForm
             btnClearResults.Click += btnClearResults_Click;
             btnAddGroup.Click += btnAddGroup_Click;
             btnRemoveGroup.Click += btnRemoveGroup_Click;
-            lstSubmitGroups.SelectedIndexChanged += lstSubmitGroups_SelectedIndexChanged;
+            dataGridViewGroups.SelectionChanged += dataGridViewGroups_SelectionChanged;
+            dataGridViewGroups.CellValueChanged += dataGridViewGroups_CellValueChanged;
             Resize += MainForm_Resize;
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
             dataGridViewDocuments.CellValueChanged += dataGridViewDocuments_CellValueChanged;
@@ -76,6 +82,28 @@ namespace CCaptureWinForm
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             _ = loginAsync(appName, appLogin, appPassword);
+        }
+
+        private void ConfigureDataGridViewGroupsColumns()
+        {
+            dataGridViewGroups.Columns.Clear();
+            dataGridViewGroups.Columns.Add(new DataGridViewCheckBoxColumn
+            {
+                HeaderText = "Submit",
+                Name = "Submit",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            });
+            dataGridViewGroups.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Group Name",
+                Name = "GroupName",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                ReadOnly = true
+            });
+
+            // Ensure single row selection and full row select
+            dataGridViewGroups.MultiSelect = false;
+            dataGridViewGroups.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
         private void ConfigureDataGridViewColumns()
@@ -119,7 +147,7 @@ namespace CCaptureWinForm
                 HeaderText = "Field Type",
                 Name = "FieldType",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                ReadOnly = true // Make the column read-only
+                ReadOnly = true
             });
         }
 
@@ -127,8 +155,18 @@ namespace CCaptureWinForm
         {
             var groupName = $"Group {_groupCounter++}";
             _groups.Add(groupName, new List<Document_Row>());
-            lstSubmitGroups.Items.Add(groupName, true); // Add + checked
-            lstSubmitGroups.SelectedItem = groupName; // Select the new group
+
+            // Ensure columns exist before adding rows
+            if (dataGridViewGroups.Columns.Count >= 2)
+            {
+                int rowIndex = dataGridViewGroups.Rows.Add(true, groupName); // Add checked by default
+                dataGridViewGroups.ClearSelection();
+                dataGridViewGroups.Rows[rowIndex].Selected = true; // Select the new group
+            }
+            else
+            {
+                throw new InvalidOperationException("DataGridViewGroups columns are not initialized.");
+            }
         }
 
         private async void PopulateBatchClassNamesAsync()
@@ -212,30 +250,57 @@ namespace CCaptureWinForm
             }
         }
 
-        private void lstSubmitGroups_SelectedIndexChanged(object sender, EventArgs e)
+        private void dataGridViewGroups_SelectionChanged(object sender, EventArgs e)
         {
+            // Debug: Log selection event
+            statusLabel2.Text = "Group selection changed.";
+            statusLabel2.ForeColor = Color.Blue;
+
             UpdateDocumentGrid();
+        }
+
+        private void dataGridViewGroups_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            // Handle checkbox changes in the Submit column
+            if (e.ColumnIndex == dataGridViewGroups.Columns["Submit"].Index && e.RowIndex >= 0)
+            {
+                UpdateDocumentGrid(); // Refresh grid to ensure consistency
+            }
         }
 
         private void UpdateDocumentGrid()
         {
             dataGridViewDocuments.Rows.Clear();
-            if (lstSubmitGroups.SelectedItem != null)
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow != null)
             {
-                string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
-                foreach (var doc in _groups[selectedGroup])
+                string selectedGroup = selectedRow.Cells["GroupName"].Value?.ToString();
+                // Debug: Log selected group
+                statusLabel2.Text = $"Selected group: {selectedGroup ?? "None"}";
+                statusLabel2.ForeColor = Color.Blue;
+
+                if (selectedGroup != null && _groups.ContainsKey(selectedGroup))
                 {
-                    int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
-                    // Ensure the PageType is selected if it exists in the dropdown
-                    if (!string.IsNullOrEmpty(doc.PageType))
+                    foreach (var doc in _groups[selectedGroup])
                     {
-                        var pageTypeCell = dataGridViewDocuments.Rows[rowIndex].Cells["PageType"];
-                        if (((DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"]).Items.Contains(doc.PageType))
+                        int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
+                        // Ensure the PageType is selected if it exists in the dropdown
+                        if (!string.IsNullOrEmpty(doc.PageType))
                         {
-                            pageTypeCell.Value = doc.PageType;
+                            var pageTypeCell = dataGridViewDocuments.Rows[rowIndex].Cells["PageType"];
+                            if (((DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"]).Items.Contains(doc.PageType))
+                            {
+                                pageTypeCell.Value = doc.PageType;
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                // Debug: No row selected
+                statusLabel2.Text = "No group selected.";
+                statusLabel2.ForeColor = Color.Orange;
             }
         }
 
@@ -350,8 +415,9 @@ namespace CCaptureWinForm
                     _errorProvider.SetError(txtMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
-                if (!lstSubmitGroups.CheckedItems.Cast<string>().Any(group => _groups[group].Any()))
-                    _errorProvider.SetError(lstSubmitGroups, "Please check at least one group with documents.");
+                if (!dataGridViewGroups.Rows.Cast<DataGridViewRow>()
+                    .Any(row => (bool?)row.Cells["Submit"].Value == true && _groups[row.Cells["GroupName"].Value.ToString()].Any()))
+                    _errorProvider.SetError(dataGridViewGroups, "Please check at least one group with documents.");
 
                 if (_errorProvider.GetError(cboBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
@@ -359,7 +425,7 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(txtSessionID) != "" ||
                     _errorProvider.GetError(txtMessageID) != "" ||
                     _errorProvider.GetError(txtUserCode) != "" ||
-                    _errorProvider.GetError(lstSubmitGroups) != "")
+                    _errorProvider.GetError(dataGridViewGroups) != "")
                 {
                     statusLabel2.Text = "Please fill in all required fields and check at least one group with documents.";
                     statusLabel2.ForeColor = Color.Red;
@@ -379,7 +445,13 @@ namespace CCaptureWinForm
                 }
 
                 // Update PageType in _groups based on DataGridView
-                foreach (string group in lstSubmitGroups.CheckedItems.Cast<string>().Where(g => _groups[g].Any()))
+                var checkedGroups = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
+                    .Where(row => (bool?)row.Cells["Submit"].Value == true)
+                    .Select(row => row.Cells["GroupName"].Value.ToString())
+                    .Where(group => _groups[group].Any())
+                    .ToList(); // ToList to avoid collection modification issues
+
+                foreach (string group in checkedGroups)
                 {
                     var documents = _groups[group];
                     foreach (DataGridViewRow row in dataGridViewDocuments.Rows)
@@ -410,6 +482,15 @@ namespace CCaptureWinForm
                     statusLabel2.Text = $"Documents for {group} submitted! Request Guid: {requestGuid}";
                     statusLabel2.ForeColor = Color.Green;
 
+                    // Remove the submitted group
+                    _groups.Remove(group);
+                    var rowToRemove = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
+                        .FirstOrDefault(r => r.Cells["GroupName"].Value?.ToString() == group);
+                    if (rowToRemove != null)
+                    {
+                        dataGridViewGroups.Rows.Remove(rowToRemove);
+                    }
+
                     // Update status fields for the last group submitted
                     txtStatusRequestGuid.Text = requestGuid;
                     txtStatusSourceSystem.Text = txtSourceSystem.Text;
@@ -417,6 +498,18 @@ namespace CCaptureWinForm
                     txtStatusSessionID.Text = txtSessionID.Text;
                     txtStatusMessageID.Text = txtMessageID.Text;
                     txtStatusUserCode.Text = txtUserCode.Text;
+                }
+
+                // Handle post-submission state
+                if (_groups.Count == 0)
+                {
+                    AddNewGroup(); // Ensure at least one group exists
+                }
+                else
+                {
+                    // Select the first remaining group
+                    dataGridViewGroups.Rows[0].Selected = true;
+                    UpdateDocumentGrid(); // Refresh document grid
                 }
 
                 tabControl.SelectedTab = checkStatusTab;
@@ -532,13 +625,14 @@ namespace CCaptureWinForm
 
         private void btnBrowseFile_Click(object sender, EventArgs e)
         {
-            if (lstSubmitGroups.SelectedItem == null)
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow == null)
             {
                 MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
+            string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
             var openFileDialog = new OpenFileDialog
             {
                 Multiselect = true,
@@ -553,7 +647,8 @@ namespace CCaptureWinForm
                     var doc = new Document_Row { FilePath = filePath, PageType = string.Empty };
                     _groups[selectedGroup].Add(doc);
                     // Update grid only if the selected group is still selected
-                    if (lstSubmitGroups.SelectedItem?.ToString() == selectedGroup)
+                    if (dataGridViewGroups.SelectedRows.Count > 0 &&
+                        dataGridViewGroups.SelectedRows[0].Cells["GroupName"].Value.ToString() == selectedGroup)
                     {
                         dataGridViewDocuments.Rows.Add(filePath, string.Empty);
                     }
@@ -563,13 +658,14 @@ namespace CCaptureWinForm
 
         private void btnRemoveFile_Click(object sender, EventArgs e)
         {
-            if (lstSubmitGroups.SelectedItem == null)
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow == null)
             {
                 MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            string selectedGroup = lstSubmitGroups.SelectedItem.ToString();
+            string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
             foreach (DataGridViewRow row in dataGridViewDocuments.SelectedRows)
             {
                 if (!row.IsNewRow)
@@ -588,22 +684,22 @@ namespace CCaptureWinForm
 
         private void btnRemoveGroup_Click(object sender, EventArgs e)
         {
-            if (lstSubmitGroups.SelectedItem != null)
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow != null)
             {
-                var selectedGroup = lstSubmitGroups.SelectedItem.ToString();
+                var selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
                 _groups.Remove(selectedGroup);
-                int prevIndex = lstSubmitGroups.SelectedIndex;
-                lstSubmitGroups.Items.Remove(selectedGroup);
-                if (lstSubmitGroups.Items.Count > 0)
-                {
-                    // Select the next or previous item
-                    lstSubmitGroups.SelectedIndex = Math.Min(prevIndex, lstSubmitGroups.Items.Count - 1);
-                }
-                else
+                dataGridViewGroups.Rows.Remove(selectedRow);
+                if (dataGridViewGroups.Rows.Count == 0)
                 {
                     AddNewGroup(); // Ensure at least one group exists
                 }
-                UpdateDocumentGrid();
+                else
+                {
+                    // Select the first row without triggering SelectionChanged prematurely
+                    dataGridViewGroups.Rows[0].Selected = true;
+                    UpdateDocumentGrid(); // Manually update grid
+                }
             }
         }
 
@@ -619,9 +715,10 @@ namespace CCaptureWinForm
         {
             if (e.ColumnIndex == dataGridViewDocuments.Columns["PageType"].Index && e.RowIndex >= 0)
             {
-                string selectedGroup = lstSubmitGroups.SelectedItem?.ToString();
-                if (selectedGroup != null)
+                var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+                if (selectedRow != null)
                 {
+                    string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
                     var filePath = dataGridViewDocuments.Rows[e.RowIndex].Cells["FilePath"].Value?.ToString();
                     var pageType = dataGridViewDocuments.Rows[e.RowIndex].Cells["PageType"].Value?.ToString();
                     var doc = _groups[selectedGroup].FirstOrDefault(d => d.FilePath == filePath);
