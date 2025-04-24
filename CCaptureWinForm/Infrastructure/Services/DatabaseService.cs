@@ -13,7 +13,7 @@ namespace CCaptureWinForm.Infrastructure.Services
 
         public DatabaseService(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("ApiConnection");
             if (string.IsNullOrEmpty(_connectionString))
             {
                 throw new InvalidOperationException("Database connection string is not configured in appsettings.json");
