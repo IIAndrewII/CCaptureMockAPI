@@ -30,6 +30,10 @@ namespace CCaptureWinForm
             InitializeComponent();
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
 
+            // Add DataError handlers
+            dataGridViewDocuments.DataError += DataGridViewDocuments_DataError;
+            dataGridViewFields.DataError += DataGridViewFields_DataError;
+
             // Load configuration from appsettings.json
             _configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -213,6 +217,31 @@ namespace CCaptureWinForm
                     var pageTypes = await _databaseService.GetPageTypesAsync(selectedBatchClass);
                     var fieldNames = await _databaseService.GetFieldNamesAsync(selectedBatchClass);
 
+                    // Reset invalid PageType in _groups
+                    foreach (var group in _groups)
+                    {
+                        foreach (var doc in group.Value)
+                        {
+                            if (!string.IsNullOrEmpty(doc.PageType) && !pageTypes.Contains(doc.PageType))
+                            {
+                                doc.PageType = string.Empty; // Reset to default
+                            }
+                        }
+                    }
+
+                    // Reset invalid FieldName in dataGridViewFields
+                    foreach (DataGridViewRow row in dataGridViewFields.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        var fieldName = row.Cells["FieldName"].Value?.ToString();
+                        if (!string.IsNullOrEmpty(fieldName) && !fieldNames.Contains(fieldName))
+                        {
+                            row.Cells["FieldName"].Value = null;
+                            row.Cells["FieldValue"].Value = null;
+                            row.Cells["FieldType"].Value = string.Empty;
+                        }
+                    }
+
                     // Update PageType dropdown in dataGridViewDocuments
                     var pageTypeColumn = (DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"];
                     pageTypeColumn.Items.Clear();
@@ -223,7 +252,7 @@ namespace CCaptureWinForm
                     fieldNameColumn.Items.Clear();
                     fieldNameColumn.Items.AddRange(fieldNames.ToArray());
 
-                    // Update FieldType for existing rows
+                    // Update FieldType for valid FieldName rows
                     foreach (DataGridViewRow row in dataGridViewFields.Rows)
                     {
                         if (row.IsNewRow) continue;
@@ -239,7 +268,7 @@ namespace CCaptureWinForm
                         }
                     }
 
-                    // Refresh the document grid to ensure dropdowns reflect the new options
+                    // Refresh the document grid to reflect updated PageType values
                     UpdateDocumentGrid();
                 }
                 catch (Exception ex)
@@ -275,30 +304,24 @@ namespace CCaptureWinForm
             if (selectedRow != null)
             {
                 string selectedGroup = selectedRow.Cells["GroupName"].Value?.ToString();
-                // Debug: Log selected group
                 statusLabel2.Text = $"Selected group: {selectedGroup ?? "None"}";
                 statusLabel2.ForeColor = Color.Blue;
 
                 if (selectedGroup != null && _groups.ContainsKey(selectedGroup))
                 {
+                    var pageTypeColumn = (DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"];
                     foreach (var doc in _groups[selectedGroup])
                     {
-                        int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, doc.PageType);
-                        // Ensure the PageType is selected if it exists in the dropdown
-                        if (!string.IsNullOrEmpty(doc.PageType))
+                        int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, null); // Set PageType to null initially
+                        if (!string.IsNullOrEmpty(doc.PageType) && pageTypeColumn.Items.Contains(doc.PageType))
                         {
-                            var pageTypeCell = dataGridViewDocuments.Rows[rowIndex].Cells["PageType"];
-                            if (((DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"]).Items.Contains(doc.PageType))
-                            {
-                                pageTypeCell.Value = doc.PageType;
-                            }
+                            dataGridViewDocuments.Rows[rowIndex].Cells["PageType"].Value = doc.PageType;
                         }
                     }
                 }
             }
             else
             {
-                // Debug: No row selected
                 statusLabel2.Text = "No group selected.";
                 statusLabel2.ForeColor = Color.Orange;
             }
@@ -761,6 +784,27 @@ namespace CCaptureWinForm
                     // Clear FieldType if FieldName is empty
                     dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
                 }
+            }
+        }
+
+        private void DataGridViewDocuments_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridViewDocuments.Columns["PageType"].Index)
+            {
+                // Handle invalid PageType selection
+                dataGridViewDocuments.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = null;
+                e.Cancel = true; // Suppress the error
+            }
+        }
+
+        private void DataGridViewFields_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridViewFields.Columns["FieldCanvas"].Index)
+            {
+                // Handle invalid FieldName selection
+                dataGridViewFields.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = null;
+                dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
+                e.Cancel = true; // Suppress the error
             }
         }
     }
