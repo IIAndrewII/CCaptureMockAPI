@@ -25,17 +25,6 @@ namespace CCaptureWinForm.Infrastructure.Services
             return new CCaptureDbContext(optionsBuilder.Options);
         }
 
-        public async Task<List<string>> GetBatchClassNamesAsync()
-        {
-            using (var context = CreateContext())
-            {
-                return await context.Submissions
-                    .Select(s => s.BatchClassName)
-                    .Distinct()
-                    .ToListAsync();
-            }
-        }
-
         public async Task<int> SaveGroupAsync(string groupName, bool isSubmitted)
         {
             using (var context = CreateContext())

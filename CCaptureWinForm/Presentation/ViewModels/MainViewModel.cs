@@ -1,10 +1,12 @@
 ﻿using CCaptureWinForm.Core.Entities;
 using CCaptureWinForm.Core.Interfaces;
+using CCaptureWinForm.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace CCaptureWinForm.Presentation.ViewModels
 {
@@ -12,13 +14,24 @@ namespace CCaptureWinForm.Presentation.ViewModels
     {
         private readonly IApiService _apiService;
         private readonly IFileService _fileService;
+        private readonly IApiDatabaseService _apiDatabaseService;
+        private readonly IDatabaseService _databaseService;
+        private readonly IConfiguration _configuration;
         private string _authToken;
         private string _lastRequestGuid;
 
-        public MainViewModel(IApiService apiService, IFileService fileService)
+        public MainViewModel(
+            IApiService apiService,
+            IFileService fileService,
+            IApiDatabaseService apiDatabaseService,
+            IDatabaseService databaseService,
+            IConfiguration configuration)
         {
             _apiService = apiService;
             _fileService = fileService;
+            _apiDatabaseService = apiDatabaseService;
+            _databaseService = databaseService;
+            _configuration = configuration;
         }
 
         public async Task<string> GetAuthTokenAsync(string appName, string appLogin, string appPassword)
@@ -42,12 +55,50 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string messageId,
             string userCode,
             string interactionDateTime,
-            List<Field> fields,
-            List<Document_Row> documents)
+            List<Core.Entities.Field> fields,
+            List<(string GroupName, bool IsSubmitted, List<Document_Row> Documents)> groups)
         {
             try
             {
-                var documentList = documents.Select(doc => new Document
+                // Generate a temporary RequestGuid
+                string tempRequestGuid = Guid.NewGuid().ToString();
+
+                // Save each group and its submissions
+                foreach (var group in groups.Where(g => g.IsSubmitted && g.Documents.Any()))
+                {
+                    // Save group
+                    var groupId = await _databaseService.SaveGroupAsync(group.GroupName, group.IsSubmitted);
+
+                    // Save submission
+                    var submissionId = await _databaseService.SaveSubmissionAsync(
+                        groupId,
+                        batchClassName,
+                        sourceSystem,
+                        channel,
+                        sessionId,
+                        messageId,
+                        userCode,
+                        interactionDateTime,
+                        tempRequestGuid,
+                        _authToken);
+
+                    // Save fields
+                    foreach (var field in fields)
+                    {
+                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(field.FieldName);
+                        await _databaseService.SaveFieldAsync(submissionId, field.FieldName, field.FieldValue, fieldType);
+                    }
+
+                    // Save documents
+                    foreach (var doc in group.Documents)
+                    {
+                        var fileName = _fileService.GetFileName(doc.FilePath);
+                        await _databaseService.SaveDocumentAsync(submissionId, doc.FilePath, doc.PageType, fileName);
+                    }
+                }
+
+                // Prepare and submit to API
+                var documentList = groups.SelectMany(g => g.Documents).Select(doc => new Core.Entities.Document
                 {
                     FileName = _fileService.GetFileName(doc.FilePath),
                     Buffer = _fileService.ReadFileAsBase64(doc.FilePath),
@@ -66,7 +117,21 @@ namespace CCaptureWinForm.Presentation.ViewModels
                     UserCode = userCode,
                     Fields = fields
                 };
+
                 _lastRequestGuid = await _apiService.SubmitDocumentAsync(request, _authToken);
+
+                // Update submissions with the API-provided RequestGuid
+                using (var context = new CCaptureDbContext(new DbContextOptionsBuilder<CCaptureDbContext>()
+                    .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")).Options))
+                {
+                    var submissions = context.Submissions.Where(s => s.RequestGuid == tempRequestGuid);
+                    foreach (var submission in submissions)
+                    {
+                        submission.RequestGuid = _lastRequestGuid;
+                    }
+                    await context.SaveChangesAsync();
+                }
+
                 return _lastRequestGuid;
             }
             catch (Exception ex)
