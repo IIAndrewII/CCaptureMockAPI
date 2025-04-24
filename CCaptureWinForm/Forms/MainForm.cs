@@ -185,7 +185,6 @@ namespace CCaptureWinForm
                 {
                     cboBatchClassName.SelectedIndex = 0;
 
-                    // Trigger field type population for existing rows
                     foreach (DataGridViewRow row in dataGridViewFields.Rows)
                     {
                         if (row.IsNewRow) continue;
@@ -468,16 +467,18 @@ namespace CCaptureWinForm
                     }
                 }
 
-                // Update PageType in _groups based on DataGridView
+                // Get checked groups
                 var checkedGroups = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
                     .Where(row => (bool?)row.Cells["Submit"].Value == true)
                     .Select(row => row.Cells["GroupName"].Value.ToString())
                     .Where(group => _groups[group].Any())
-                    .ToList(); // ToList to avoid collection modification issues
+                    .ToList();
 
-                foreach (string group in checkedGroups)
+                foreach (string group in checkedGroups.ToList()) // Create a copy to avoid modification issues
                 {
                     var documents = _groups[group];
+
+                    // Update PageType for documents in this group
                     foreach (DataGridViewRow row in dataGridViewDocuments.Rows)
                     {
                         if (row.IsNewRow) continue;
@@ -492,6 +493,7 @@ namespace CCaptureWinForm
 
                     statusLabel2.Text = $"Submitting {group} documents...";
                     statusLabel2.ForeColor = Color.Blue;
+
                     var requestGuid = await _viewModel.SubmitDocumentAsync(
                         cboBatchClassName.SelectedItem.ToString(),
                         txtSourceSystem.Text,
@@ -501,6 +503,7 @@ namespace CCaptureWinForm
                         txtUserCode.Text,
                         pickerInteractionDateTime.Value.ToString("o"),
                         fields,
+                        group,
                         documents);
 
                     statusLabel2.Text = $"Documents for {group} submitted! Request Guid: {requestGuid}";
@@ -515,7 +518,7 @@ namespace CCaptureWinForm
                         dataGridViewGroups.Rows.Remove(rowToRemove);
                     }
 
-                    // Update status fields for the last group submitted
+                    // Update status fields
                     txtStatusRequestGuid.Text = requestGuid;
                     txtStatusSourceSystem.Text = txtSourceSystem.Text;
                     txtStatusChannel.Text = txtChannel.Text;
@@ -527,13 +530,12 @@ namespace CCaptureWinForm
                 // Handle post-submission state
                 if (_groups.Count == 0)
                 {
-                    AddNewGroup(); // Ensure at least one group exists
+                    AddNewGroup();
                 }
                 else
                 {
-                    // Select the first remaining group
                     dataGridViewGroups.Rows[0].Selected = true;
-                    UpdateDocumentGrid(); // Refresh document grid
+                    UpdateDocumentGrid();
                 }
 
                 tabControl.SelectedTab = checkStatusTab;
@@ -754,39 +756,7 @@ namespace CCaptureWinForm
             }
         }
 
-        private async void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-
-            // Handle FieldName column changes
-            if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index)
-            {
-                var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
-                var batchClassName = cboBatchClassName.SelectedItem?.ToString();
-
-                if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(batchClassName))
-                {
-                    try
-                    {
-                        // Fetch the field type
-                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
-
-                        // Update the FieldType cell
-                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
-                    }
-                    catch (Exception ex)
-                    {
-                        statusLabel2.Text = $"Failed to load field type: {ex.Message}";
-                        statusLabel2.ForeColor = Color.Red;
-                    }
-                }
-                else
-                {
-                    // Clear FieldType if FieldName is empty
-                    dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
-                }
-            }
-        }
+  
 
         private void DataGridViewDocuments_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -808,5 +778,36 @@ namespace CCaptureWinForm
                 e.Cancel = true; // Suppress the error
             }
         }
+
+        private async void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index)
+            {
+                var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
+                var batchClassName = cboBatchClassName.SelectedItem?.ToString();
+
+                if (!string.IsNullOrEmpty(fieldName) && !string.IsNullOrEmpty(batchClassName))
+                {
+                    try
+                    {
+                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
+                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
+                    }
+                    catch (Exception ex)
+                    {
+                        statusLabel2.Text = $"Failed to load field type: {ex.Message}";
+                        statusLabel2.ForeColor = Color.Red;
+                    }
+                }
+                else
+                {
+                    dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
+                }
+            }
+        }
+
+
     }
 }

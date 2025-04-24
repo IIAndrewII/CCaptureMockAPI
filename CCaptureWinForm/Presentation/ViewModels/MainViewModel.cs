@@ -56,49 +56,46 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string userCode,
             string interactionDateTime,
             List<Core.Entities.Field> fields,
-            List<(string GroupName, bool IsSubmitted, List<Document_Row> Documents)> groups)
+            string groupName,
+            List<Document_Row> documents)
         {
             try
             {
                 // Generate a temporary RequestGuid
                 string tempRequestGuid = Guid.NewGuid().ToString();
 
-                // Save each group and its submissions
-                foreach (var group in groups.Where(g => g.IsSubmitted && g.Documents.Any()))
+                // Save group
+                var groupId = await _databaseService.SaveGroupAsync(groupName, true);
+
+                // Save submission
+                var submissionId = await _databaseService.SaveSubmissionAsync(
+                    groupId,
+                    batchClassName,
+                    sourceSystem,
+                    channel,
+                    sessionId,
+                    messageId,
+                    userCode,
+                    interactionDateTime,
+                    tempRequestGuid,
+                    _authToken);
+
+                // Save fields
+                foreach (var field in fields)
                 {
-                    // Save group
-                    var groupId = await _databaseService.SaveGroupAsync(group.GroupName, group.IsSubmitted);
+                    var fieldType = await _apiDatabaseService.GetFieldTypeAsync(field.FieldName);
+                    await _databaseService.SaveFieldAsync(submissionId, field.FieldName, field.FieldValue, fieldType);
+                }
 
-                    // Save submission
-                    var submissionId = await _databaseService.SaveSubmissionAsync(
-                        groupId,
-                        batchClassName,
-                        sourceSystem,
-                        channel,
-                        sessionId,
-                        messageId,
-                        userCode,
-                        interactionDateTime,
-                        tempRequestGuid,
-                        _authToken);
-
-                    // Save fields
-                    foreach (var field in fields)
-                    {
-                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(field.FieldName);
-                        await _databaseService.SaveFieldAsync(submissionId, field.FieldName, field.FieldValue, fieldType);
-                    }
-
-                    // Save documents
-                    foreach (var doc in group.Documents)
-                    {
-                        var fileName = _fileService.GetFileName(doc.FilePath);
-                        await _databaseService.SaveDocumentAsync(submissionId, doc.FilePath, doc.PageType, fileName);
-                    }
+                // Save documents
+                foreach (var doc in documents)
+                {
+                    var fileName = _fileService.GetFileName(doc.FilePath);
+                    await _databaseService.SaveDocumentAsync(submissionId, doc.FilePath, doc.PageType, fileName);
                 }
 
                 // Prepare and submit to API
-                var documentList = groups.SelectMany(g => g.Documents).Select(doc => new Core.Entities.Document
+                var documentList = documents.Select(doc => new Core.Entities.Document
                 {
                     FileName = _fileService.GetFileName(doc.FilePath),
                     Buffer = _fileService.ReadFileAsBase64(doc.FilePath),
@@ -120,16 +117,16 @@ namespace CCaptureWinForm.Presentation.ViewModels
 
                 _lastRequestGuid = await _apiService.SubmitDocumentAsync(request, _authToken);
 
-                // Update submissions with the API-provided RequestGuid
+                // Update submission with the API-provided RequestGuid
                 using (var context = new CCaptureDbContext(new DbContextOptionsBuilder<CCaptureDbContext>()
                     .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")).Options))
                 {
-                    var submissions = context.Submissions.Where(s => s.RequestGuid == tempRequestGuid);
-                    foreach (var submission in submissions)
+                    var submission = context.Submissions.FirstOrDefault(s => s.RequestGuid == tempRequestGuid);
+                    if (submission != null)
                     {
                         submission.RequestGuid = _lastRequestGuid;
+                        await context.SaveChangesAsync();
                     }
-                    await context.SaveChangesAsync();
                 }
 
                 return _lastRequestGuid;

@@ -36,6 +36,7 @@ namespace CCaptureWinForm
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(configuration);
+            services.AddScoped<IDatabaseService, DatabaseService>();
             services.AddScoped<IApiDatabaseService, ApiDatabaseService>();
             services.AddTransient<MainForm>();
         }
