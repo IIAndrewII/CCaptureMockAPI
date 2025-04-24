@@ -756,7 +756,7 @@ namespace CCaptureWinForm
             }
         }
 
-  
+
 
         private void DataGridViewDocuments_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
@@ -808,6 +808,27 @@ namespace CCaptureWinForm
             }
         }
 
+        private void btnRemoveField_Click(object sender, EventArgs e)
+        {
+            // Check if there are selected rows in dataGridViewFields
+            if (dataGridViewFields.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select at least one row to remove.", "No Field Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
+            // Remove selected rows, excluding the new row
+            foreach (DataGridViewRow row in dataGridViewFields.SelectedRows)
+            {
+                if (!row.IsNewRow)
+                {
+                    dataGridViewFields.Rows.Remove(row);
+                }
+            }
+
+            // Update status label to provide feedback
+            statusLabel2.Text = "Selected fields removed.";
+            statusLabel2.ForeColor = Color.Green;
+        }
     }
 }

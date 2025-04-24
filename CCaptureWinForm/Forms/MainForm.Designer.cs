@@ -105,6 +105,7 @@
             tableLayoutPanel4 = new TableLayoutPanel();
             btnAddGroup = new Button();
             label1 = new Label();
+            btnRemoveField = new Button();
             checkStatusPanel = new Panel();
             tableLayout3 = new TableLayoutPanel();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -325,6 +326,7 @@
             tableLayout2.Controls.Add(tableLayoutPanel4, 0, 9);
             tableLayout2.Controls.Add(label1, 2, 7);
             tableLayout2.Controls.Add(dataGridViewGroups, 0, 8);
+            tableLayout2.Controls.Add(btnRemoveField, 4, 9);
             tableLayout2.Location = new Point(0, 0);
             tableLayout2.Margin = new Padding(3, 2, 3, 2);
             tableLayout2.Name = "tableLayout2";
@@ -572,6 +574,21 @@
             label1.Size = new Size(92, 21);
             label1.TabIndex = 27;
             label1.Text = "Documents:";
+            // 
+            // btnRemoveField
+            // 
+            btnRemoveField.BackColor = Color.FromArgb(220, 53, 69);
+            btnRemoveField.FlatStyle = FlatStyle.Flat;
+            btnRemoveField.Font = new Font("Segoe UI", 12F);
+            btnRemoveField.ForeColor = Color.White;
+            btnRemoveField.Location = new Point(799, 437);
+            btnRemoveField.Margin = new Padding(3, 2, 3, 2);
+            btnRemoveField.Name = "btnRemoveField";
+            btnRemoveField.Size = new Size(161, 32);
+            btnRemoveField.TabIndex = 28;
+            btnRemoveField.Text = "Remove Field";
+            btnRemoveField.UseVisualStyleBackColor = false;
+            btnRemoveField.Click += btnRemoveField_Click;
             // 
             // checkStatusPanel
             // 
@@ -856,7 +873,7 @@
             submitTab.Controls.Add(submitPanel);
             submitTab.Location = new Point(4, 26);
             submitTab.Name = "submitTab";
-            submitTab.Padding = new Padding(3, 3, 3, 3);
+            submitTab.Padding = new Padding(3);
             submitTab.Size = new Size(1206, 589);
             submitTab.TabIndex = 0;
             submitTab.Text = "Submit Document";
@@ -867,7 +884,7 @@
             checkStatusTab.Controls.Add(checkStatusPanel);
             checkStatusTab.Location = new Point(4, 26);
             checkStatusTab.Name = "checkStatusTab";
-            checkStatusTab.Padding = new Padding(3, 3, 3, 3);
+            checkStatusTab.Padding = new Padding(3);
             checkStatusTab.Size = new Size(1206, 589);
             checkStatusTab.TabIndex = 1;
             checkStatusTab.Text = "Check Status";
@@ -912,5 +929,6 @@
         }
         private TableLayoutPanel tableLayoutPanel4;
         private Label label1;
+        private Button btnRemoveField;
     }
 }
