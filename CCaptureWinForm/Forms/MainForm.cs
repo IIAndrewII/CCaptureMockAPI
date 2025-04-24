@@ -19,14 +19,14 @@ namespace CCaptureWinForm
         private bool _viewerInitialized = false;
         private readonly ErrorProvider _errorProvider;
         private readonly IConfiguration _configuration;
-        private readonly IDatabaseService _databaseService;
+        private readonly IApiDatabaseService _apidatabaseService;
 
         private Dictionary<string, List<Document_Row>> _groups; // Store groups and their documents
         private int _groupCounter = 1; // For generating unique group names
 
-        public MainForm(IDatabaseService databaseService)
+        public MainForm(IApiDatabaseService apidatabaseService)
         {
-            _databaseService = databaseService;
+            _apidatabaseService = apidatabaseService;
             InitializeComponent();
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
 
@@ -48,7 +48,7 @@ namespace CCaptureWinForm
             }
 
             var apiService = new ApiService(apiUrl);
-            _databaseService = new DatabaseService(_configuration);
+            _apidatabaseService = new ApiDatabaseService(_configuration);
             _viewModel = new MainViewModel(apiService, fileService);
 
             // Initialize groups
@@ -177,7 +177,7 @@ namespace CCaptureWinForm
         {
             try
             {
-                var batchClassNames = await _databaseService.GetBatchClassNamesAsync();
+                var batchClassNames = await _apidatabaseService.GetBatchClassNamesAsync();
                 cboBatchClassName.Items.Clear();
                 cboBatchClassName.Items.AddRange(batchClassNames.ToArray());
                 if (cboBatchClassName.Items.Count > 0)
@@ -191,7 +191,7 @@ namespace CCaptureWinForm
                         var fieldName = row.Cells["FieldName"].Value?.ToString();
                         if (!string.IsNullOrEmpty(fieldName))
                         {
-                            var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+                            var fieldType = await _apidatabaseService.GetFieldTypeAsync(fieldName);
                             row.Cells["FieldType"].Value = fieldType;
                         }
                     }
@@ -214,8 +214,8 @@ namespace CCaptureWinForm
                 try
                 {
                     // Fetch page types and field names
-                    var pageTypes = await _databaseService.GetPageTypesAsync(selectedBatchClass);
-                    var fieldNames = await _databaseService.GetFieldNamesAsync(selectedBatchClass);
+                    var pageTypes = await _apidatabaseService.GetPageTypesAsync(selectedBatchClass);
+                    var fieldNames = await _apidatabaseService.GetFieldNamesAsync(selectedBatchClass);
 
                     // Reset invalid PageType in _groups
                     foreach (var group in _groups)
@@ -259,7 +259,7 @@ namespace CCaptureWinForm
                         var fieldName = row.Cells["FieldName"].Value?.ToString();
                         if (!string.IsNullOrEmpty(fieldName) && fieldNames.Contains(fieldName))
                         {
-                            var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+                            var fieldType = await _apidatabaseService.GetFieldTypeAsync(fieldName);
                             row.Cells["FieldType"].Value = fieldType;
                         }
                         else
@@ -768,7 +768,7 @@ namespace CCaptureWinForm
                     try
                     {
                         // Fetch the field type
-                        var fieldType = await _databaseService.GetFieldTypeAsync(fieldName);
+                        var fieldType = await _apidatabaseService.GetFieldTypeAsync(fieldName);
 
                         // Update the FieldType cell
                         dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
