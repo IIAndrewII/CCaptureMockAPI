@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CCaptureWinForm
@@ -16,27 +17,34 @@ namespace CCaptureWinForm
         private readonly MainViewModel _viewModel;
         private readonly ErrorProvider _errorProvider;
 
+        public CheckStatusForm()
+        {
+            InitializeComponent();
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
+                return;
+
+            _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+        }
+
         public CheckStatusForm(IApiDatabaseService apiDatabaseService, IDatabaseService databaseService, IConfiguration configuration, MainViewModel viewModel)
+            : this()
         {
             _apiDatabaseService = apiDatabaseService;
             _databaseService = databaseService;
             _configuration = configuration;
             _viewModel = viewModel;
-            InitializeComponent();
-            _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
 
-            // Configure DataGridViewRequests
             ConfigureDataGridViewRequests();
+            AttachEventHandlers();
+            InitializeAsync();
+        }
 
-            // Attach event handlers
-            btnCheckStatus.Click += btnCheckStatus_Click;
-            dataGridViewRequests.DataError += DataGridViewRequests_DataError;
-
-            // Initialize login
+        private async void InitializeAsync()
+        {
             var appName = _configuration["AppName"];
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
-            _ = loginAsync(appName, appLogin, appPassword);
+            await loginAsync(appName, appLogin, appPassword);
         }
 
         private void ConfigureDataGridViewRequests()
@@ -52,14 +60,17 @@ namespace CCaptureWinForm
             dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
+        private void AttachEventHandlers()
+        {
+            btnCheckStatus.Click += btnCheckStatus_Click;
+            dataGridViewRequests.DataError += DataGridViewRequests_DataError;
+        }
+
         private async Task loginAsync(string appName, string appLogin, string appPassword)
         {
             try
             {
                 _errorProvider.Clear();
-                statusLabel3.Text = string.Empty;
-                statusLabel3.ForeColor = SystemColors.ControlText;
-
                 statusLabel3.Text = "Logging in...";
                 statusLabel3.ForeColor = Color.Blue;
 
@@ -72,25 +83,17 @@ namespace CCaptureWinForm
                 }
 
                 var token = await _viewModel.GetAuthTokenAsync(appName, appLogin, appPassword);
-
                 statusLabel3.Text = "You're logged in!";
                 statusLabel3.ForeColor = Color.Green;
                 checkStatusPanel.Visible = true;
             }
             catch (Exception ex)
             {
-                if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
-                {
-                    statusLabel3.Text = "Unauthorized configuration settings.";
-                    statusLabel3.ForeColor = Color.Red;
-                    ShowLoginForm();
-                }
-                else
-                {
-                    statusLabel3.Text = "Something went wrong. Please try again.";
-                    statusLabel3.ForeColor = Color.Red;
-                    ShowLoginForm();
-                }
+                statusLabel3.Text = ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401")
+                    ? "Unauthorized configuration settings."
+                    : $"Login failed: {ex.Message}";
+                statusLabel3.ForeColor = Color.Red;
+                ShowLoginForm();
             }
         }
 
@@ -109,7 +112,6 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Login failed. Please try again.";
                     statusLabel3.ForeColor = Color.Red;
-                    checkStatusPanel.Visible = false;
                 }
             }
         }
@@ -132,7 +134,7 @@ namespace CCaptureWinForm
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
 
-                // Collect valid RequestGuids from DataGridView
+                // Collect valid RequestGuids
                 var requestGuids = dataGridViewRequests.Rows
                     .Cast<DataGridViewRow>()
                     .Where(row => !row.IsNewRow)
@@ -161,13 +163,13 @@ namespace CCaptureWinForm
                 toolStripProgressBar1.Visible = true;
                 toolStripProgressBar1.Value = 0;
                 toolStripProgressBar1.Maximum = requestGuids.Count;
-
-                VerificationStatusViewer.Text = string.Empty;
+                VerificationStatusViewer.Clear();
 
                 foreach (var requestGuid in requestGuids)
                 {
                     try
                     {
+                        statusLabel3.Text = $"Checking status for {requestGuid}...";
                         var status = await _viewModel.CheckVerificationStatusAsync(
                             requestGuid,
                             txtSourceSystem.Text,
@@ -175,17 +177,18 @@ namespace CCaptureWinForm
                             txtSessionID.Text,
                             txtMessageID.Text,
                             txtUserCode.Text);
-                        VerificationStatusViewer.AppendText($"Request Guid: {requestGuid}\n");
-                        VerificationStatusViewer.AppendText($"Status: {status}\n");
-                        VerificationStatusViewer.AppendText("------------------------\n");
+                        AppendStatusText($"Request Guid: {requestGuid}", Color.Black);
+                        AppendStatusText($"Status: {status ?? "Unknown"}", Color.Green);
+                        AppendStatusText("------------------------", Color.Gray);
                     }
                     catch (Exception ex)
                     {
-                        VerificationStatusViewer.AppendText($"Request Guid: {requestGuid}\n");
-                        VerificationStatusViewer.AppendText($"Error: {ex.Message}\n");
-                        VerificationStatusViewer.AppendText("------------------------\n");
+                        AppendStatusText($"Request Guid: {requestGuid}", Color.Black);
+                        AppendStatusText($"Error: {ex.Message}", Color.Red);
+                        AppendStatusText("------------------------", Color.Gray);
                     }
                     toolStripProgressBar1.Value++;
+                    Application.DoEvents();
                 }
 
                 toolStripProgressBar1.Visible = false;
@@ -195,25 +198,22 @@ namespace CCaptureWinForm
             catch (Exception ex)
             {
                 toolStripProgressBar1.Visible = false;
-                statusLabel3.Text = "Something went wrong while checking status.";
+                statusLabel3.Text = $"Error: {ex.Message}";
                 statusLabel3.ForeColor = Color.Red;
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
-                {
-                    checkStatusPanel.Visible = false;
-                    using (var loginForm = new LoginForm(_viewModel))
-                    {
-                        if (loginForm.ShowDialog() == DialogResult.OK)
-                        {
-                            btnCheckStatus_Click(sender, e);
-                        }
-                        else
-                        {
-                            statusLabel3.Text = "Login failed. Please try again.";
-                            statusLabel3.ForeColor = Color.Red;
-                        }
-                    }
-                }
+                    ShowLoginForm();
             }
+        }
+
+        private void AppendStatusText(string text, Color color)
+        {
+            VerificationStatusViewer.SelectionStart = VerificationStatusViewer.TextLength;
+            VerificationStatusViewer.SelectionLength = 0;
+            VerificationStatusViewer.SelectionColor = color;
+            VerificationStatusViewer.SelectionFont = new Font("Segoe UI", 12F, FontStyle.Regular);
+            VerificationStatusViewer.AppendText(text + Environment.NewLine);
+            VerificationStatusViewer.SelectionColor = VerificationStatusViewer.ForeColor;
+            VerificationStatusViewer.ScrollToCaret();
         }
 
         private void DataGridViewRequests_DataError(object sender, DataGridViewDataErrorEventArgs e)
