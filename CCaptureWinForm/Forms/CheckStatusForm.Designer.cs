@@ -60,6 +60,8 @@
             statusLabel3 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
             errorProvider = new ErrorProvider(components);
+            pickerInteractionDateTime = new DateTimePicker();
+            lblInteractionDate = new Label();
             checkStatusPanel.SuspendLayout();
             metadataTableLayout.SuspendLayout();
             tableLayout3.SuspendLayout();
@@ -89,6 +91,7 @@
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33F));
+            metadataTableLayout.Controls.Add(lblInteractionDate, 0, 0);
             metadataTableLayout.Controls.Add(txtSourceSystem, 2, 1);
             metadataTableLayout.Controls.Add(lblSourceSystem, 2, 0);
             metadataTableLayout.Controls.Add(txtChannel, 4, 1);
@@ -99,6 +102,7 @@
             metadataTableLayout.Controls.Add(lblMessageID, 4, 2);
             metadataTableLayout.Controls.Add(txtUserCode, 0, 3);
             metadataTableLayout.Controls.Add(lblUserCode, 0, 2);
+            metadataTableLayout.Controls.Add(pickerInteractionDateTime, 0, 1);
             metadataTableLayout.Location = new Point(12, 12);
             metadataTableLayout.Name = "metadataTableLayout";
             metadataTableLayout.RowCount = 4;
@@ -296,6 +300,26 @@
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // pickerInteractionDateTime
+            // 
+            pickerInteractionDateTime.CustomFormat = "ddd, dd MMM yyyy hh:mm tt";
+            pickerInteractionDateTime.Font = new Font("Segoe UI", 12F);
+            pickerInteractionDateTime.Format = DateTimePickerFormat.Custom;
+            pickerInteractionDateTime.Location = new Point(3, 33);
+            pickerInteractionDateTime.Name = "pickerInteractionDateTime";
+            pickerInteractionDateTime.Size = new Size(346, 29);
+            pickerInteractionDateTime.TabIndex = 26;
+            // 
+            // lblInteractionDate
+            // 
+            lblInteractionDate.AutoSize = true;
+            lblInteractionDate.Font = new Font("Segoe UI", 12F);
+            lblInteractionDate.Location = new Point(3, 0);
+            lblInteractionDate.Name = "lblInteractionDate";
+            lblInteractionDate.Size = new Size(161, 21);
+            lblInteractionDate.TabIndex = 27;
+            lblInteractionDate.Text = "Interaction Date Time:";
+            // 
             // CheckStatusForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -317,5 +341,7 @@
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
         }
+        private DateTimePicker pickerInteractionDateTime;
+        private Label lblInteractionDate;
     }
 }
