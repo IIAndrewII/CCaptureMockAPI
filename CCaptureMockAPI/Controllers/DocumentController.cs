@@ -228,8 +228,8 @@ namespace CCaptureMockApi.Controllers
             var message = JsonSerializer.Serialize(request);
             Console.WriteLine($"Simulated Queue Message: {message}");
 
-            // Simulate a delay of 10 seconds
-            await Task.Delay(10000);
+            // Simulate a delay
+            await Task.Delay(4000);
 
             // Return the RequestGuid as part of the response
             return Ok(new { RequestGuid = requestGuid });
@@ -382,8 +382,8 @@ namespace CCaptureMockApi.Controllers
             if (responseRecord == null)
                 return NotFound(new { Code = "-2", Message = "No response found for given requestGuid" });
             
-            // Simulate a delay of 10 seconds
-            await Task.Delay(10000);
+            // Simulate a delay
+            await Task.Delay(4000);
 
             return Content(responseRecord.ResponseJson, "application/json");
         }

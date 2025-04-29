@@ -230,7 +230,8 @@ namespace CCaptureWinForm
                             txtChannel.Text,
                             txtSessionID.Text,
                             txtMessageID.Text,
-                            txtUserCode.Text);
+                            txtUserCode.Text,
+                            pickerInteractionDateTime.Value.ToString("o"));
 
                         // Deserialize the JSON response
                         var response = JsonSerializer.Deserialize<VerificationResponse>(responseJson, new JsonSerializerOptions

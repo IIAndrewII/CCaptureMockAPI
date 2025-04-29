@@ -143,14 +143,15 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string channel,
             string sessionId,
             string messageId,
-            string userCode)
+            string userCode,
+            string interactionDateTime)
         {
             var request = new VerificationStatusRequest
             {
                 RequestGuid = string.IsNullOrEmpty(requestGuid) ? _lastRequestGuid : requestGuid,
                 SourceSystem = sourceSystem,
                 Channel = channel,
-                InteractionDateTime = DateTime.Now.ToString("o"),
+                InteractionDateTime = interactionDateTime,
                 SessionID = sessionId,
                 MessageID = messageId,
                 UserCode = userCode
