@@ -6,7 +6,9 @@
         private System.Windows.Forms.Panel checkStatusPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayout3;
         private System.Windows.Forms.Label lblVerificationStatus;
-        private System.Windows.Forms.RichTextBox VerificationStatusViewer;
+        private System.Windows.Forms.TreeView VerificationStatusTree;
+        private System.Windows.Forms.Button btnExpandAll;
+        private System.Windows.Forms.Button btnCollapseAll;
         private System.Windows.Forms.DataGridView dataGridViewRequests;
         private System.Windows.Forms.Label lblRequestGuid;
         private System.Windows.Forms.Button btnCheckStatus;
@@ -52,7 +54,9 @@
             lblUserCode = new Label();
             tableLayout3 = new TableLayoutPanel();
             lblVerificationStatus = new Label();
-            VerificationStatusViewer = new RichTextBox();
+            VerificationStatusTree = new TreeView();
+            btnExpandAll = new Button();
+            btnCollapseAll = new Button();
             dataGridViewRequests = new DataGridView();
             lblRequestGuid = new Label();
             btnCheckStatus = new Button();
@@ -60,6 +64,7 @@
             statusLabel3 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
             errorProvider = new ErrorProvider(components);
+            tableLayoutPanel4 = new TableLayoutPanel();
             pickerInteractionDateTime = new DateTimePicker();
             lblInteractionDate = new Label();
             checkStatusPanel.SuspendLayout();
@@ -68,6 +73,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewRequests).BeginInit();
             statusStrip3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
+            tableLayoutPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // checkStatusPanel
@@ -91,32 +97,32 @@
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33F));
-            metadataTableLayout.Controls.Add(lblInteractionDate, 0, 0);
-            metadataTableLayout.Controls.Add(txtSourceSystem, 2, 1);
-            metadataTableLayout.Controls.Add(lblSourceSystem, 2, 0);
-            metadataTableLayout.Controls.Add(txtChannel, 4, 1);
-            metadataTableLayout.Controls.Add(lblChannel, 4, 0);
-            metadataTableLayout.Controls.Add(txtSessionID, 2, 3);
-            metadataTableLayout.Controls.Add(lblSessionID, 2, 2);
-            metadataTableLayout.Controls.Add(txtMessageID, 4, 3);
-            metadataTableLayout.Controls.Add(lblMessageID, 4, 2);
-            metadataTableLayout.Controls.Add(txtUserCode, 0, 3);
-            metadataTableLayout.Controls.Add(lblUserCode, 0, 2);
-            metadataTableLayout.Controls.Add(pickerInteractionDateTime, 0, 1);
+            metadataTableLayout.Controls.Add(lblSourceSystem, 0, 0);
+            metadataTableLayout.Controls.Add(txtSourceSystem, 0, 1);
+            metadataTableLayout.Controls.Add(lblChannel, 2, 0);
+            metadataTableLayout.Controls.Add(txtChannel, 2, 1);
+            metadataTableLayout.Controls.Add(lblSessionID, 4, 0);
+            metadataTableLayout.Controls.Add(txtSessionID, 4, 1);
+            metadataTableLayout.Controls.Add(lblUserCode, 2, 2);
+            metadataTableLayout.Controls.Add(txtUserCode, 2, 3);
+            metadataTableLayout.Controls.Add(lblMessageID, 0, 2);
+            metadataTableLayout.Controls.Add(txtMessageID, 0, 3);
+            metadataTableLayout.Controls.Add(pickerInteractionDateTime, 4, 3);
+            metadataTableLayout.Controls.Add(lblInteractionDate, 4, 2);
             metadataTableLayout.Location = new Point(12, 12);
             metadataTableLayout.Name = "metadataTableLayout";
             metadataTableLayout.RowCount = 4;
             metadataTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             metadataTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            metadataTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             metadataTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            metadataTableLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             metadataTableLayout.Size = new Size(1176, 140);
             metadataTableLayout.TabIndex = 2;
             // 
             // txtSourceSystem
             // 
             txtSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtSourceSystem.Location = new Point(394, 33);
+            txtSourceSystem.Location = new Point(3, 33);
             txtSourceSystem.Name = "txtSourceSystem";
             txtSourceSystem.Size = new Size(346, 29);
             txtSourceSystem.TabIndex = 0;
@@ -125,7 +131,7 @@
             // 
             lblSourceSystem.AutoSize = true;
             lblSourceSystem.Font = new Font("Segoe UI", 12F);
-            lblSourceSystem.Location = new Point(394, 0);
+            lblSourceSystem.Location = new Point(3, 0);
             lblSourceSystem.Name = "lblSourceSystem";
             lblSourceSystem.Size = new Size(116, 21);
             lblSourceSystem.TabIndex = 0;
@@ -134,7 +140,7 @@
             // txtChannel
             // 
             txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(785, 33);
+            txtChannel.Location = new Point(394, 33);
             txtChannel.Name = "txtChannel";
             txtChannel.Size = new Size(346, 29);
             txtChannel.TabIndex = 1;
@@ -143,7 +149,7 @@
             // 
             lblChannel.AutoSize = true;
             lblChannel.Font = new Font("Segoe UI", 12F);
-            lblChannel.Location = new Point(785, 0);
+            lblChannel.Location = new Point(394, 0);
             lblChannel.Name = "lblChannel";
             lblChannel.Size = new Size(70, 21);
             lblChannel.TabIndex = 0;
@@ -152,7 +158,7 @@
             // txtSessionID
             // 
             txtSessionID.Font = new Font("Segoe UI", 12F);
-            txtSessionID.Location = new Point(394, 113);
+            txtSessionID.Location = new Point(785, 33);
             txtSessionID.Name = "txtSessionID";
             txtSessionID.Size = new Size(346, 29);
             txtSessionID.TabIndex = 2;
@@ -161,7 +167,7 @@
             // 
             lblSessionID.AutoSize = true;
             lblSessionID.Font = new Font("Segoe UI", 12F);
-            lblSessionID.Location = new Point(394, 70);
+            lblSessionID.Location = new Point(785, 0);
             lblSessionID.Name = "lblSessionID";
             lblSessionID.Size = new Size(85, 21);
             lblSessionID.TabIndex = 0;
@@ -170,7 +176,7 @@
             // txtMessageID
             // 
             txtMessageID.Font = new Font("Segoe UI", 12F);
-            txtMessageID.Location = new Point(785, 113);
+            txtMessageID.Location = new Point(3, 103);
             txtMessageID.Name = "txtMessageID";
             txtMessageID.Size = new Size(346, 29);
             txtMessageID.TabIndex = 3;
@@ -179,7 +185,7 @@
             // 
             lblMessageID.AutoSize = true;
             lblMessageID.Font = new Font("Segoe UI", 12F);
-            lblMessageID.Location = new Point(785, 70);
+            lblMessageID.Location = new Point(3, 70);
             lblMessageID.Name = "lblMessageID";
             lblMessageID.Size = new Size(93, 21);
             lblMessageID.TabIndex = 0;
@@ -188,7 +194,7 @@
             // txtUserCode
             // 
             txtUserCode.Font = new Font("Segoe UI", 12F);
-            txtUserCode.Location = new Point(3, 113);
+            txtUserCode.Location = new Point(394, 103);
             txtUserCode.Name = "txtUserCode";
             txtUserCode.Size = new Size(346, 29);
             txtUserCode.TabIndex = 4;
@@ -197,7 +203,7 @@
             // 
             lblUserCode.AutoSize = true;
             lblUserCode.Font = new Font("Segoe UI", 12F);
-            lblUserCode.Location = new Point(3, 70);
+            lblUserCode.Location = new Point(394, 70);
             lblUserCode.Name = "lblUserCode";
             lblUserCode.Size = new Size(64, 21);
             lblUserCode.TabIndex = 0;
@@ -208,18 +214,20 @@
             tableLayout3.ColumnCount = 2;
             tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             tableLayout3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            tableLayout3.Controls.Add(tableLayoutPanel4, 1, 2);
             tableLayout3.Controls.Add(lblVerificationStatus, 1, 0);
-            tableLayout3.Controls.Add(VerificationStatusViewer, 1, 1);
+            tableLayout3.Controls.Add(VerificationStatusTree, 1, 1);
             tableLayout3.Controls.Add(dataGridViewRequests, 0, 1);
             tableLayout3.Controls.Add(lblRequestGuid, 0, 0);
             tableLayout3.Controls.Add(btnCheckStatus, 0, 2);
             tableLayout3.Location = new Point(12, 160);
             tableLayout3.Name = "tableLayout3";
-            tableLayout3.RowCount = 3;
+            tableLayout3.RowCount = 4;
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayout3.Size = new Size(1176, 389);
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayout3.Size = new Size(1176, 439);
             tableLayout3.TabIndex = 0;
             // 
             // lblVerificationStatus
@@ -232,14 +240,40 @@
             lblVerificationStatus.TabIndex = 2;
             lblVerificationStatus.Text = "Verification Status:";
             // 
-            // VerificationStatusViewer
+            // VerificationStatusTree
             // 
-            VerificationStatusViewer.Font = new Font("Segoe UI", 14F);
-            VerificationStatusViewer.Location = new Point(355, 33);
-            VerificationStatusViewer.Name = "VerificationStatusViewer";
-            VerificationStatusViewer.Size = new Size(818, 303);
-            VerificationStatusViewer.TabIndex = 3;
-            VerificationStatusViewer.Text = "";
+            VerificationStatusTree.Font = new Font("Segoe UI", 12F);
+            VerificationStatusTree.Location = new Point(355, 33);
+            VerificationStatusTree.Name = "VerificationStatusTree";
+            VerificationStatusTree.Size = new Size(818, 303);
+            VerificationStatusTree.TabIndex = 3;
+            // 
+            // btnExpandAll
+            // 
+            btnExpandAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnExpandAll.BackColor = Color.RoyalBlue;
+            btnExpandAll.FlatStyle = FlatStyle.Flat;
+            btnExpandAll.Font = new Font("Segoe UI", 12F);
+            btnExpandAll.ForeColor = Color.White;
+            btnExpandAll.Location = new Point(3, 3);
+            btnExpandAll.Name = "btnExpandAll";
+            btnExpandAll.Size = new Size(167, 32);
+            btnExpandAll.TabIndex = 4;
+            btnExpandAll.Text = "Expand All";
+            btnExpandAll.UseVisualStyleBackColor = false;
+            // 
+            // btnCollapseAll
+            // 
+            btnCollapseAll.BackColor = Color.RoyalBlue;
+            btnCollapseAll.FlatStyle = FlatStyle.Flat;
+            btnCollapseAll.Font = new Font("Segoe UI", 12F);
+            btnCollapseAll.ForeColor = Color.White;
+            btnCollapseAll.Location = new Point(176, 3);
+            btnCollapseAll.Name = "btnCollapseAll";
+            btnCollapseAll.Size = new Size(167, 31);
+            btnCollapseAll.TabIndex = 5;
+            btnCollapseAll.Text = "Collapse All";
+            btnCollapseAll.UseVisualStyleBackColor = false;
             // 
             // dataGridViewRequests
             // 
@@ -300,12 +334,27 @@
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // tableLayoutPanel4
+            // 
+            tableLayoutPanel4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            tableLayoutPanel4.ColumnCount = 2;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel4.Controls.Add(btnCollapseAll, 1, 0);
+            tableLayoutPanel4.Controls.Add(btnExpandAll, 0, 0);
+            tableLayoutPanel4.Location = new Point(827, 342);
+            tableLayoutPanel4.Name = "tableLayoutPanel4";
+            tableLayoutPanel4.RowCount = 1;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel4.Size = new Size(346, 44);
+            tableLayoutPanel4.TabIndex = 27;
+            // 
             // pickerInteractionDateTime
             // 
             pickerInteractionDateTime.CustomFormat = "ddd, dd MMM yyyy hh:mm tt";
             pickerInteractionDateTime.Font = new Font("Segoe UI", 12F);
             pickerInteractionDateTime.Format = DateTimePickerFormat.Custom;
-            pickerInteractionDateTime.Location = new Point(3, 33);
+            pickerInteractionDateTime.Location = new Point(785, 103);
             pickerInteractionDateTime.Name = "pickerInteractionDateTime";
             pickerInteractionDateTime.Size = new Size(346, 29);
             pickerInteractionDateTime.TabIndex = 26;
@@ -314,7 +363,7 @@
             // 
             lblInteractionDate.AutoSize = true;
             lblInteractionDate.Font = new Font("Segoe UI", 12F);
-            lblInteractionDate.Location = new Point(3, 0);
+            lblInteractionDate.Location = new Point(785, 70);
             lblInteractionDate.Name = "lblInteractionDate";
             lblInteractionDate.Size = new Size(161, 21);
             lblInteractionDate.TabIndex = 27;
@@ -339,8 +388,10 @@
             statusStrip3.ResumeLayout(false);
             statusStrip3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
+            tableLayoutPanel4.ResumeLayout(false);
             ResumeLayout(false);
         }
+        private TableLayoutPanel tableLayoutPanel4;
         private DateTimePicker pickerInteractionDateTime;
         private Label lblInteractionDate;
     }

@@ -1,9 +1,11 @@
-﻿using CCaptureWinForm.Core.Interfaces;
+﻿using CCaptureWinForm.Core.Entities;
+using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -35,6 +37,7 @@ namespace CCaptureWinForm
             _viewModel = viewModel;
 
             ConfigureDataGridViewRequests();
+            ConfigureTreeView();
             AttachEventHandlers();
             InitializeAsync();
         }
@@ -60,10 +63,30 @@ namespace CCaptureWinForm
             dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
+        private void ConfigureTreeView()
+        {
+            VerificationStatusTree.Nodes.Clear();
+            VerificationStatusTree.Font = new Font("Segoe UI", 12F);
+            VerificationStatusTree.ShowLines = true;
+            VerificationStatusTree.ShowPlusMinus = true;
+        }
+
         private void AttachEventHandlers()
         {
             btnCheckStatus.Click += btnCheckStatus_Click;
+            btnExpandAll.Click += btnExpandAll_Click;
+            btnCollapseAll.Click += btnCollapseAll_Click;
             dataGridViewRequests.DataError += DataGridViewRequests_DataError;
+        }
+
+        private void btnExpandAll_Click(object sender, EventArgs e)
+        {
+            VerificationStatusTree.ExpandAll();
+        }
+
+        private void btnCollapseAll_Click(object sender, EventArgs e)
+        {
+            VerificationStatusTree.CollapseAll();
         }
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
@@ -163,34 +186,143 @@ namespace CCaptureWinForm
                 toolStripProgressBar1.Visible = true;
                 toolStripProgressBar1.Value = 0;
                 toolStripProgressBar1.Maximum = requestGuids.Count;
-                VerificationStatusViewer.Clear();
+                VerificationStatusTree.Nodes.Clear();
 
                 foreach (var requestGuid in requestGuids)
                 {
                     try
                     {
                         statusLabel3.Text = $"Checking status for {requestGuid}...";
-                        var status = await _viewModel.CheckVerificationStatusAsync(
+                        var responseJson = await _viewModel.CheckVerificationStatusAsync(
                             requestGuid,
                             txtSourceSystem.Text,
                             txtChannel.Text,
                             txtSessionID.Text,
                             txtMessageID.Text,
                             txtUserCode.Text);
-                        AppendStatusText($"Request Guid: {requestGuid}", Color.Black);
-                        AppendStatusText($"Status: {status ?? "Unknown"}", Color.Green);
-                        AppendStatusText("------------------------", Color.Gray);
+
+                        // Deserialize the JSON response
+                        var response = JsonSerializer.Deserialize<VerificationResponse>(responseJson, new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+
+                        // Build TreeView for this request
+                        var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                        requestNode.ForeColor = Color.Black;
+
+                        // Add top-level response fields
+                        var statusNode = requestNode.Nodes.Add($"Status: {response.Status}");
+                        statusNode.ForeColor = response.Status == 0 ? Color.Green : Color.Red;
+
+                        var executionDateNode = requestNode.Nodes.Add($"Execution Date: {response.ExecutionDate:yyyy-MM-dd HH:mm:ss}");
+                        executionDateNode.ForeColor = Color.Black;
+
+                        if (!string.IsNullOrEmpty(response.ErrorMessage))
+                        {
+                            var errorNode = requestNode.Nodes.Add($"Error Message: {response.ErrorMessage}");
+                            errorNode.ForeColor = Color.Red;
+                        }
+
+                        // Add Batch details
+                        if (response.Batch != null)
+                        {
+                            var batchNode = requestNode.Nodes.Add("Batch");
+                            batchNode.ForeColor = Color.Black;
+
+                            batchNode.Nodes.Add($"Id: {response.Batch.Id}").ForeColor = Color.Black;
+                            batchNode.Nodes.Add($"Name: {response.Batch.Name}").ForeColor = Color.Black;
+                            batchNode.Nodes.Add($"Creation Date: {response.Batch.CreationDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
+                            batchNode.Nodes.Add($"Close Date: {response.Batch.CloseDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
+
+                            // BatchClass
+                            if (response.Batch.BatchClass != null)
+                            {
+                                var batchClassNode = batchNode.Nodes.Add($"Batch Class: {response.Batch.BatchClass.Name}");
+                                batchClassNode.ForeColor = Color.Black;
+                            }
+
+                            // BatchFields
+                            if (response.Batch.BatchFields?.Any() == true)
+                            {
+                                var fieldsNode = batchNode.Nodes.Add("Batch Fields");
+                                fieldsNode.ForeColor = Color.Black;
+                                foreach (var field in response.Batch.BatchFields)
+                                {
+                                    var fieldNode = fieldsNode.Nodes.Add($"Field: {field.Name}");
+                                    fieldNode.ForeColor = Color.Black;
+                                    fieldNode.Nodes.Add($"Value: {field.Value}").ForeColor = Color.Black;
+                                    fieldNode.Nodes.Add($"Confidence: {field.Confidence}").ForeColor = Color.Black;
+                                }
+                            }
+
+                            // Documents
+                            if (response.Batch.Documents?.Any() == true)
+                            {
+                                var docsNode = batchNode.Nodes.Add("Documents");
+                                docsNode.ForeColor = Color.Black;
+                                foreach (var doc in response.Batch.Documents)
+                                {
+                                    var docNode = docsNode.Nodes.Add($"Document: {doc.Name}");
+                                    docNode.ForeColor = Color.Black;
+
+                                    if (doc.DocumentClass != null)
+                                    {
+                                        docNode.Nodes.Add($"Document Class: {doc.DocumentClass.Name}").ForeColor = Color.Black;
+                                    }
+
+                                    if (doc.Pages?.Any() == true)
+                                    {
+                                        var pagesNode = docNode.Nodes.Add("Pages");
+                                        pagesNode.ForeColor = Color.Black;
+                                        foreach (var page in doc.Pages)
+                                        {
+                                            var pageNode = pagesNode.Nodes.Add($"Page: {page.FileName}");
+                                            pageNode.ForeColor = Color.Black;
+
+                                            if (page.PageTypes?.Any() == true)
+                                            {
+                                                var pageTypesNode = pageNode.Nodes.Add("Page Types");
+                                                pageTypesNode.ForeColor = Color.Black;
+                                                foreach (var pageType in page.PageTypes)
+                                                {
+                                                    var pageTypeNode = pageTypesNode.Nodes.Add($"Type: {pageType.Name}");
+                                                    pageTypeNode.ForeColor = Color.Black;
+                                                    pageTypeNode.Nodes.Add($"Confidence: {pageType.Confidence}").ForeColor = Color.Black;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // BatchStates
+                            if (response.Batch.BatchStates?.Any() == true)
+                            {
+                                var statesNode = batchNode.Nodes.Add("Batch States");
+                                statesNode.ForeColor = Color.Black;
+                                foreach (var state in response.Batch.BatchStates)
+                                {
+                                    var stateNode = statesNode.Nodes.Add($"State: {state.Value}");
+                                    stateNode.ForeColor = Color.Black;
+                                    stateNode.Nodes.Add($"Track Date: {state.TrackDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
+                                    stateNode.Nodes.Add($"Workstation: {state.Workstation}").ForeColor = Color.Black;
+                                }
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
-                        AppendStatusText($"Request Guid: {requestGuid}", Color.Black);
-                        AppendStatusText($"Error: {ex.Message}", Color.Red);
-                        AppendStatusText("------------------------", Color.Gray);
+                        var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                        requestNode.ForeColor = Color.Black;
+                        var errorNode = requestNode.Nodes.Add($"Error: {ex.Message}");
+                        errorNode.ForeColor = Color.Red;
                     }
                     toolStripProgressBar1.Value++;
                     Application.DoEvents();
                 }
 
+                VerificationStatusTree.ExpandAll();
                 toolStripProgressBar1.Visible = false;
                 statusLabel3.Text = "Status check completed.";
                 statusLabel3.ForeColor = Color.Green;
@@ -203,17 +335,6 @@ namespace CCaptureWinForm
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                     ShowLoginForm();
             }
-        }
-
-        private void AppendStatusText(string text, Color color)
-        {
-            VerificationStatusViewer.SelectionStart = VerificationStatusViewer.TextLength;
-            VerificationStatusViewer.SelectionLength = 0;
-            VerificationStatusViewer.SelectionColor = color;
-            VerificationStatusViewer.SelectionFont = new Font("Segoe UI", 12F, FontStyle.Regular);
-            VerificationStatusViewer.AppendText(text + Environment.NewLine);
-            VerificationStatusViewer.SelectionColor = VerificationStatusViewer.ForeColor;
-            VerificationStatusViewer.ScrollToCaret();
         }
 
         private void DataGridViewRequests_DataError(object sender, DataGridViewDataErrorEventArgs e)
