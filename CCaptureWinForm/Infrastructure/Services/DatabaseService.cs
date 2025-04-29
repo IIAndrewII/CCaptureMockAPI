@@ -1,5 +1,6 @@
 ﻿using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Data;
+using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -96,6 +97,29 @@ namespace CCaptureWinForm.Infrastructure.Services
                 };
                 context.Fields.Add(field);
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<SubmissionDetails> GetSubmissionDetailsAsync(string requestGuid)
+        {
+            using (var context = CreateContext())
+            {
+                var submission = await context.Submissions
+                    .Include(s => s.Group)
+                    .Include(s => s.Documents)
+                    .Include(s => s.Fields)
+                    .FirstOrDefaultAsync(s => s.RequestGuid == requestGuid);
+
+                if (submission == null)
+                    return null;
+
+                return new SubmissionDetails
+                {
+                    Submission = submission,
+                    GroupName = submission.Group?.GroupName,
+                    Documents = submission.Documents.ToList(),
+                    Fields = submission.Fields.ToList()
+                };
             }
         }
     }

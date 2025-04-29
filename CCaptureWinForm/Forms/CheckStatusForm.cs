@@ -59,6 +59,14 @@ namespace CCaptureWinForm
                 Name = "RequestGuid",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             });
+            dataGridViewRequests.Columns.Add(new DataGridViewButtonColumn
+            {
+                HeaderText = "Details",
+                Name = "Details",
+                Text = "View Details",
+                UseColumnTextForButtonValue = true,
+                Width = 100
+            });
             dataGridViewRequests.AllowUserToAddRows = true;
             dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
@@ -77,6 +85,30 @@ namespace CCaptureWinForm
             btnExpandAll.Click += btnExpandAll_Click;
             btnCollapseAll.Click += btnCollapseAll_Click;
             dataGridViewRequests.DataError += DataGridViewRequests_DataError;
+            dataGridViewRequests.CellContentClick += DataGridViewRequests_CellContentClick;
+        }
+
+        private async void DataGridViewRequests_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridViewRequests.Columns["Details"].Index && e.RowIndex >= 0)
+            {
+                var requestGuid = dataGridViewRequests.Rows[e.RowIndex].Cells["RequestGuid"].Value?.ToString();
+                if (!string.IsNullOrWhiteSpace(requestGuid) && Guid.TryParse(requestGuid, out _))
+                {
+                    try
+                    {
+                        var details = await _databaseService.GetSubmissionDetailsAsync(requestGuid);
+                        using (var detailsForm = new SubmissionDetailsForm(details))
+                        {
+                            detailsForm.ShowDialog();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error loading details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
 
         private void btnExpandAll_Click(object sender, EventArgs e)
@@ -173,8 +205,7 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(txtChannel) != "" ||
                     _errorProvider.GetError(txtSessionID) != "" ||
                     _errorProvider.GetError(txtMessageID) != "" ||
-                    _errorProvider.GetError(txtUserCode) != "" ||
-                    _errorProvider.GetError(dataGridViewRequests) != "")
+                    _errorProvider.GetError(txtUserCode) != "")
                 {
                     statusLabel3.Text = "Please fill in all required fields and provide at least one valid Request Guid.";
                     statusLabel3.ForeColor = Color.Red;
