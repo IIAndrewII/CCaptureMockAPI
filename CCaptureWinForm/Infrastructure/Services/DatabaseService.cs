@@ -122,5 +122,104 @@ namespace CCaptureWinForm.Infrastructure.Services
                 };
             }
         }
+
+        // public async Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse, string requestGuid)
+        //{
+        //    using (var context = CreateContext())
+        //    {
+        //        // Map VerificationResponse
+        //        var efVerificationResponse = new Data.VerificationResponse
+        //        {
+        //            Status = verificationResponse.Status,
+        //            ExecutionDate = verificationResponse.ExecutionDate,
+        //            ErrorMessage = verificationResponse.ErrorMessage
+        //        };
+
+        //        // Map Batch
+        //        if (verificationResponse.Batch != null)
+        //        {
+        //            var efBatch = new Batch
+        //            {
+        //                Name = verificationResponse.Batch.Name,
+        //                CreationDate = verificationResponse.Batch.CreationDate,
+        //                CloseDate = verificationResponse.Batch.CloseDate
+        //            };
+
+        //            // Map BatchClass
+        //            if (verificationResponse.Batch.BatchClass != null)
+        //            {
+        //                var existingBatchClass = await context.BatchClasses
+        //                    .FirstOrDefaultAsync(bc => bc.Name == verificationResponse.Batch.BatchClass.Name);
+        //                if (existingBatchClass == null)
+        //                {
+        //                    efBatch.BatchClass = new BatchClass { Name = verificationResponse.Batch.BatchClass.Name };
+        //                }
+        //                else
+        //                {
+        //                    efBatch.BatchClassId = existingBatchClass.BatchClassId;
+        //                }
+        //            }
+
+        //            // Map BatchFields
+        //            efBatch.BatchFields = verificationResponse.Batch.BatchFields?.Select(bf => new BatchField
+        //            {
+        //                Name = bf.Name,
+        //                Value = bf.Value,
+        //                Confidence = bf.Confidence
+        //            }).ToList() ?? new List<BatchField>();
+
+        //            // Map BatchStates
+        //            efBatch.BatchStates = verificationResponse.Batch.BatchStates?.Select(bs => new BatchState
+        //            {
+        //                Value = bs.Value,
+        //                TrackDate = bs.TrackDate,
+        //                Workstation = bs.Workstation
+        //            }).ToList() ?? new List<BatchState>();
+
+        //            // Map Documents
+        //            efBatch.Documents = verificationResponse.Batch.Documents?.Select(doc => new VerificationDocument
+        //            {
+        //                Name = doc.Name,
+        //                // Map DocumentClass
+        //                DocumentClass = doc.DocumentClass != null ? new VerificationDocumentClass { Name = doc.DocumentClass.Name } : null,
+        //                // Map Pages
+        //                Pages = doc.Pages?.Select(p => new Page
+        //                {
+        //                    FileName = p.FileName,
+        //                    Sections = p.Sections != null ? JsonSerializer.Serialize(p.Sections) : null,
+        //                    PageTypes = p.PageTypes?.Select(pt => new PageType
+        //                    {
+        //                        Name = pt.Name,
+        //                        Confidence = pt.Confidence
+        //                    }).ToList() ?? new List<PageType>()
+        //                }).ToList() ?? new List<Page>(),
+        //                // Map DocumentFields (assuming objects are key-value pairs with confidence)
+        //                DocumentFields = doc.DocumentFields?.Select(df => 
+        //                {
+        //                    var dict = df as Dictionary<string, object>;
+        //                    return new DocumentField
+        //                    {
+        //                        Name = dict?.ContainsKey("Name") == true ? dict["Name"].ToString() : "Unknown",
+        //                        Value = dict?.ContainsKey("Value") == true ? dict["Value"].ToString() : null,
+        //                        Confidence = dict?.ContainsKey("Confidence") == true && float.TryParse(dict["Confidence"].ToString(), out var conf) ? conf : null
+        //                    };
+        //                }).ToList() ?? new List<DocumentField>(),
+        //                // Map Signatures (assuming objects are JSON-serializable)
+        //                Signatures = doc.Signatures?.Select(s => new Signature
+        //                {
+        //                    SignatureData = JsonSerializer.Serialize(s)
+        //                }).ToList() ?? new List<Signature>()
+        //            }).ToList() ?? new List<VerificationDocument>();
+
+        //            efVerificationResponse.Batch = efBatch;
+        //        }
+
+        //        context.VerificationResponses.Add(efVerificationResponse);
+        //        await context.SaveChangesAsync();
+        //        return efVerificationResponse.VerificationResponseId;
+        //    }
+        //}
+
+
     }
 }
