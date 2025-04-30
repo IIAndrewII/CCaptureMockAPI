@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace CCaptureWinForm.Models;
+namespace CCaptureWinForm;
 
-public partial class AppDbContext : DbContext
+public partial class CcaptureWinFormDbContext : DbContext
 {
-    public AppDbContext()
+    public CcaptureWinFormDbContext()
     {
     }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public CcaptureWinFormDbContext(DbContextOptions<CcaptureWinFormDbContext> options)
         : base(options)
     {
     }
