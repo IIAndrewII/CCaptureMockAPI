@@ -3,6 +3,8 @@ using CCaptureWinForm.Presentation.ViewModels;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics; // Required for Process.Start
+using System.IO; // Required for File.Exists
 
 namespace CCaptureWinForm
 {
@@ -12,6 +14,8 @@ namespace CCaptureWinForm
         {
             InitializeComponent();
             PopulateDetails(details);
+            // Register the double-click event handler for dataGridViewDocuments
+            dataGridViewDocuments.CellDoubleClick += DataGridViewDocuments_CellDoubleClick;
         }
 
         private void PopulateDetails(SubmissionDetails details)
@@ -62,6 +66,40 @@ namespace CCaptureWinForm
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void DataGridViewDocuments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ensure the click is on a valid row (not the header)
+            if (e.RowIndex >= 0)
+            {
+                // Get the file path from the FilePath column (index 2)
+                string filePath = dataGridViewDocuments.Rows[e.RowIndex].Cells[2].Value?.ToString();
+
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    MessageBox.Show("No file path specified for this document.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    // Check if the file exists
+                    if (File.Exists(filePath))
+                    {
+                        // Open the file with the default application
+                        Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                    }
+                    else
+                    {
+                        MessageBox.Show($"The file '{filePath}' does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to open the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

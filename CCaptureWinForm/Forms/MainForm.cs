@@ -34,9 +34,9 @@ namespace CCaptureWinForm
             // Set up MDI
             this.IsMdiContainer = true;
 
-            // Open child forms on startup
-            OpenSubmitForm();
-            OpenCheckStatusForm();
+            //// Open child forms on startup
+            //OpenSubmitForm();
+            //OpenCheckStatusForm();
 
             // Attach menu event handlers
             submitDocumentToolStripMenuItem.Click += (s, e) => OpenSubmitForm();
