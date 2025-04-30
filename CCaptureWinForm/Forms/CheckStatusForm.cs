@@ -239,6 +239,9 @@ namespace CCaptureWinForm
                             PropertyNameCaseInsensitive = true
                         });
 
+                        // Save the VerificationResponse to the database
+                        await _databaseService.SaveVerificationResponseAsync(response, requestGuid);
+
                         // Build TreeView for this request
                         var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
                         requestNode.ForeColor = Color.Black;
