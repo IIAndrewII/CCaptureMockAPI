@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CCaptureWinForm.Models;
+namespace CCaptureMockAPI;
 
 public partial class DocumentField
 {
