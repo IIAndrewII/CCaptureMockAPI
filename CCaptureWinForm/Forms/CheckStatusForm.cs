@@ -1,5 +1,6 @@
 ﻿using CCaptureWinForm.Core.Entities;
 using CCaptureWinForm.Core.Interfaces;
+using CCaptureWinForm.Infrastructure.Services;
 using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -36,6 +37,8 @@ namespace CCaptureWinForm
             _configuration = configuration;
             _viewModel = viewModel;
 
+            // Initialize the API URL textbox with the configured value
+            txtApiUrl.Text = _configuration["ApiUrl"];
             ConfigureDataGridViewRequests();
             ConfigureTreeView();
             AttachEventHandlers();
@@ -211,6 +214,16 @@ namespace CCaptureWinForm
                     statusLabel3.ForeColor = Color.Red;
                     return;
                 }
+
+                // Use the textbox value if provided, otherwise fall back to configuration
+                var apiUrl = string.IsNullOrWhiteSpace(txtApiUrl.Text) ? _configuration["ApiUrl"] : txtApiUrl.Text;
+                if (string.IsNullOrEmpty(apiUrl))
+                {
+                    throw new InvalidOperationException("API URL is not configured in appsettings.json or provided in the textbox");
+                }
+                // Update the ApiService with the selected URL
+                var apiService = new ApiService(apiUrl);
+                _viewModel.UpdateApiService(apiService);
 
                 statusLabel3.Text = "Checking status...";
                 statusLabel3.ForeColor = Color.Blue;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using CCaptureWinForm.Infrastructure.Services;
 
 namespace CCaptureWinForm
 {
@@ -38,6 +39,8 @@ namespace CCaptureWinForm
             _viewModel = viewModel;
 
             _groups = new Dictionary<string, List<Document_Row>>();
+            // Initialize the API URL textbox with the configured value
+            txtApiUrl.Text = _configuration["ApiUrl"];
             ConfigureDataGridViewGroupsColumns();
             ConfigureDataGridViewColumns();
             AttachEventHandlers();
@@ -309,6 +312,16 @@ namespace CCaptureWinForm
                     statusLabel2.ForeColor = Color.Red;
                     return;
                 }
+
+                // Use the textbox value if provided, otherwise fall back to configuration
+                var apiUrl = string.IsNullOrWhiteSpace(txtApiUrl.Text) ? _configuration["ApiUrl"] : txtApiUrl.Text;
+                if (string.IsNullOrEmpty(apiUrl))
+                {
+                    throw new InvalidOperationException("API URL is not configured in appsettings.json or provided in the textbox");
+                }
+                // Update the ApiService with the selected URL
+                var apiService = new ApiService(apiUrl);
+                _viewModel.UpdateApiService(apiService);
 
                 var fields = dataGridViewFields.Rows.Cast<DataGridViewRow>()
                     .Where(row => !row.IsNewRow)

@@ -12,7 +12,7 @@ namespace CCaptureWinForm.Presentation.ViewModels
 {
     public class MainViewModel
     {
-        private readonly IApiService _apiService;
+        private IApiService _apiService;
         private readonly IFileService _fileService;
         private readonly IApiDatabaseService _apiDatabaseService;
         private readonly IDatabaseService _databaseService;
@@ -32,6 +32,11 @@ namespace CCaptureWinForm.Presentation.ViewModels
             _apiDatabaseService = apiDatabaseService;
             _databaseService = databaseService;
             _configuration = configuration;
+        }
+
+        public void UpdateApiService(IApiService apiService)
+        {
+            _apiService = apiService ?? throw new ArgumentNullException(nameof(apiService));
         }
 
         public async Task<string> GetAuthTokenAsync(string appName, string appLogin, string appPassword)

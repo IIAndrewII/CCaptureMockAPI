@@ -84,6 +84,8 @@
             dataGridViewGroups = new DataGridView();
             btnRemoveField = new Button();
             errorProvider = new ErrorProvider(components);
+            txtApiUrl = new TextBox();
+            lblApiUrl = new Label();
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
             metadataPanel.SuspendLayout();
@@ -164,6 +166,8 @@
             tableLayout2.Controls.Add(label1, 2, 7);
             tableLayout2.Controls.Add(dataGridViewGroups, 0, 8);
             tableLayout2.Controls.Add(btnRemoveField, 4, 9);
+            tableLayout2.Controls.Add(txtApiUrl, 2, 6);
+            tableLayout2.Controls.Add(lblApiUrl, 2, 5);
             tableLayout2.Location = new Point(12, 12);
             tableLayout2.Name = "tableLayout2";
             tableLayout2.RowCount = 12;
@@ -489,6 +493,24 @@
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // txtApiUrl
+            // 
+            txtApiUrl.Font = new Font("Segoe UI", 12F);
+            txtApiUrl.Location = new Point(394, 203);
+            txtApiUrl.Name = "txtApiUrl";
+            txtApiUrl.Size = new Size(346, 29);
+            txtApiUrl.TabIndex = 29;
+            // 
+            // lblApiUrl
+            // 
+            lblApiUrl.AutoSize = true;
+            lblApiUrl.Font = new Font("Segoe UI", 12F);
+            lblApiUrl.Location = new Point(394, 170);
+            lblApiUrl.Name = "lblApiUrl";
+            lblApiUrl.Size = new Size(69, 21);
+            lblApiUrl.TabIndex = 30;
+            lblApiUrl.Text = "API URL:";
+            // 
             // SubmitForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -513,5 +535,7 @@
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
         }
+        private TextBox txtApiUrl;
+        private Label lblApiUrl;
     }
 }
