@@ -18,8 +18,15 @@ namespace CCaptureWinForm
         private readonly IApiDatabaseService _apiDatabaseService;
         private readonly IDatabaseService _databaseService;
         private readonly ErrorProvider _errorProvider;
-        private Dictionary<string, List<Document_Row>> _groups;
+        private Dictionary<string, GroupData> _groups; // Updated to use GroupData
         private int _groupCounter = 1;
+
+        // New class to hold documents and fields per group
+        private class GroupData
+        {
+            public List<Document_Row> Documents { get; set; } = new List<Document_Row>();
+            public List<Field> Fields { get; set; } = new List<Field>();
+        }
 
         public SubmitForm()
         {
@@ -38,8 +45,7 @@ namespace CCaptureWinForm
             _configuration = configuration;
             _viewModel = viewModel;
 
-            _groups = new Dictionary<string, List<Document_Row>>();
-            // Initialize the API URL textbox with the configured value
+            _groups = new Dictionary<string, GroupData>();
             txtApiUrl.Text = _configuration["ApiUrl"];
             ConfigureDataGridViewGroupsColumns();
             ConfigureDataGridViewColumns();
@@ -140,7 +146,7 @@ namespace CCaptureWinForm
         private void AddNewGroup()
         {
             var groupName = $"Group {_groupCounter++}";
-            _groups.Add(groupName, new List<Document_Row>());
+            _groups.Add(groupName, new GroupData());
             int rowIndex = dataGridViewGroups.Rows.Add(true, groupName);
             dataGridViewGroups.ClearSelection();
             dataGridViewGroups.Rows[rowIndex].Selected = true;
@@ -182,7 +188,7 @@ namespace CCaptureWinForm
                     fieldNameColumn.Items.Clear();
                     fieldNameColumn.Items.AddRange(fieldNames.ToArray());
 
-                    UpdateDocumentGrid();
+                    UpdateDocumentAndFieldGrid();
                 }
                 catch (Exception ex)
                 {
@@ -194,30 +200,41 @@ namespace CCaptureWinForm
 
         private void dataGridViewGroups_SelectionChanged(object sender, EventArgs e)
         {
-            UpdateDocumentGrid();
+            UpdateDocumentAndFieldGrid();
         }
 
         private void dataGridViewGroups_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == dataGridViewGroups.Columns["Submit"].Index && e.RowIndex >= 0)
-                UpdateDocumentGrid();
+                UpdateDocumentAndFieldGrid();
         }
 
-        private void UpdateDocumentGrid()
+        private void UpdateDocumentAndFieldGrid()
         {
             dataGridViewDocuments.Rows.Clear();
+            dataGridViewFields.Rows.Clear();
             var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
             if (selectedRow != null)
             {
                 string selectedGroup = selectedRow.Cells["GroupName"].Value?.ToString();
                 if (selectedGroup != null && _groups.ContainsKey(selectedGroup))
                 {
+                    // Update Documents
                     var pageTypeColumn = (DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"];
-                    foreach (var doc in _groups[selectedGroup])
+                    foreach (var doc in _groups[selectedGroup].Documents)
                     {
                         int rowIndex = dataGridViewDocuments.Rows.Add(doc.FilePath, null);
                         if (!string.IsNullOrEmpty(doc.PageType) && pageTypeColumn.Items.Contains(doc.PageType))
                             dataGridViewDocuments.Rows[rowIndex].Cells["PageType"].Value = doc.PageType;
+                    }
+
+                    // Update Fields
+                    var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
+                    foreach (var field in _groups[selectedGroup].Fields)
+                    {
+                        int rowIndex = dataGridViewFields.Rows.Add(null, field.FieldValue);
+                        if (!string.IsNullOrEmpty(field.FieldName) && fieldNameColumn.Items.Contains(field.FieldName))
+                            dataGridViewFields.Rows[rowIndex].Cells["FieldName"].Value = field.FieldName;
                     }
                 }
             }
@@ -297,7 +314,7 @@ namespace CCaptureWinForm
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
                 if (!dataGridViewGroups.Rows.Cast<DataGridViewRow>()
-                    .Any(row => (bool?)row.Cells["Submit"].Value == true && _groups[row.Cells["GroupName"].Value.ToString()].Any()))
+                    .Any(row => (bool?)row.Cells["Submit"].Value == true && _groups[row.Cells["GroupName"].Value.ToString()].Documents.Any()))
                     _errorProvider.SetError(dataGridViewGroups, "Please check at least one group with documents.");
 
                 if (_errorProvider.GetError(cboBatchClassName) != "" ||
@@ -313,35 +330,23 @@ namespace CCaptureWinForm
                     return;
                 }
 
-                // Use the textbox value if provided, otherwise fall back to configuration
                 var apiUrl = string.IsNullOrWhiteSpace(txtApiUrl.Text) ? _configuration["ApiUrl"] : txtApiUrl.Text;
                 if (string.IsNullOrEmpty(apiUrl))
                 {
                     throw new InvalidOperationException("API URL is not configured in appsettings.json or provided in the textbox");
                 }
-                // Update the ApiService with the selected URL
                 var apiService = new ApiService(apiUrl);
                 _viewModel.UpdateApiService(apiService);
-
-                var fields = dataGridViewFields.Rows.Cast<DataGridViewRow>()
-                    .Where(row => !row.IsNewRow)
-                    .Select(row => new Field
-                    {
-                        FieldName = row.Cells["FieldName"].Value?.ToString(),
-                        FieldValue = row.Cells["FieldValue"].Value?.ToString()
-                    })
-                    .Where(f => !string.IsNullOrWhiteSpace(f.FieldName) && !string.IsNullOrWhiteSpace(f.FieldValue))
-                    .ToList();
 
                 var checkedGroups = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
                     .Where(row => (bool?)row.Cells["Submit"].Value == true)
                     .Select(row => row.Cells["GroupName"].Value.ToString())
-                    .Where(group => _groups[group].Any())
+                    .Where(group => _groups[group].Documents.Any())
                     .ToList();
 
                 foreach (string group in checkedGroups.ToList())
                 {
-                    var documents = _groups[group];
+                    var groupData = _groups[group];
                     statusLabel2.Text = $"Submitting {group} documents...";
                     statusLabel2.ForeColor = Color.Blue;
 
@@ -353,9 +358,9 @@ namespace CCaptureWinForm
                         txtMessageID.Text,
                         txtUserCode.Text,
                         pickerInteractionDateTime.Value.ToString("o"),
-                        fields,
+                        groupData.Fields,
                         group,
-                        documents);
+                        groupData.Documents);
 
                     statusLabel2.Text = $"Documents for {group} submitted! Request Guid: {requestGuid}";
                     statusLabel2.ForeColor = Color.Green;
@@ -372,7 +377,7 @@ namespace CCaptureWinForm
                 else
                     dataGridViewGroups.Rows[0].Selected = true;
 
-                UpdateDocumentGrid();
+                UpdateDocumentAndFieldGrid();
             }
             catch (Exception ex)
             {
@@ -407,7 +412,7 @@ namespace CCaptureWinForm
                 foreach (var filePath in openFileDialog.FileNames)
                 {
                     var doc = new Document_Row { FilePath = filePath, PageType = string.Empty };
-                    _groups[selectedGroup].Add(doc);
+                    _groups[selectedGroup].Documents.Add(doc);
                     if (dataGridViewGroups.SelectedRows[0].Cells["GroupName"].Value.ToString() == selectedGroup)
                         dataGridViewDocuments.Rows.Add(filePath, string.Empty);
                 }
@@ -429,7 +434,7 @@ namespace CCaptureWinForm
                 if (!row.IsNewRow)
                 {
                     var filePath = row.Cells["FilePath"].Value?.ToString();
-                    _groups[selectedGroup].RemoveAll(doc => doc.FilePath == filePath);
+                    _groups[selectedGroup].Documents.RemoveAll(doc => doc.FilePath == filePath);
                     dataGridViewDocuments.Rows.Remove(row);
                 }
             }
@@ -452,16 +457,28 @@ namespace CCaptureWinForm
                     AddNewGroup();
                 else
                     dataGridViewGroups.Rows[0].Selected = true;
-                UpdateDocumentGrid();
+                UpdateDocumentAndFieldGrid();
             }
         }
 
         private void btnRemoveField_Click(object sender, EventArgs e)
         {
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow == null)
+            {
+                MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
             foreach (DataGridViewRow row in dataGridViewFields.SelectedRows.Cast<DataGridViewRow>().ToList())
             {
                 if (!row.IsNewRow)
+                {
+                    var fieldName = row.Cells["FieldName"].Value?.ToString();
+                    _groups[selectedGroup].Fields.RemoveAll(f => f.FieldName == fieldName);
                     dataGridViewFields.Rows.Remove(row);
+                }
             }
         }
 
@@ -475,7 +492,7 @@ namespace CCaptureWinForm
                     string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
                     var filePath = dataGridViewDocuments.Rows[e.RowIndex].Cells["FilePath"].Value?.ToString();
                     var pageType = dataGridViewDocuments.Rows[e.RowIndex].Cells["PageType"].Value?.ToString();
-                    var doc = _groups[selectedGroup].FirstOrDefault(d => d.FilePath == filePath);
+                    var doc = _groups[selectedGroup].Documents.FirstOrDefault(d => d.FilePath == filePath);
                     if (doc != null)
                         doc.PageType = pageType ?? string.Empty;
                 }
@@ -506,21 +523,57 @@ namespace CCaptureWinForm
             if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index && e.RowIndex >= 0)
             {
                 var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
-                if (!string.IsNullOrEmpty(fieldName))
+                var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+                if (selectedRow != null)
                 {
-                    try
+                    string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
+                    var fieldValue = dataGridViewFields.Rows[e.RowIndex].Cells["FieldValue"].Value?.ToString();
+                    var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
+                    if (!string.IsNullOrEmpty(fieldName))
                     {
-                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
-                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
+                        try
+                        {
+                            var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
+                            dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
+
+                            if (existingField != null)
+                            {
+                                existingField.FieldValue = fieldValue ?? string.Empty;
+                            }
+                            else
+                            {
+                                _groups[selectedGroup].Fields.Add(new Field
+                                {
+                                    FieldName = fieldName,
+                                    FieldValue = fieldValue ?? string.Empty,
+                                });
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            statusLabel2.Text = $"Failed to load field type: {ex.Message}";
+                            statusLabel2.ForeColor = Color.Red;
+                        }
                     }
-                    catch (Exception ex)
+                    else if (existingField != null)
                     {
-                        statusLabel2.Text = $"Failed to load field type: {ex.Message}";
-                        statusLabel2.ForeColor = Color.Red;
+                        _groups[selectedGroup].Fields.Remove(existingField);
+                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
                     }
                 }
-                else
-                    dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
+            }
+            else if (e.ColumnIndex == dataGridViewFields.Columns["FieldValue"].Index && e.RowIndex >= 0)
+            {
+                var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+                if (selectedRow != null)
+                {
+                    string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
+                    var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
+                    var fieldValue = dataGridViewFields.Rows[e.RowIndex].Cells["FieldValue"].Value?.ToString();
+                    var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
+                    if (existingField != null)
+                        existingField.FieldValue = fieldValue ?? string.Empty;
+                }
             }
         }
     }

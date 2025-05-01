@@ -95,6 +95,7 @@
             // 
             // metadataTableLayout
             // 
+            metadataTableLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             metadataTableLayout.ColumnCount = 6;
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30.0029984F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 3.33033276F));
@@ -272,9 +273,9 @@
             tableLayout3.RowCount = 4;
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             tableLayout3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayout3.Size = new Size(1176, 366);
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 46F));
+            tableLayout3.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
+            tableLayout3.Size = new Size(1176, 325);
             tableLayout3.TabIndex = 0;
             // 
             // lblVerificationStatus
@@ -289,10 +290,11 @@
             // 
             // VerificationStatusTree
             // 
+            VerificationStatusTree.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             VerificationStatusTree.Font = new Font("Segoe UI", 12F);
             VerificationStatusTree.Location = new Point(355, 33);
             VerificationStatusTree.Name = "VerificationStatusTree";
-            VerificationStatusTree.Size = new Size(818, 230);
+            VerificationStatusTree.Size = new Size(818, 211);
             VerificationStatusTree.TabIndex = 3;
             // 
             // tableLayoutPanel4
@@ -303,11 +305,11 @@
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel4.Controls.Add(btnExpandAll, 0, 0);
             tableLayoutPanel4.Controls.Add(btnCollapseAll, 1, 0);
-            tableLayoutPanel4.Location = new Point(827, 269);
+            tableLayoutPanel4.Location = new Point(827, 250);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Size = new Size(346, 44);
+            tableLayoutPanel4.Size = new Size(346, 40);
             tableLayoutPanel4.TabIndex = 27;
             // 
             // btnExpandAll
@@ -338,13 +340,14 @@
             // 
             // dataGridViewRequests
             // 
+            dataGridViewRequests.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewRequests.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewRequests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewRequests.Font = new Font("Segoe UI", 12F);
             dataGridViewRequests.Location = new Point(3, 33);
             dataGridViewRequests.Name = "dataGridViewRequests";
             dataGridViewRequests.RowHeadersWidth = 51;
-            dataGridViewRequests.Size = new Size(346, 230);
+            dataGridViewRequests.Size = new Size(346, 211);
             dataGridViewRequests.TabIndex = 1;
             // 
             // lblRequestGuid
@@ -363,9 +366,9 @@
             btnCheckStatus.FlatStyle = FlatStyle.Flat;
             btnCheckStatus.Font = new Font("Segoe UI", 12F);
             btnCheckStatus.ForeColor = Color.White;
-            btnCheckStatus.Location = new Point(3, 269);
+            btnCheckStatus.Location = new Point(3, 250);
             btnCheckStatus.Name = "btnCheckStatus";
-            btnCheckStatus.Size = new Size(346, 44);
+            btnCheckStatus.Size = new Size(346, 40);
             btnCheckStatus.TabIndex = 4;
             btnCheckStatus.Text = "Check Status";
             btnCheckStatus.UseVisualStyleBackColor = false;
