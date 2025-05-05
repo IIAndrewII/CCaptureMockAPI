@@ -234,6 +234,7 @@ namespace CCaptureWinForm
 
                 foreach (var requestGuid in requestGuids)
                 {
+                    TreeNode requestNode = null;
                     try
                     {
                         statusLabel3.Text = $"Checking status for {requestGuid}...";
@@ -255,8 +256,20 @@ namespace CCaptureWinForm
                         // Save the VerificationResponse to the database
                         await _databaseService.SaveVerificationResponseAsync(response, requestGuid);
 
+                        // Update Checked_GUID to true
+                        var updateResult = await _databaseService.UpdateCheckedGuidAsync(requestGuid);
+                        if (!updateResult)
+                        {
+                            requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                            requestNode.ForeColor = Color.Black;
+                            var errorNode = requestNode.Nodes.Add("Error: Failed to update Checked_GUID (submission not found)");
+                            errorNode.ForeColor = Color.Red;
+                            toolStripProgressBar1.Value++;
+                            continue; // Skip to the next requestGuid
+                        }
+
                         // Build TreeView for this request
-                        var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                        requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
                         requestNode.ForeColor = Color.Black;
 
                         // Add top-level response fields
@@ -361,7 +374,7 @@ namespace CCaptureWinForm
                     }
                     catch (Exception ex)
                     {
-                        var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                        requestNode = requestNode ?? VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
                         requestNode.ForeColor = Color.Black;
                         var errorNode = requestNode.Nodes.Add($"Error: {ex.Message}");
                         errorNode.ForeColor = Color.Red;

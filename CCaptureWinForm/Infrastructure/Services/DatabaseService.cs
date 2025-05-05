@@ -67,6 +67,24 @@ namespace CCaptureWinForm.Infrastructure.Services
             }
         }
 
+        public async Task<bool> UpdateCheckedGuidAsync(string requestGuid)
+        {
+            using (var context = CreateContext())
+            {
+                var submission = await context.Submissions
+                    .FirstOrDefaultAsync(s => s.RequestGuid == requestGuid);
+
+                if (submission == null)
+                {
+                    return false; // Submission not found
+                }
+
+                submission.CheckedGuid = true;
+                await context.SaveChangesAsync();
+                return true; // Update successful
+            }
+        }
+
         public async Task SaveDocumentAsync(int submissionId, string filePath, string pageType, string fileName)
         {
             using (var context = CreateContext())
