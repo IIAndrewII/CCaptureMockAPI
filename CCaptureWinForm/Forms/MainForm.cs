@@ -19,6 +19,10 @@ namespace CCaptureWinForm
             _apiDatabaseService = apiDatabaseService;
             _databaseService = databaseService;
             _configuration = configuration;
+
+            // Set the form to maximized state before initializing components
+            this.WindowState = FormWindowState.Maximized;
+
             InitializeComponent();
 
             // Initialize MainViewModel

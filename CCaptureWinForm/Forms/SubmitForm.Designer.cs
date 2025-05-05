@@ -85,9 +85,9 @@
             label1 = new Label();
             dataGridViewGroups = new DataGridView();
             btnRemoveField = new Button();
-            errorProvider = new ErrorProvider(components);
             txtApiUrl = new TextBox();
             lblApiUrl = new Label();
+            errorProvider = new ErrorProvider(components);
             submitPanel.SuspendLayout();
             statusStrip2.SuspendLayout();
             metadataPanel.SuspendLayout();
@@ -323,7 +323,7 @@
             // 
             lblFields.AutoSize = true;
             lblFields.Font = new Font("Segoe UI", 12F);
-            lblFields.Location = new Point(784, 240);
+            lblFields.Location = new Point(785, 240);
             lblFields.Name = "lblFields";
             lblFields.Size = new Size(82, 21);
             lblFields.TabIndex = 11;
@@ -373,7 +373,7 @@
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel3.Size = new Size(346, 34);
+            tableLayoutPanel3.Size = new Size(346, 44);
             tableLayoutPanel3.TabIndex = 23;
             // 
             // btnRemoveFile
@@ -384,7 +384,7 @@
             btnRemoveFile.ForeColor = Color.White;
             btnRemoveFile.Location = new Point(176, 3);
             btnRemoveFile.Name = "btnRemoveFile";
-            btnRemoveFile.Size = new Size(167, 28);
+            btnRemoveFile.Size = new Size(167, 31);
             btnRemoveFile.TabIndex = 16;
             btnRemoveFile.Text = "Remove File";
             btnRemoveFile.UseVisualStyleBackColor = false;
@@ -397,7 +397,7 @@
             btnBrowseFile.ForeColor = Color.White;
             btnBrowseFile.Location = new Point(3, 3);
             btnBrowseFile.Name = "btnBrowseFile";
-            btnBrowseFile.Size = new Size(167, 28);
+            btnBrowseFile.Size = new Size(167, 31);
             btnBrowseFile.TabIndex = 15;
             btnBrowseFile.Text = "Add Files";
             btnBrowseFile.UseVisualStyleBackColor = false;
@@ -425,7 +425,7 @@
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Size = new Size(346, 34);
+            tableLayoutPanel4.Size = new Size(346, 44);
             tableLayoutPanel4.TabIndex = 26;
             // 
             // btnAddGroup
@@ -436,9 +436,9 @@
             btnAddGroup.ForeColor = Color.White;
             btnAddGroup.Location = new Point(3, 3);
             btnAddGroup.Name = "btnAddGroup";
-            btnAddGroup.Size = new Size(167, 28);
+            btnAddGroup.Size = new Size(167, 31);
             btnAddGroup.TabIndex = 20;
-            btnAddGroup.Text = "Add";
+            btnAddGroup.Text = "Add Group";
             btnAddGroup.UseVisualStyleBackColor = false;
             // 
             // btnRemoveGroup
@@ -449,9 +449,9 @@
             btnRemoveGroup.ForeColor = Color.White;
             btnRemoveGroup.Location = new Point(176, 3);
             btnRemoveGroup.Name = "btnRemoveGroup";
-            btnRemoveGroup.Size = new Size(167, 28);
+            btnRemoveGroup.Size = new Size(167, 31);
             btnRemoveGroup.TabIndex = 12;
-            btnRemoveGroup.Text = "Remove";
+            btnRemoveGroup.Text = "Remove Group";
             btnRemoveGroup.UseVisualStyleBackColor = false;
             // 
             // label1
@@ -459,8 +459,8 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
             label1.Location = new Point(394, 240);
-            lblFields.Size = new Size(92, 21);
             label1.Name = "label1";
+            label1.Size = new Size(92, 21);
             label1.TabIndex = 27;
             label1.Text = "Documents:";
             // 
@@ -490,11 +490,6 @@
             btnRemoveField.Text = "Remove Field";
             btnRemoveField.UseVisualStyleBackColor = false;
             // 
-            // errorProvider
-            // 
-            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
-            errorProvider.ContainerControl = this;
-            // 
             // txtApiUrl
             // 
             txtApiUrl.Font = new Font("Segoe UI", 12F);
@@ -512,6 +507,11 @@
             lblApiUrl.Size = new Size(69, 21);
             lblApiUrl.TabIndex = 30;
             lblApiUrl.Text = "API URL:";
+            // 
+            // errorProvider
+            // 
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            errorProvider.ContainerControl = this;
             // 
             // SubmitForm
             // 
