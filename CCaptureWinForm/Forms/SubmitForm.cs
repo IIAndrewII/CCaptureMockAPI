@@ -18,10 +18,9 @@ namespace CCaptureWinForm
         private readonly IApiDatabaseService _apiDatabaseService;
         private readonly IDatabaseService _databaseService;
         private readonly ErrorProvider _errorProvider;
-        private Dictionary<string, GroupData> _groups; // Updated to use GroupData
-        private int _groupCounter = 1;
+        private Dictionary<string, GroupData> _groups;
+        private bool _isSubmitting = false;
 
-        // New class to hold documents and fields per group
         private class GroupData
         {
             public List<Document_Row> Documents { get; set; } = new List<Document_Row>();
@@ -50,7 +49,7 @@ namespace CCaptureWinForm
             ConfigureDataGridViewGroupsColumns();
             ConfigureDataGridViewColumns();
             AttachEventHandlers();
-            AddNewGroup();
+            UpdateControlStates();
             InitializeAsync();
         }
 
@@ -141,15 +140,89 @@ namespace CCaptureWinForm
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
             dataGridViewDocuments.CellValueChanged += dataGridViewDocuments_CellValueChanged;
             dataGridViewFields.CellValueChanged += dataGridViewFields_CellValueChanged;
+            dataGridViewGroups.RowsRemoved += (s, e) => UpdateControlStates();
+            dataGridViewGroups.RowsAdded += (s, e) => UpdateControlStates();
+            dataGridViewDocuments.RowsRemoved += (s, e) => UpdateControlStates();
+            dataGridViewDocuments.RowsAdded += (s, e) => UpdateControlStates();
+            dataGridViewFields.RowsRemoved += (s, e) => UpdateControlStates();
+            dataGridViewFields.RowsAdded += (s, e) => UpdateControlStates();
+        }
+
+        private void UpdateControlStates()
+        {
+            bool hasGroups = _groups.Any();
+            bool hasDocuments = dataGridViewDocuments.Rows.Cast<DataGridViewRow>().Any(r => !r.IsNewRow);
+            bool hasFields = dataGridViewFields.Rows.Cast<DataGridViewRow>().Any(r => !r.IsNewRow);
+
+            btnSubmitDocument.Enabled = hasGroups && !_isSubmitting;
+            btnBrowseFile.Enabled = hasGroups && !_isSubmitting;
+            btnRemoveFile.Enabled = hasGroups && hasDocuments && !_isSubmitting;
+            btnRemoveField.Enabled = hasGroups && hasFields && !_isSubmitting;
+            btnRemoveGroup.Enabled = hasGroups && !_isSubmitting;
+            dataGridViewDocuments.Enabled = hasGroups && !_isSubmitting;
+            dataGridViewFields.Enabled = hasGroups && !_isSubmitting;
         }
 
         private void AddNewGroup()
         {
-            var groupName = $"Group {_groupCounter++}";
-            _groups.Add(groupName, new GroupData());
-            int rowIndex = dataGridViewGroups.Rows.Add(true, groupName);
-            dataGridViewGroups.ClearSelection();
-            dataGridViewGroups.Rows[rowIndex].Selected = true;
+            using (var form = new Form())
+            {
+                form.Text = "Create New Group";
+                form.Size = new Size(300, 150);
+                form.FormBorderStyle = FormBorderStyle.FixedDialog;
+                form.MaximizeBox = false;
+                form.MinimizeBox = false;
+                form.StartPosition = FormStartPosition.CenterParent;
+
+                var label = new Label
+                {
+                    Text = "Enter Group Name:",
+                    Location = new Point(10, 20),
+                    Size = new Size(260, 20)
+                };
+
+                var textBox = new TextBox
+                {
+                    Location = new Point(10, 40),
+                    Size = new Size(260, 20)
+                };
+
+                var okButton = new Button
+                {
+                    Text = "OK",
+                    Location = new Point(110, 70),
+                    DialogResult = DialogResult.OK
+                };
+
+                var cancelButton = new Button
+                {
+                    Text = "Cancel",
+                    Location = new Point(190, 70),
+                    DialogResult = DialogResult.Cancel
+                };
+
+                form.Controls.Add(label);
+                form.Controls.Add(textBox);
+                form.Controls.Add(okButton);
+                form.Controls.Add(cancelButton);
+                form.AcceptButton = okButton;
+                form.CancelButton = cancelButton;
+
+                if (form.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(textBox.Text))
+                {
+                    string groupName = textBox.Text.Trim();
+                    if (_groups.ContainsKey(groupName))
+                    {
+                        MessageBox.Show("Group name already exists!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    _groups.Add(groupName, new GroupData());
+                    int rowIndex = dataGridViewGroups.Rows.Add(true, groupName);
+                    dataGridViewGroups.ClearSelection();
+                    dataGridViewGroups.Rows[rowIndex].Selected = true;
+                    UpdateControlStates();
+                }
+            }
         }
 
         private async Task PopulateBatchClassNamesAsync()
@@ -201,6 +274,7 @@ namespace CCaptureWinForm
         private void dataGridViewGroups_SelectionChanged(object sender, EventArgs e)
         {
             UpdateDocumentAndFieldGrid();
+            UpdateControlStates();
         }
 
         private void dataGridViewGroups_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -219,7 +293,6 @@ namespace CCaptureWinForm
                 string selectedGroup = selectedRow.Cells["GroupName"].Value?.ToString();
                 if (selectedGroup != null && _groups.ContainsKey(selectedGroup))
                 {
-                    // Update Documents
                     var pageTypeColumn = (DataGridViewComboBoxColumn)dataGridViewDocuments.Columns["PageType"];
                     foreach (var doc in _groups[selectedGroup].Documents)
                     {
@@ -228,7 +301,6 @@ namespace CCaptureWinForm
                             dataGridViewDocuments.Rows[rowIndex].Cells["PageType"].Value = doc.PageType;
                     }
 
-                    // Update Fields
                     var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
                     foreach (var field in _groups[selectedGroup].Fields)
                     {
@@ -238,6 +310,7 @@ namespace CCaptureWinForm
                     }
                 }
             }
+            UpdateControlStates();
         }
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
@@ -300,6 +373,8 @@ namespace CCaptureWinForm
         {
             try
             {
+                _isSubmitting = true;
+                UpdateControlStates();
                 _errorProvider.Clear();
                 if (cboBatchClassName.SelectedIndex == -1)
                     _errorProvider.SetError(cboBatchClassName, "Please select a batch category.");
@@ -313,20 +388,28 @@ namespace CCaptureWinForm
                     _errorProvider.SetError(txtMessageID, "Please enter the message ID.");
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
-                if (!dataGridViewGroups.Rows.Cast<DataGridViewRow>()
-                    .Any(row => (bool?)row.Cells["Submit"].Value == true && _groups[row.Cells["GroupName"].Value.ToString()].Documents.Any()))
-                    _errorProvider.SetError(dataGridViewGroups, "Please check at least one group with documents.");
 
-                if (_errorProvider.GetError(cboBatchClassName) != "" ||
-                    _errorProvider.GetError(txtSourceSystem) != "" ||
-                    _errorProvider.GetError(txtChannel) != "" ||
-                    _errorProvider.GetError(txtSessionID) != "" ||
-                    _errorProvider.GetError(txtMessageID) != "" ||
-                    _errorProvider.GetError(txtUserCode) != "" ||
-                    _errorProvider.GetError(dataGridViewGroups) != "")
+                var checkedGroups = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
+                    .Where(row => (bool?)row.Cells["Submit"].Value == true)
+                    .Select(row => row.Cells["GroupName"].Value.ToString())
+                    .ToList();
+
+                if (!checkedGroups.Any())
                 {
-                    statusLabel2.Text = "Please fill in all required fields and check at least one group with documents.";
+                    statusLabel2.Text = "Please check at least one group to submit.";
                     statusLabel2.ForeColor = Color.Red;
+                    _isSubmitting = false;
+                    UpdateControlStates();
+                    return;
+                }
+
+                var emptyGroups = checkedGroups.Where(group => !_groups[group].Documents.Any()).ToList();
+                if (emptyGroups.Any())
+                {
+                    statusLabel2.Text = $"The following groups have no documents: {string.Join(", ", emptyGroups)}";
+                    statusLabel2.ForeColor = Color.Red;
+                    _isSubmitting = false;
+                    UpdateControlStates();
                     return;
                 }
 
@@ -337,12 +420,6 @@ namespace CCaptureWinForm
                 }
                 var apiService = new ApiService(apiUrl);
                 _viewModel.UpdateApiService(apiService);
-
-                var checkedGroups = dataGridViewGroups.Rows.Cast<DataGridViewRow>()
-                    .Where(row => (bool?)row.Cells["Submit"].Value == true)
-                    .Select(row => row.Cells["GroupName"].Value.ToString())
-                    .Where(group => _groups[group].Documents.Any())
-                    .ToList();
 
                 foreach (string group in checkedGroups.ToList())
                 {
@@ -372,11 +449,6 @@ namespace CCaptureWinForm
                         dataGridViewGroups.Rows.Remove(rowToRemove);
                 }
 
-                if (_groups.Count == 0)
-                    AddNewGroup();
-                else
-                    dataGridViewGroups.Rows[0].Selected = true;
-
                 UpdateDocumentAndFieldGrid();
             }
             catch (Exception ex)
@@ -387,6 +459,11 @@ namespace CCaptureWinForm
                 statusLabel2.ForeColor = Color.Red;
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                     ShowLoginForm();
+            }
+            finally
+            {
+                _isSubmitting = false;
+                UpdateControlStates();
             }
         }
 
@@ -416,6 +493,7 @@ namespace CCaptureWinForm
                     if (dataGridViewGroups.SelectedRows[0].Cells["GroupName"].Value.ToString() == selectedGroup)
                         dataGridViewDocuments.Rows.Add(filePath, string.Empty);
                 }
+                UpdateControlStates();
             }
         }
 
@@ -438,6 +516,7 @@ namespace CCaptureWinForm
                     dataGridViewDocuments.Rows.Remove(row);
                 }
             }
+            UpdateControlStates();
         }
 
         private void btnAddGroup_Click(object sender, EventArgs e)
@@ -453,10 +532,6 @@ namespace CCaptureWinForm
                 var selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
                 _groups.Remove(selectedGroup);
                 dataGridViewGroups.Rows.Remove(selectedRow);
-                if (dataGridViewGroups.Rows.Count == 0)
-                    AddNewGroup();
-                else
-                    dataGridViewGroups.Rows[0].Selected = true;
                 UpdateDocumentAndFieldGrid();
             }
         }
@@ -480,6 +555,7 @@ namespace CCaptureWinForm
                     dataGridViewFields.Rows.Remove(row);
                 }
             }
+            UpdateControlStates();
         }
 
         private void dataGridViewDocuments_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -575,6 +651,7 @@ namespace CCaptureWinForm
                         existingField.FieldValue = fieldValue ?? string.Empty;
                 }
             }
+            UpdateControlStates();
         }
     }
 }

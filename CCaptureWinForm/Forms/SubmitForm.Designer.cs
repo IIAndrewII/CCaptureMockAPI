@@ -37,6 +37,8 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnRemoveField;
+        private System.Windows.Forms.TextBox txtApiUrl;
+        private System.Windows.Forms.Label lblApiUrl;
 
         protected override void Dispose(bool disposing)
         {
@@ -535,7 +537,5 @@
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
         }
-        private TextBox txtApiUrl;
-        private Label lblApiUrl;
     }
 }
