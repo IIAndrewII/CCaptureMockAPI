@@ -204,6 +204,7 @@ public partial class CCaptureDbContext : DbContext
             entity.Property(e => e.AuthToken).HasMaxLength(500);
             entity.Property(e => e.BatchClassName).HasMaxLength(100);
             entity.Property(e => e.Channel).HasMaxLength(50);
+            entity.Property(e => e.CheckedGuid).HasColumnName("Checked_GUID");
             entity.Property(e => e.InteractionDateTime).HasColumnType("datetime");
             entity.Property(e => e.MessageId).HasMaxLength(50);
             entity.Property(e => e.RequestGuid).HasMaxLength(36);

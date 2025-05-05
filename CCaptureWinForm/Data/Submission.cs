@@ -29,6 +29,8 @@ public partial class Submission
 
     public DateTime? SubmittedAt { get; set; }
 
+    public bool CheckedGuid { get; set; }
+
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     public virtual ICollection<Field> Fields { get; set; } = new List<Field>();
