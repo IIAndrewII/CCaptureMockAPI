@@ -323,7 +323,7 @@
             // 
             lblFields.AutoSize = true;
             lblFields.Font = new Font("Segoe UI", 12F);
-            lblFields.Location = new Point(785, 240);
+            lblFields.Location = new Point(784, 240);
             lblFields.Name = "lblFields";
             lblFields.Size = new Size(82, 21);
             lblFields.TabIndex = 11;
@@ -459,8 +459,8 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
             label1.Location = new Point(394, 240);
+            lblFields.Size = new Size(92, 21);
             label1.Name = "label1";
-            label1.Size = new Size(92, 21);
             label1.TabIndex = 27;
             label1.Text = "Documents:";
             // 

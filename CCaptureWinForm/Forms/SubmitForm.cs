@@ -146,6 +146,60 @@ namespace CCaptureWinForm
             dataGridViewDocuments.RowsAdded += (s, e) => UpdateControlStates();
             dataGridViewFields.RowsRemoved += (s, e) => UpdateControlStates();
             dataGridViewFields.RowsAdded += (s, e) => UpdateControlStates();
+
+            // Attach EnabledChanged handlers for styling
+            btnSubmitDocument.EnabledChanged += Control_EnabledChanged;
+            btnBrowseFile.EnabledChanged += Control_EnabledChanged;
+            btnRemoveFile.EnabledChanged += Control_EnabledChanged;
+            btnRemoveField.EnabledChanged += Control_EnabledChanged;
+            btnAddGroup.EnabledChanged += Control_EnabledChanged;
+            btnRemoveGroup.EnabledChanged += Control_EnabledChanged;
+            txtApiUrl.EnabledChanged += Control_EnabledChanged;
+            txtSourceSystem.EnabledChanged += Control_EnabledChanged;
+            txtChannel.EnabledChanged += Control_EnabledChanged;
+            txtUserCode.EnabledChanged += Control_EnabledChanged;
+            txtSessionID.EnabledChanged += Control_EnabledChanged;
+            txtMessageID.EnabledChanged += Control_EnabledChanged;
+            cboBatchClassName.EnabledChanged += Control_EnabledChanged;
+            dataGridViewGroups.EnabledChanged += Control_EnabledChanged;
+            dataGridViewDocuments.EnabledChanged += Control_EnabledChanged;
+            dataGridViewFields.EnabledChanged += Control_EnabledChanged;
+            pickerInteractionDateTime.EnabledChanged += Control_EnabledChanged;
+        }
+
+        private void Control_EnabledChanged(object sender, EventArgs e)
+        {
+            if (sender is Control control)
+            {
+                if (control.Enabled)
+                {
+                    control.BackColor = SystemColors.Window;
+                    if (control is Button button)
+                    {
+                        button.ForeColor = Color.White;
+                        button.BackColor = button == btnSubmitDocument ? Color.RoyalBlue :
+                                          button == btnBrowseFile || button == btnAddGroup ? Color.Green :
+                                          Color.FromArgb(220, 53, 69);
+                    }
+                    if (control is TextBox || control is ComboBox)
+                    {
+                        control.ForeColor = SystemColors.WindowText;
+                    }
+                }
+                else
+                {
+                    control.BackColor = Color.FromArgb(230, 230, 230);
+                    if (control is Button button)
+                    {
+                        button.ForeColor = Color.DarkGray;
+                        button.BackColor = Color.FromArgb(200, 200, 200);
+                    }
+                    if (control is TextBox || control is ComboBox)
+                    {
+                        control.ForeColor = Color.DimGray;
+                    }
+                }
+            }
         }
 
         private void UpdateControlStates()
@@ -159,8 +213,39 @@ namespace CCaptureWinForm
             btnRemoveFile.Enabled = hasGroups && hasDocuments && !_isSubmitting;
             btnRemoveField.Enabled = hasGroups && hasFields && !_isSubmitting;
             btnRemoveGroup.Enabled = hasGroups && !_isSubmitting;
+            btnAddGroup.Enabled = !_isSubmitting;
             dataGridViewDocuments.Enabled = hasGroups && !_isSubmitting;
             dataGridViewFields.Enabled = hasGroups && !_isSubmitting;
+            dataGridViewGroups.Enabled = !_isSubmitting;
+            cboBatchClassName.Enabled = !_isSubmitting;
+            pickerInteractionDateTime.Enabled = !_isSubmitting;
+
+            // Disable text boxes during submission
+            txtApiUrl.Enabled = !_isSubmitting;
+            txtSourceSystem.Enabled = !_isSubmitting;
+            txtChannel.Enabled = !_isSubmitting;
+            txtUserCode.Enabled = !_isSubmitting;
+            txtSessionID.Enabled = !_isSubmitting;
+            txtMessageID.Enabled = !_isSubmitting;
+
+            // Force style update
+            Control_EnabledChanged(btnSubmitDocument, EventArgs.Empty);
+            Control_EnabledChanged(btnBrowseFile, EventArgs.Empty);
+            Control_EnabledChanged(btnRemoveFile, EventArgs.Empty);
+            Control_EnabledChanged(btnRemoveField, EventArgs.Empty);
+            Control_EnabledChanged(btnAddGroup, EventArgs.Empty);
+            Control_EnabledChanged(btnRemoveGroup, EventArgs.Empty);
+            Control_EnabledChanged(txtApiUrl, EventArgs.Empty);
+            Control_EnabledChanged(txtSourceSystem, EventArgs.Empty);
+            Control_EnabledChanged(txtChannel, EventArgs.Empty);
+            Control_EnabledChanged(txtUserCode, EventArgs.Empty);
+            Control_EnabledChanged(txtSessionID, EventArgs.Empty);
+            Control_EnabledChanged(txtMessageID, EventArgs.Empty);
+            Control_EnabledChanged(cboBatchClassName, EventArgs.Empty);
+            Control_EnabledChanged(dataGridViewGroups, EventArgs.Empty);
+            Control_EnabledChanged(dataGridViewDocuments, EventArgs.Empty);
+            Control_EnabledChanged(dataGridViewFields, EventArgs.Empty);
+            Control_EnabledChanged(pickerInteractionDateTime, EventArgs.Empty);
         }
 
         private void AddNewGroup()
