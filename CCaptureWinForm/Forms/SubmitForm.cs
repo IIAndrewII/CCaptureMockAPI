@@ -34,10 +34,8 @@ namespace CCaptureWinForm
                 return;
 
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-            // Force layout refresh on initialization
-            this.Load += SubmitForm_Load;
-            this.WindowState = FormWindowState.Maximized;
-
+            // Attach Shown event for layout initialization
+            this.Shown += SubmitForm_Shown;
         }
 
         public SubmitForm(IApiDatabaseService apiDatabaseService, IDatabaseService databaseService, IConfiguration configuration, MainViewModel viewModel)
@@ -57,11 +55,22 @@ namespace CCaptureWinForm
             InitializeAsync();
         }
 
-        private void SubmitForm_Load(object sender, EventArgs e)
+        private void SubmitForm_Shown(object sender, EventArgs e)
         {
-            // Force layout calculation on form load
+            // Force layout recalculation after form is fully rendered
             SubmitForm_Resize(this, EventArgs.Empty);
             tableLayout2.PerformLayout();
+            metadataPanel.PerformLayout();
+            submitPanel.PerformLayout();
+            tableLayout2.Invalidate();
+            tableLayout2.Refresh();
+            // Adjust for DPI scaling
+            float dpiScale = CreateGraphics().DpiX / 96f;
+            if (dpiScale != 1.0f)
+            {
+                tableLayout2.Width = (int)(tableLayout2.Width * dpiScale);
+                tableLayout2.Height = (int)(tableLayout2.Height * dpiScale);
+            }
         }
 
         private async void InitializeAsync()
@@ -310,6 +319,14 @@ namespace CCaptureWinForm
                 form.AcceptButton = okButton;
                 form.CancelButton = cancelButton;
 
+                // Force layout refresh for dialog
+                form.Shown += (s, e) =>
+                {
+                    form.PerformLayout();
+                    form.Invalidate();
+                    form.Refresh();
+                };
+
                 if (form.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(textBox.Text))
                 {
                     string groupName = textBox.Text.Trim();
@@ -448,14 +465,23 @@ namespace CCaptureWinForm
 
         private void ShowLoginForm()
         {
+            OnShown(EventArgs.Empty);
             submitPanel.Visible = false;
             using (var loginForm = new LoginForm(_viewModel))
             {
+                loginForm.Shown += (s, e) =>
+                {
+                    loginForm.PerformLayout();
+                    loginForm.Invalidate();
+                    loginForm.Refresh();
+                };
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
                     statusLabel2.Text = "You're logged in!";
                     statusLabel2.ForeColor = Color.Green;
                     submitPanel.Visible = true;
+                    // Force layout refresh after login
+                    SubmitForm_Shown(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -471,6 +497,8 @@ namespace CCaptureWinForm
             {
                 tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
                 tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical - statusStrip2.Height;
+                tableLayout2.Invalidate();
+                tableLayout2.Refresh();
             }
         }
 
