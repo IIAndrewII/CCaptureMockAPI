@@ -70,24 +70,22 @@
             btnExpandAll = new Button();
             btnCollapseAll = new Button();
             dataGridViewRequests = new DataGridView();
-            Select = new DataGridViewCheckBoxColumn();
-            RequestGuid = new DataGridViewTextBoxColumn();
-            Details = new DataGridViewButtonColumn();
             lblRequestGuid = new Label();
             btnCheckStatus = new Button();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            btnUncheckAll = new Button();
             btnCheckAll = new Button();
+            btnUncheckAll = new Button();
             statusStrip3 = new StatusStrip();
             statusLabel3 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
             errorProvider = new ErrorProvider(components);
+            Select = new DataGridViewCheckBoxColumn();
+            RequestGuid = new DataGridViewTextBoxColumn();
+            Details = new DataGridViewButtonColumn();
             checkStatusPanel.SuspendLayout();
             metadataTableLayout.SuspendLayout();
             tableLayout3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRequests).BeginInit();
-            tableLayoutPanel1.SuspendLayout();
             statusStrip3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
@@ -278,8 +276,9 @@
             tableLayout3.Controls.Add(tableLayoutPanel4, 1, 2);
             tableLayout3.Controls.Add(dataGridViewRequests, 0, 1);
             tableLayout3.Controls.Add(lblRequestGuid, 0, 0);
-            tableLayout3.Controls.Add(btnCheckStatus, 0, 3);
-            tableLayout3.Controls.Add(tableLayoutPanel1, 0, 2);
+            tableLayout3.Controls.Add(btnCheckStatus, 0, 2);
+            tableLayout3.Controls.Add(btnCheckAll, 0, 3);
+            tableLayout3.Controls.Add(btnUncheckAll, 0, 4);
             tableLayout3.Location = new Point(12, 233);
             tableLayout3.Name = "tableLayout3";
             tableLayout3.RowCount = 5;
@@ -353,6 +352,7 @@
             // 
             // dataGridViewRequests
             // 
+            dataGridViewRequests.AllowUserToAddRows = false;
             dataGridViewRequests.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewRequests.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewRequests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -361,27 +361,9 @@
             dataGridViewRequests.Location = new Point(3, 33);
             dataGridViewRequests.Name = "dataGridViewRequests";
             dataGridViewRequests.RowHeadersWidth = 51;
+            dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewRequests.Size = new Size(346, 163);
             dataGridViewRequests.TabIndex = 1;
-            // 
-            // Select
-            // 
-            Select.FillWeight = 59.803936F;
-            Select.HeaderText = "Select";
-            Select.Name = "Select";
-            // 
-            // RequestGuid
-            // 
-            RequestGuid.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            RequestGuid.FillWeight = 87.91179F;
-            RequestGuid.HeaderText = "Request Guid";
-            RequestGuid.Name = "RequestGuid";
-            // 
-            // Details
-            // 
-            Details.FillWeight = 152.284271F;
-            Details.HeaderText = "Details";
-            Details.Name = "Details";
             // 
             // lblRequestGuid
             // 
@@ -399,40 +381,12 @@
             btnCheckStatus.FlatStyle = FlatStyle.Flat;
             btnCheckStatus.Font = new Font("Segoe UI", 12F);
             btnCheckStatus.ForeColor = Color.White;
-            btnCheckStatus.Location = new Point(3, 248);
+            btnCheckStatus.Location = new Point(3, 202);
             btnCheckStatus.Name = "btnCheckStatus";
-            btnCheckStatus.Size = new Size(346, 34);
+            btnCheckStatus.Size = new Size(346, 40);
             btnCheckStatus.TabIndex = 4;
             btnCheckStatus.Text = "Check Status";
             btnCheckStatus.UseVisualStyleBackColor = false;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(btnUncheckAll, 1, 0);
-            tableLayoutPanel1.Controls.Add(btnCheckAll, 0, 0);
-            tableLayoutPanel1.Location = new Point(130, 202);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(219, 40);
-            tableLayoutPanel1.TabIndex = 28;
-            // 
-            // btnUncheckAll
-            // 
-            btnUncheckAll.BackColor = Color.RoyalBlue;
-            btnUncheckAll.FlatStyle = FlatStyle.Flat;
-            btnUncheckAll.Font = new Font("Segoe UI", 12F);
-            btnUncheckAll.ForeColor = Color.White;
-            btnUncheckAll.Location = new Point(112, 3);
-            btnUncheckAll.Name = "btnUncheckAll";
-            btnUncheckAll.Size = new Size(104, 34);
-            btnUncheckAll.TabIndex = 7;
-            btnUncheckAll.Text = "Uncheck All";
-            btnUncheckAll.UseVisualStyleBackColor = false;
             // 
             // btnCheckAll
             // 
@@ -440,12 +394,25 @@
             btnCheckAll.FlatStyle = FlatStyle.Flat;
             btnCheckAll.Font = new Font("Segoe UI", 12F);
             btnCheckAll.ForeColor = Color.White;
-            btnCheckAll.Location = new Point(3, 3);
+            btnCheckAll.Location = new Point(3, 248);
             btnCheckAll.Name = "btnCheckAll";
-            btnCheckAll.Size = new Size(103, 34);
+            btnCheckAll.Size = new Size(346, 34);
             btnCheckAll.TabIndex = 6;
             btnCheckAll.Text = "Check All";
             btnCheckAll.UseVisualStyleBackColor = false;
+            // 
+            // btnUncheckAll
+            // 
+            btnUncheckAll.BackColor = Color.RoyalBlue;
+            btnUncheckAll.FlatStyle = FlatStyle.Flat;
+            btnUncheckAll.Font = new Font("Segoe UI", 12F);
+            btnUncheckAll.ForeColor = Color.White;
+            btnUncheckAll.Location = new Point(3, 288);
+            btnUncheckAll.Name = "btnUncheckAll";
+            btnUncheckAll.Size = new Size(346, 34);
+            btnUncheckAll.TabIndex = 7;
+            btnUncheckAll.Text = "Uncheck All";
+            btnUncheckAll.UseVisualStyleBackColor = false;
             // 
             // statusStrip3
             // 
@@ -472,6 +439,27 @@
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // Select
+            // 
+            Select.FillWeight = 90.6307144F;
+            Select.HeaderText = "Select";
+            Select.Name = "Select";
+            // 
+            // RequestGuid
+            // 
+            RequestGuid.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            RequestGuid.FillWeight = 133.227142F;
+            RequestGuid.HeaderText = "Request Guid";
+            RequestGuid.Name = "RequestGuid";
+            // 
+            // Details
+            // 
+            Details.FillWeight = 76.1421356F;
+            Details.HeaderText = "Details";
+            Details.Name = "Details";
+            Details.Text = "View Details";
+            Details.UseColumnTextForButtonValue = true;
+            // 
             // CheckStatusForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -489,13 +477,11 @@
             tableLayout3.PerformLayout();
             tableLayoutPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewRequests).EndInit();
-            tableLayoutPanel1.ResumeLayout(false);
             statusStrip3.ResumeLayout(false);
             statusStrip3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
         }
-        private TableLayoutPanel tableLayoutPanel1;
         private DataGridViewCheckBoxColumn Select;
         private DataGridViewTextBoxColumn RequestGuid;
         private DataGridViewButtonColumn Details;

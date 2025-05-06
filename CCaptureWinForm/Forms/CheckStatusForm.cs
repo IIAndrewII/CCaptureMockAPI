@@ -84,29 +84,8 @@ namespace CCaptureWinForm
 
         private void ConfigureDataGridViewRequests()
         {
-            dataGridViewRequests.Columns.Clear();
-            dataGridViewRequests.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                HeaderText = "Select",
-                Name = "Select",
-                Width = 50
-            });
-            dataGridViewRequests.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Request Guid",
-                Name = "RequestGuid",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            });
-            dataGridViewRequests.Columns.Add(new DataGridViewButtonColumn
-            {
-                HeaderText = "Details",
-                Name = "Details",
-                Text = "View Details",
-                UseColumnTextForButtonValue = true,
-                Width = 100
-            });
-            dataGridViewRequests.AllowUserToAddRows = false;
-            dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            // Columns are now defined in the Designer, so no need to add them here
+            // Ensure any runtime-specific configuration is applied if necessary
         }
 
         private void ConfigureTreeView()
