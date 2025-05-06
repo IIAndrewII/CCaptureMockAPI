@@ -272,61 +272,89 @@ namespace CCaptureWinForm
         {
             using (var form = new Form())
             {
+                // Form setup
                 form.Text = "Create New Group";
-                form.Size = new Size(300, 150);
+                form.Size = new Size(300, 180);
                 form.FormBorderStyle = FormBorderStyle.FixedDialog;
                 form.MaximizeBox = false;
                 form.MinimizeBox = false;
                 form.StartPosition = FormStartPosition.CenterParent;
 
+                // Create a TableLayoutPanel for better control placement
+                var tableLayout = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 1,
+                    RowCount = 3,
+                    Padding = new Padding(10)
+                };
+                tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+                // Label
                 var label = new Label
                 {
                     Text = "Enter Group Name:",
-                    Location = new Point(10, 20),
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 12F)
+                };
+
+                // TextBox
+                var textBox = new TextBox
+                {
                     Size = new Size(260, 20),
                     Font = new Font("Segoe UI", 12F)
                 };
 
-                var textBox = new TextBox
+                // Button panel for OK and Cancel buttons
+                var buttonPanel = new FlowLayoutPanel
                 {
-                    Location = new Point(10, 40),
-                    Size = new Size(260, 20),
-                    Font = new Font("Segoe UI", 12F)
+                    AutoSize = true,
+                    FlowDirection = FlowDirection.LeftToRight
                 };
 
                 var okButton = new Button
                 {
                     Text = "OK",
-                    Location = new Point(110, 70),
                     DialogResult = DialogResult.OK,
                     Font = new Font("Segoe UI", 12F),
-                    Size = new Size(75, 30)
+                    Size = new Size(75, 35),
+                    Margin = new Padding(5)
                 };
 
                 var cancelButton = new Button
                 {
                     Text = "Cancel",
-                    Location = new Point(190, 70),
                     DialogResult = DialogResult.Cancel,
                     Font = new Font("Segoe UI", 12F),
-                    Size = new Size(75, 30)
+                    Size = new Size(75, 35),
+                    Margin = new Padding(5)
                 };
 
-                form.Controls.Add(label);
-                form.Controls.Add(textBox);
-                form.Controls.Add(okButton);
-                form.Controls.Add(cancelButton);
+                // Add buttons to button panel
+                buttonPanel.Controls.Add(okButton);
+                buttonPanel.Controls.Add(cancelButton);
+
+                // Add controls to TableLayoutPanel
+                tableLayout.Controls.Add(label, 0, 0);
+                tableLayout.Controls.Add(textBox, 0, 1);
+                tableLayout.Controls.Add(buttonPanel, 0, 2);
+
+                // Add TableLayoutPanel to form
+                form.Controls.Add(tableLayout);
+
+                // Set Accept and Cancel buttons
                 form.AcceptButton = okButton;
                 form.CancelButton = cancelButton;
 
-                // Force layout refresh for dialog
+                // Handle form shown to ensure proper rendering
                 form.Shown += (s, e) =>
                 {
-                    form.PerformLayout();
-                    form.Invalidate();
                     form.Refresh();
                 };
 
+                // Show dialog and process input
                 if (form.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(textBox.Text))
                 {
                     string groupName = textBox.Text.Trim();
