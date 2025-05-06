@@ -465,7 +465,6 @@ namespace CCaptureWinForm
 
         private void ShowLoginForm()
         {
-            OnShown(EventArgs.Empty);
             submitPanel.Visible = false;
             using (var loginForm = new LoginForm(_viewModel))
             {
@@ -493,13 +492,13 @@ namespace CCaptureWinForm
 
         private void SubmitForm_Resize(object sender, EventArgs e)
         {
-            if (metadataPanel != null && tableLayout2 != null)
-            {
-                tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
-                tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical - statusStrip2.Height;
-                tableLayout2.Invalidate();
-                tableLayout2.Refresh();
-            }
+            //if (metadataPanel != null && tableLayout2 != null)
+            //{
+            //    tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
+            //    tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical - statusStrip2.Height;
+            //    tableLayout2.Invalidate();
+            //    tableLayout2.Refresh();
+            //}
         }
 
         private async void btnSubmitDocument_Click(object sender, EventArgs e)
