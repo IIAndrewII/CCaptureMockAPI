@@ -34,6 +34,10 @@ namespace CCaptureWinForm
                 return;
 
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
+            // Force layout refresh on initialization
+            this.Load += SubmitForm_Load;
+            this.WindowState = FormWindowState.Maximized;
+
         }
 
         public SubmitForm(IApiDatabaseService apiDatabaseService, IDatabaseService databaseService, IConfiguration configuration, MainViewModel viewModel)
@@ -51,6 +55,13 @@ namespace CCaptureWinForm
             AttachEventHandlers();
             UpdateControlStates();
             InitializeAsync();
+        }
+
+        private void SubmitForm_Load(object sender, EventArgs e)
+        {
+            // Force layout calculation on form load
+            SubmitForm_Resize(this, EventArgs.Empty);
+            tableLayout2.PerformLayout();
         }
 
         private async void InitializeAsync()
@@ -263,27 +274,33 @@ namespace CCaptureWinForm
                 {
                     Text = "Enter Group Name:",
                     Location = new Point(10, 20),
-                    Size = new Size(260, 20)
+                    Size = new Size(260, 20),
+                    Font = new Font("Segoe UI", 12F)
                 };
 
                 var textBox = new TextBox
                 {
                     Location = new Point(10, 40),
-                    Size = new Size(260, 20)
+                    Size = new Size(260, 20),
+                    Font = new Font("Segoe UI", 12F)
                 };
 
                 var okButton = new Button
                 {
                     Text = "OK",
                     Location = new Point(110, 70),
-                    DialogResult = DialogResult.OK
+                    DialogResult = DialogResult.OK,
+                    Font = new Font("Segoe UI", 12F),
+                    Size = new Size(75, 30)
                 };
 
                 var cancelButton = new Button
                 {
                     Text = "Cancel",
                     Location = new Point(190, 70),
-                    DialogResult = DialogResult.Cancel
+                    DialogResult = DialogResult.Cancel,
+                    Font = new Font("Segoe UI", 12F),
+                    Size = new Size(75, 30)
                 };
 
                 form.Controls.Add(label);
@@ -450,8 +467,11 @@ namespace CCaptureWinForm
 
         private void SubmitForm_Resize(object sender, EventArgs e)
         {
-            tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
-            tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical;
+            if (metadataPanel != null && tableLayout2 != null)
+            {
+                tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
+                tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical - statusStrip2.Height;
+            }
         }
 
         private async void btnSubmitDocument_Click(object sender, EventArgs e)

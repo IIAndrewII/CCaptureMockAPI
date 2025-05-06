@@ -257,8 +257,9 @@ namespace CCaptureWinForm
                     .Distinct()
                     .ToList();
 
-                if (!requestGuids.Any())
-                    _errorProvider.SetError(dataGridViewRequests, "Please select at least one valid Request Guid.");
+                //if (!requestGuids.Any())
+                //    _errorProvider.SetError(dataGridViewRequests, "Please select at least one valid Request Guid.");
+
 
                 if (_errorProvider.GetError(txtSourceSystem) != "" ||
                     _errorProvider.GetError(txtChannel) != "" ||
@@ -268,6 +269,13 @@ namespace CCaptureWinForm
                     _errorProvider.GetError(dataGridViewRequests) != "")
                 {
                     statusLabel3.Text = "Please fill in all required fields and select at least one valid Request Guid.";
+                    statusLabel3.ForeColor = Color.Red;
+                    return;
+                }
+
+                if (!requestGuids.Any())
+                {
+                    statusLabel3.Text = "Please select at least one valid Request Guid.";
                     statusLabel3.ForeColor = Color.Red;
                     return;
                 }
