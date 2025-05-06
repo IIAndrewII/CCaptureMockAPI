@@ -154,6 +154,7 @@ namespace CCaptureWinForm
             btnAddGroup.Click += btnAddGroup_Click;
             btnRemoveGroup.Click += btnRemoveGroup_Click;
             btnRemoveField.Click += btnRemoveField_Click;
+            btnAddField.Click += btnAddField_Click; // New event handler for Add Field button
             dataGridViewGroups.SelectionChanged += dataGridViewGroups_SelectionChanged;
             dataGridViewGroups.CellValueChanged += dataGridViewGroups_CellValueChanged;
             Resize += SubmitForm_Resize;
@@ -172,6 +173,7 @@ namespace CCaptureWinForm
             btnBrowseFile.EnabledChanged += Control_EnabledChanged;
             btnRemoveFile.EnabledChanged += Control_EnabledChanged;
             btnRemoveField.EnabledChanged += Control_EnabledChanged;
+            btnAddField.EnabledChanged += Control_EnabledChanged; // New handler for Add Field button
             btnAddGroup.EnabledChanged += Control_EnabledChanged;
             btnRemoveGroup.EnabledChanged += Control_EnabledChanged;
             txtApiUrl.EnabledChanged += Control_EnabledChanged;
@@ -198,7 +200,7 @@ namespace CCaptureWinForm
                     {
                         button.ForeColor = Color.White;
                         button.BackColor = button == btnSubmitDocument ? Color.RoyalBlue :
-                                          button == btnBrowseFile || button == btnAddGroup ? Color.Green :
+                                          button == btnBrowseFile || button == btnAddGroup || button == btnAddField ? Color.Green :
                                           Color.FromArgb(220, 53, 69);
                     }
                     if (control is TextBox || control is ComboBox)
@@ -232,6 +234,7 @@ namespace CCaptureWinForm
             btnBrowseFile.Enabled = hasGroups && !_isSubmitting;
             btnRemoveFile.Enabled = hasGroups && hasDocuments && !_isSubmitting;
             btnRemoveField.Enabled = hasGroups && hasFields && !_isSubmitting;
+            btnAddField.Enabled = hasGroups && !_isSubmitting; // Enable Add Field when a group is selected
             btnRemoveGroup.Enabled = hasGroups && !_isSubmitting;
             btnAddGroup.Enabled = !_isSubmitting;
             dataGridViewDocuments.Enabled = hasGroups && !_isSubmitting;
@@ -253,6 +256,7 @@ namespace CCaptureWinForm
             Control_EnabledChanged(btnBrowseFile, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveFile, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveField, EventArgs.Empty);
+            Control_EnabledChanged(btnAddField, EventArgs.Empty); // Style update for Add Field button
             Control_EnabledChanged(btnAddGroup, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveGroup, EventArgs.Empty);
             Control_EnabledChanged(txtApiUrl, EventArgs.Empty);
@@ -369,6 +373,46 @@ namespace CCaptureWinForm
                     dataGridViewGroups.Rows[rowIndex].Selected = true;
                     UpdateControlStates();
                 }
+            }
+        }
+
+        private async void btnAddField_Click(object sender, EventArgs e)
+        {
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow == null)
+            {
+                MessageBox.Show("Please select a group first.", "No Group Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
+            var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
+            if (fieldNameColumn.Items.Count == 0)
+            {
+                MessageBox.Show("No field names available. Please select a batch class first.", "No Fields Available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Add a new field with the first available field name
+            string defaultFieldName = fieldNameColumn.Items[0].ToString();
+            var newField = new Field
+            {
+                FieldName = defaultFieldName,
+                FieldValue = string.Empty
+            };
+
+            try
+            {
+                var fieldType = await _apiDatabaseService.GetFieldTypeAsync(defaultFieldName);
+                _groups[selectedGroup].Fields.Add(newField);
+                int rowIndex = dataGridViewFields.Rows.Add(defaultFieldName, string.Empty, fieldType);
+                dataGridViewFields.Rows[rowIndex].Selected = true;
+                UpdateControlStates();
+            }
+            catch (Exception ex)
+            {
+                statusLabel2.Text = $"Failed to add field: {ex.Message}";
+                statusLabel2.ForeColor = Color.Red;
             }
         }
 

@@ -90,6 +90,8 @@ namespace CCaptureWinForm
             statusStrip2 = new StatusStrip();
             statusLabel2 = new ToolStripStatusLabel();
             errorProvider = new ErrorProvider(components);
+            tableLayoutPanel1 = new TableLayoutPanel();
+            btnAddField = new Button();
             submitPanel.SuspendLayout();
             metadataPanel.SuspendLayout();
             tableLayout2.SuspendLayout();
@@ -100,6 +102,7 @@ namespace CCaptureWinForm
             ((System.ComponentModel.ISupportInitialize)dataGridViewFields).BeginInit();
             statusStrip2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // submitPanel
@@ -157,8 +160,8 @@ namespace CCaptureWinForm
             tableLayout2.Controls.Add(tableLayoutPanel3, 2, 8);
             tableLayout2.Controls.Add(lblFields, 4, 6);
             tableLayout2.Controls.Add(dataGridViewFields, 4, 7);
-            tableLayout2.Controls.Add(btnRemoveField, 4, 8);
             tableLayout2.Controls.Add(btnSubmitDocument, 4, 9);
+            tableLayout2.Controls.Add(tableLayoutPanel1, 4, 8);
             tableLayout2.Location = new Point(14, 16);
             tableLayout2.Margin = new Padding(3, 4, 3, 4);
             tableLayout2.Name = "tableLayout2";
@@ -510,10 +513,10 @@ namespace CCaptureWinForm
             btnRemoveField.FlatStyle = FlatStyle.Flat;
             btnRemoveField.Font = new Font("Segoe UI", 12F);
             btnRemoveField.ForeColor = Color.White;
-            btnRemoveField.Location = new Point(974, 573);
+            btnRemoveField.Location = new Point(218, 4);
             btnRemoveField.Margin = new Padding(3, 4, 3, 4);
             btnRemoveField.Name = "btnRemoveField";
-            btnRemoveField.Size = new Size(458, 53);
+            btnRemoveField.Size = new Size(237, 45);
             btnRemoveField.TabIndex = 28;
             btnRemoveField.Text = "Remove Field";
             btnRemoveField.UseVisualStyleBackColor = false;
@@ -554,6 +557,37 @@ namespace CCaptureWinForm
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 47.0588226F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52.9411774F));
+            tableLayoutPanel1.Controls.Add(btnAddField, 0, 0);
+            tableLayoutPanel1.Controls.Add(btnRemoveField, 1, 0);
+            tableLayoutPanel1.Location = new Point(974, 573);
+            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(458, 53);
+            tableLayoutPanel1.TabIndex = 31;
+            // 
+            // btnAddField
+            // 
+            btnAddField.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            btnAddField.BackColor = Color.Green;
+            btnAddField.FlatStyle = FlatStyle.Flat;
+            btnAddField.Font = new Font("Segoe UI", 12F);
+            btnAddField.ForeColor = Color.White;
+            btnAddField.Location = new Point(3, 4);
+            btnAddField.Margin = new Padding(3, 4, 3, 4);
+            btnAddField.Name = "btnAddField";
+            btnAddField.Size = new Size(209, 45);
+            btnAddField.TabIndex = 29;
+            btnAddField.Text = "Add Field";
+            btnAddField.UseVisualStyleBackColor = false;
+            // 
             // SubmitForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -577,7 +611,10 @@ namespace CCaptureWinForm
             statusStrip2.ResumeLayout(false);
             statusStrip2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button btnAddField;
     }
 }
