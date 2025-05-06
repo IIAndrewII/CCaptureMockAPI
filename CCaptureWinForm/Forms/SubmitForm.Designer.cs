@@ -128,7 +128,7 @@ namespace CCaptureWinForm
             // 
             tableLayout2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayout2.ColumnCount = 5;
-            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayout2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
@@ -170,7 +170,7 @@ namespace CCaptureWinForm
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayout2.RowStyles.Add(new RowStyle());
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 250F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 61F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 61F));
             tableLayout2.Size = new Size(1435, 899);
@@ -360,7 +360,7 @@ namespace CCaptureWinForm
             dataGridViewGroups.Margin = new Padding(3, 4, 3, 4);
             dataGridViewGroups.Name = "dataGridViewGroups";
             dataGridViewGroups.RowHeadersWidth = 51;
-            dataGridViewGroups.Size = new Size(456, 448);
+            dataGridViewGroups.Size = new Size(456, 242);
             dataGridViewGroups.TabIndex = 11;
             // 
             // tableLayoutPanel4
@@ -371,7 +371,7 @@ namespace CCaptureWinForm
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel4.Controls.Add(btnAddGroup, 0, 0);
             tableLayoutPanel4.Controls.Add(btnRemoveGroup, 1, 0);
-            tableLayoutPanel4.Location = new Point(3, 779);
+            tableLayoutPanel4.Location = new Point(3, 573);
             tableLayoutPanel4.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
@@ -430,7 +430,7 @@ namespace CCaptureWinForm
             dataGridViewDocuments.Margin = new Padding(3, 4, 3, 4);
             dataGridViewDocuments.Name = "dataGridViewDocuments";
             dataGridViewDocuments.RowHeadersWidth = 51;
-            dataGridViewDocuments.Size = new Size(457, 448);
+            dataGridViewDocuments.Size = new Size(457, 242);
             dataGridViewDocuments.TabIndex = 13;
             // 
             // tableLayoutPanel3
@@ -441,7 +441,7 @@ namespace CCaptureWinForm
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.Controls.Add(btnBrowseFile, 0, 0);
             tableLayoutPanel3.Controls.Add(btnRemoveFile, 1, 0);
-            tableLayoutPanel3.Location = new Point(488, 779);
+            tableLayoutPanel3.Location = new Point(488, 573);
             tableLayoutPanel3.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
@@ -500,7 +500,7 @@ namespace CCaptureWinForm
             dataGridViewFields.Margin = new Padding(3, 4, 3, 4);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.RowHeadersWidth = 51;
-            dataGridViewFields.Size = new Size(458, 448);
+            dataGridViewFields.Size = new Size(458, 242);
             dataGridViewFields.TabIndex = 14;
             // 
             // btnRemoveField
@@ -510,7 +510,7 @@ namespace CCaptureWinForm
             btnRemoveField.FlatStyle = FlatStyle.Flat;
             btnRemoveField.Font = new Font("Segoe UI", 12F);
             btnRemoveField.ForeColor = Color.White;
-            btnRemoveField.Location = new Point(974, 779);
+            btnRemoveField.Location = new Point(974, 573);
             btnRemoveField.Margin = new Padding(3, 4, 3, 4);
             btnRemoveField.Name = "btnRemoveField";
             btnRemoveField.Size = new Size(458, 53);
@@ -525,7 +525,7 @@ namespace CCaptureWinForm
             btnSubmitDocument.FlatStyle = FlatStyle.Flat;
             btnSubmitDocument.Font = new Font("Segoe UI", 12F);
             btnSubmitDocument.ForeColor = Color.White;
-            btnSubmitDocument.Location = new Point(974, 841);
+            btnSubmitDocument.Location = new Point(974, 738);
             btnSubmitDocument.Margin = new Padding(3, 4, 3, 4);
             btnSubmitDocument.Name = "btnSubmitDocument";
             btnSubmitDocument.Size = new Size(458, 53);
