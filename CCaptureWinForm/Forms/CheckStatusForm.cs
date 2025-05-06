@@ -51,6 +51,41 @@ namespace CCaptureWinForm
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             await loginAsync(appName, appLogin, appPassword);
+            await PopulateUncheckedGuidsAsync(); // Call new method to populate GUIDs
+        }
+
+        private async Task PopulateUncheckedGuidsAsync()
+        {
+            try
+            {
+                // Get existing GUIDs in the grid to avoid duplicates
+                var existingGuids = dataGridViewRequests.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(row => !row.IsNewRow)
+                    .Select(row => row.Cells["RequestGuid"].Value?.ToString())
+                    .Where(guid => !string.IsNullOrWhiteSpace(guid))
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+                // Fetch unchecked GUIDs from the database
+                var uncheckedGuids = await _databaseService.GetUncheckedRequestGuidsAsync();
+
+                // Add new GUIDs to the grid
+                foreach (var guid in uncheckedGuids)
+                {
+                    if (!existingGuids.Contains(guid))
+                    {
+                        dataGridViewRequests.Rows.Add(guid);
+                        existingGuids.Add(guid);
+                    }
+                }
+
+                // Refresh the grid
+                dataGridViewRequests.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading unchecked GUIDs: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ConfigureDataGridViewRequests()
@@ -265,7 +300,7 @@ namespace CCaptureWinForm
                             var errorNode = requestNode.Nodes.Add("Error: Failed to update Checked_GUID (submission not found)");
                             errorNode.ForeColor = Color.Red;
                             toolStripProgressBar1.Value++;
-                            continue; // Skip to the next requestGuid
+                            continue;
                         }
 
                         // Build TreeView for this request

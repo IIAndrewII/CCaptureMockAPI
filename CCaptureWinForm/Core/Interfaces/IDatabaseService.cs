@@ -11,5 +11,6 @@ namespace CCaptureWinForm.Core.Interfaces
         Task<SubmissionDetails> GetSubmissionDetailsAsync(string requestGuid);
         Task<int> SaveVerificationResponseAsync(Core.Entities.VerificationResponse verificationResponse, string requestGuid);
         Task<bool> UpdateCheckedGuidAsync(string requestGuid);
+        Task<List<string>> GetUncheckedRequestGuidsAsync();
     }
 }
