@@ -37,7 +37,6 @@ namespace CCaptureWinForm
             _configuration = configuration;
             _viewModel = viewModel;
 
-            // Initialize the API URL textbox with the configured value
             txtApiUrl.Text = _configuration["ApiUrl"];
             ConfigureDataGridViewRequests();
             ConfigureTreeView();
@@ -51,35 +50,30 @@ namespace CCaptureWinForm
             var appLogin = _configuration["AppLogin"];
             var appPassword = _configuration["AppPassword"];
             await loginAsync(appName, appLogin, appPassword);
-            await PopulateUncheckedGuidsAsync(); // Call new method to populate GUIDs
+            await PopulateUncheckedGuidsAsync();
         }
 
         private async Task PopulateUncheckedGuidsAsync()
         {
             try
             {
-                // Get existing GUIDs in the grid to avoid duplicates
                 var existingGuids = dataGridViewRequests.Rows
                     .Cast<DataGridViewRow>()
-                    .Where(row => !row.IsNewRow)
                     .Select(row => row.Cells["RequestGuid"].Value?.ToString())
                     .Where(guid => !string.IsNullOrWhiteSpace(guid))
                     .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-                // Fetch unchecked GUIDs from the database
                 var uncheckedGuids = await _databaseService.GetUncheckedRequestGuidsAsync();
 
-                // Add new GUIDs to the grid
                 foreach (var guid in uncheckedGuids)
                 {
                     if (!existingGuids.Contains(guid))
                     {
-                        dataGridViewRequests.Rows.Add(guid);
+                        dataGridViewRequests.Rows.Add(false, guid);
                         existingGuids.Add(guid);
                     }
                 }
 
-                // Refresh the grid
                 dataGridViewRequests.Refresh();
             }
             catch (Exception ex)
@@ -91,6 +85,12 @@ namespace CCaptureWinForm
         private void ConfigureDataGridViewRequests()
         {
             dataGridViewRequests.Columns.Clear();
+            dataGridViewRequests.Columns.Add(new DataGridViewCheckBoxColumn
+            {
+                HeaderText = "Select",
+                Name = "Select",
+                Width = 50
+            });
             dataGridViewRequests.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Request Guid",
@@ -105,7 +105,7 @@ namespace CCaptureWinForm
                 UseColumnTextForButtonValue = true,
                 Width = 100
             });
-            dataGridViewRequests.AllowUserToAddRows = true;
+            dataGridViewRequests.AllowUserToAddRows = false;
             dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
@@ -115,6 +115,7 @@ namespace CCaptureWinForm
             VerificationStatusTree.Font = new Font("Segoe UI", 12F);
             VerificationStatusTree.ShowLines = true;
             VerificationStatusTree.ShowPlusMinus = true;
+            VerificationStatusTree.CollapseAll();
         }
 
         private void AttachEventHandlers()
@@ -122,8 +123,26 @@ namespace CCaptureWinForm
             btnCheckStatus.Click += btnCheckStatus_Click;
             btnExpandAll.Click += btnExpandAll_Click;
             btnCollapseAll.Click += btnCollapseAll_Click;
+            btnCheckAll.Click += btnCheckAll_Click;
+            btnUncheckAll.Click += btnUncheckAll_Click;
             dataGridViewRequests.DataError += DataGridViewRequests_DataError;
             dataGridViewRequests.CellContentClick += DataGridViewRequests_CellContentClick;
+        }
+
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridViewRequests.Rows)
+            {
+                row.Cells["Select"].Value = true;
+            }
+        }
+
+        private void btnUncheckAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridViewRequests.Rows)
+            {
+                row.Cells["Select"].Value = false;
+            }
         }
 
         private async void DataGridViewRequests_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -227,36 +246,35 @@ namespace CCaptureWinForm
                 if (string.IsNullOrWhiteSpace(txtUserCode.Text))
                     _errorProvider.SetError(txtUserCode, "Please enter the user ID.");
 
-                // Collect valid RequestGuids
+                // Collect selected RequestGuids
                 var requestGuids = dataGridViewRequests.Rows
                     .Cast<DataGridViewRow>()
-                    .Where(row => !row.IsNewRow)
+                    .Where(row => row.Cells["Select"].Value is true)
                     .Select(row => row.Cells["RequestGuid"].Value?.ToString())
                     .Where(guid => !string.IsNullOrWhiteSpace(guid) && Guid.TryParse(guid, out _))
                     .Distinct()
                     .ToList();
 
                 if (!requestGuids.Any())
-                    _errorProvider.SetError(dataGridViewRequests, "Please enter at least one valid Request Guid.");
+                    _errorProvider.SetError(dataGridViewRequests, "Please select at least one valid Request Guid.");
 
                 if (_errorProvider.GetError(txtSourceSystem) != "" ||
                     _errorProvider.GetError(txtChannel) != "" ||
                     _errorProvider.GetError(txtSessionID) != "" ||
                     _errorProvider.GetError(txtMessageID) != "" ||
-                    _errorProvider.GetError(txtUserCode) != "")
+                    _errorProvider.GetError(txtUserCode) != "" ||
+                    _errorProvider.GetError(dataGridViewRequests) != "")
                 {
-                    statusLabel3.Text = "Please fill in all required fields and provide at least one valid Request Guid.";
+                    statusLabel3.Text = "Please fill in all required fields and select at least one valid Request Guid.";
                     statusLabel3.ForeColor = Color.Red;
                     return;
                 }
 
-                // Use the textbox value if provided, otherwise fall back to configuration
                 var apiUrl = string.IsNullOrWhiteSpace(txtApiUrl.Text) ? _configuration["ApiUrl"] : txtApiUrl.Text;
                 if (string.IsNullOrEmpty(apiUrl))
                 {
                     throw new InvalidOperationException("API URL is not configured in appsettings.json or provided in the textbox");
                 }
-                // Update the ApiService with the selected URL
                 var apiService = new ApiService(apiUrl);
                 _viewModel.UpdateApiService(apiService);
 
@@ -282,16 +300,13 @@ namespace CCaptureWinForm
                             txtUserCode.Text,
                             pickerInteractionDateTime.Value.ToString("o"));
 
-                        // Deserialize the JSON response
                         var response = JsonSerializer.Deserialize<VerificationResponse>(responseJson, new JsonSerializerOptions
                         {
                             PropertyNameCaseInsensitive = true
                         });
 
-                        // Save the VerificationResponse to the database
                         await _databaseService.SaveVerificationResponseAsync(response, requestGuid);
 
-                        // Update Checked_GUID to true
                         var updateResult = await _databaseService.UpdateCheckedGuidAsync(requestGuid);
                         if (!updateResult)
                         {
@@ -303,11 +318,9 @@ namespace CCaptureWinForm
                             continue;
                         }
 
-                        // Build TreeView for this request
                         requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
                         requestNode.ForeColor = Color.Black;
 
-                        // Add top-level response fields
                         var statusNode = requestNode.Nodes.Add($"Status: {response.Status}");
                         statusNode.ForeColor = response.Status == 0 ? Color.Green : Color.Red;
 
@@ -320,7 +333,6 @@ namespace CCaptureWinForm
                             errorNode.ForeColor = Color.Red;
                         }
 
-                        // Add Batch details
                         if (response.Batch != null)
                         {
                             var batchNode = requestNode.Nodes.Add("Batch");
@@ -331,14 +343,12 @@ namespace CCaptureWinForm
                             batchNode.Nodes.Add($"Creation Date: {response.Batch.CreationDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
                             batchNode.Nodes.Add($"Close Date: {response.Batch.CloseDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
 
-                            // BatchClass
                             if (response.Batch.BatchClass != null)
                             {
                                 var batchClassNode = batchNode.Nodes.Add($"Batch Class: {response.Batch.BatchClass.Name}");
                                 batchClassNode.ForeColor = Color.Black;
                             }
 
-                            // BatchFields
                             if (response.Batch.BatchFields?.Any() == true)
                             {
                                 var fieldsNode = batchNode.Nodes.Add("Batch Fields");
@@ -352,7 +362,6 @@ namespace CCaptureWinForm
                                 }
                             }
 
-                            // Documents
                             if (response.Batch.Documents?.Any() == true)
                             {
                                 var docsNode = batchNode.Nodes.Add("Documents");
@@ -392,7 +401,6 @@ namespace CCaptureWinForm
                                 }
                             }
 
-                            // BatchStates
                             if (response.Batch.BatchStates?.Any() == true)
                             {
                                 var statesNode = batchNode.Nodes.Add("Batch States");
@@ -418,7 +426,7 @@ namespace CCaptureWinForm
                     Application.DoEvents();
                 }
 
-                VerificationStatusTree.ExpandAll();
+                VerificationStatusTree.CollapseAll();
                 toolStripProgressBar1.Visible = false;
                 statusLabel3.Text = "Status check completed.";
                 statusLabel3.ForeColor = Color.Green;
