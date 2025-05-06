@@ -70,6 +70,9 @@
             btnExpandAll = new Button();
             btnCollapseAll = new Button();
             dataGridViewRequests = new DataGridView();
+            Select = new DataGridViewCheckBoxColumn();
+            RequestGuid = new DataGridViewTextBoxColumn();
+            Details = new DataGridViewButtonColumn();
             lblRequestGuid = new Label();
             btnCheckStatus = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -79,9 +82,6 @@
             statusLabel3 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
             errorProvider = new ErrorProvider(components);
-            Select = new DataGridViewCheckBoxColumn();
-            RequestGuid = new DataGridViewTextBoxColumn();
-            Details = new DataGridViewButtonColumn();
             checkStatusPanel.SuspendLayout();
             metadataTableLayout.SuspendLayout();
             tableLayout3.SuspendLayout();
@@ -108,12 +108,13 @@
             // metadataTableLayout
             // 
             metadataTableLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            metadataTableLayout.ColumnCount = 5;
+            metadataTableLayout.ColumnCount = 6;
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
-            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
-            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
             metadataTableLayout.Controls.Add(txtSourceSystem, 0, 1);
             metadataTableLayout.Controls.Add(lblSourceSystem, 0, 0);
             metadataTableLayout.Controls.Add(txtChannel, 2, 1);
@@ -148,7 +149,7 @@
             txtSourceSystem.Location = new Point(3, 49);
             txtSourceSystem.Margin = new Padding(3, 4, 3, 4);
             txtSourceSystem.Name = "txtSourceSystem";
-            txtSourceSystem.Size = new Size(457, 34);
+            txtSourceSystem.Size = new Size(449, 34);
             txtSourceSystem.TabIndex = 0;
             // 
             // lblSourceSystem
@@ -165,17 +166,17 @@
             // 
             txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(489, 49);
+            txtChannel.Location = new Point(481, 49);
             txtChannel.Margin = new Padding(3, 4, 3, 4);
             txtChannel.Name = "txtChannel";
-            txtChannel.Size = new Size(457, 34);
+            txtChannel.Size = new Size(449, 34);
             txtChannel.TabIndex = 1;
             // 
             // lblChannel
             // 
             lblChannel.AutoSize = true;
             lblChannel.Font = new Font("Segoe UI", 12F);
-            lblChannel.Location = new Point(489, 0);
+            lblChannel.Location = new Point(481, 0);
             lblChannel.Name = "lblChannel";
             lblChannel.Size = new Size(86, 28);
             lblChannel.TabIndex = 0;
@@ -185,17 +186,17 @@
             // 
             txtSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSessionID.Font = new Font("Segoe UI", 12F);
-            txtSessionID.Location = new Point(975, 49);
+            txtSessionID.Location = new Point(959, 49);
             txtSessionID.Margin = new Padding(3, 4, 3, 4);
             txtSessionID.Name = "txtSessionID";
-            txtSessionID.Size = new Size(457, 34);
+            txtSessionID.Size = new Size(449, 34);
             txtSessionID.TabIndex = 2;
             // 
             // lblSessionID
             // 
             lblSessionID.AutoSize = true;
             lblSessionID.Font = new Font("Segoe UI", 12F);
-            lblSessionID.Location = new Point(975, 0);
+            lblSessionID.Location = new Point(959, 0);
             lblSessionID.Name = "lblSessionID";
             lblSessionID.Size = new Size(105, 28);
             lblSessionID.TabIndex = 0;
@@ -208,7 +209,7 @@
             txtMessageID.Location = new Point(3, 142);
             txtMessageID.Margin = new Padding(3, 4, 3, 4);
             txtMessageID.Name = "txtMessageID";
-            txtMessageID.Size = new Size(457, 34);
+            txtMessageID.Size = new Size(449, 34);
             txtMessageID.TabIndex = 3;
             // 
             // lblMessageID
@@ -225,17 +226,17 @@
             // 
             txtUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtUserCode.Font = new Font("Segoe UI", 12F);
-            txtUserCode.Location = new Point(489, 142);
+            txtUserCode.Location = new Point(481, 142);
             txtUserCode.Margin = new Padding(3, 4, 3, 4);
             txtUserCode.Name = "txtUserCode";
-            txtUserCode.Size = new Size(457, 34);
+            txtUserCode.Size = new Size(449, 34);
             txtUserCode.TabIndex = 4;
             // 
             // lblUserCode
             // 
             lblUserCode.AutoSize = true;
             lblUserCode.Font = new Font("Segoe UI", 12F);
-            lblUserCode.Location = new Point(489, 93);
+            lblUserCode.Location = new Point(481, 93);
             lblUserCode.Name = "lblUserCode";
             lblUserCode.Size = new Size(79, 28);
             lblUserCode.TabIndex = 0;
@@ -245,7 +246,7 @@
             // 
             lblApiUrl.AutoSize = true;
             lblApiUrl.Font = new Font("Segoe UI", 12F);
-            lblApiUrl.Location = new Point(975, 93);
+            lblApiUrl.Location = new Point(959, 93);
             lblApiUrl.Name = "lblApiUrl";
             lblApiUrl.Size = new Size(85, 28);
             lblApiUrl.TabIndex = 7;
@@ -265,10 +266,10 @@
             // 
             txtApiUrl.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtApiUrl.Font = new Font("Segoe UI", 12F);
-            txtApiUrl.Location = new Point(975, 142);
+            txtApiUrl.Location = new Point(959, 142);
             txtApiUrl.Margin = new Padding(3, 4, 3, 4);
             txtApiUrl.Name = "txtApiUrl";
-            txtApiUrl.Size = new Size(457, 34);
+            txtApiUrl.Size = new Size(449, 34);
             txtApiUrl.TabIndex = 6;
             // 
             // pickerInteractionDateTime
@@ -280,7 +281,7 @@
             pickerInteractionDateTime.Location = new Point(3, 236);
             pickerInteractionDateTime.Margin = new Padding(3, 4, 3, 4);
             pickerInteractionDateTime.Name = "pickerInteractionDateTime";
-            pickerInteractionDateTime.Size = new Size(457, 34);
+            pickerInteractionDateTime.Size = new Size(449, 34);
             pickerInteractionDateTime.TabIndex = 5;
             // 
             // tableLayout3
@@ -388,6 +389,30 @@
             dataGridViewRequests.Size = new Size(533, 396);
             dataGridViewRequests.TabIndex = 1;
             // 
+            // Select
+            // 
+            Select.FillWeight = 38.0776138F;
+            Select.HeaderText = "Select";
+            Select.MinimumWidth = 6;
+            Select.Name = "Select";
+            // 
+            // RequestGuid
+            // 
+            RequestGuid.FillWeight = 197.7513F;
+            RequestGuid.HeaderText = "Request Guid";
+            RequestGuid.MinimumWidth = 6;
+            RequestGuid.Name = "RequestGuid";
+            // 
+            // Details
+            // 
+            Details.DataPropertyName = "Details";
+            Details.FillWeight = 64.1711349F;
+            Details.HeaderText = "Details";
+            Details.MinimumWidth = 8;
+            Details.Name = "Details";
+            Details.Text = "View Details";
+            Details.UseColumnTextForButtonValue = true;
+            // 
             // lblRequestGuid
             // 
             lblRequestGuid.AutoSize = true;
@@ -485,30 +510,6 @@
             // 
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
-            // 
-            // Select
-            // 
-            Select.FillWeight = 38.0776138F;
-            Select.HeaderText = "Select";
-            Select.MinimumWidth = 6;
-            Select.Name = "Select";
-            // 
-            // RequestGuid
-            // 
-            RequestGuid.FillWeight = 197.7513F;
-            RequestGuid.HeaderText = "Request Guid";
-            RequestGuid.MinimumWidth = 6;
-            RequestGuid.Name = "RequestGuid";
-            // 
-            // Details
-            // 
-            Details.DataPropertyName = "Details";
-            Details.FillWeight = 64.1711349F;
-            Details.HeaderText = "Details";
-            Details.MinimumWidth = 8;
-            Details.Name = "Details";
-            Details.Text = "View Details";
-            Details.UseColumnTextForButtonValue = true;
             // 
             // CheckStatusForm
             // 

@@ -598,6 +598,21 @@ namespace CCaptureWinForm
                     .Select(row => row.Cells["GroupName"].Value.ToString())
                     .ToList();
 
+                // Check if any errors were set
+                if (_errorProvider.GetError(cboBatchClassName) != "" ||
+                    _errorProvider.GetError(txtSourceSystem) != "" ||
+                    _errorProvider.GetError(txtChannel) != "" ||
+                    _errorProvider.GetError(txtSessionID) != "" ||
+                    _errorProvider.GetError(txtMessageID) != "" ||
+                    _errorProvider.GetError(txtUserCode) != "")
+                {
+                    statusLabel2.Text = "Please enter all needed data.";
+                    statusLabel2.ForeColor = Color.Red;
+                    _isSubmitting = false;
+                    UpdateControlStates();
+                    return;
+                }
+
                 if (!checkedGroups.Any())
                 {
                     statusLabel2.Text = "Please check at least one group to submit.";
@@ -627,6 +642,31 @@ namespace CCaptureWinForm
 
                 foreach (string group in checkedGroups.ToList())
                 {
+                    // Get field data from dataGridViewFields
+                    var gridFields = dataGridViewFields.Rows.Cast<DataGridViewRow>()
+                        .Where(row => !row.IsNewRow)
+                        .Select(row => new
+                        {
+                            FieldName = row.Cells["FieldName"].Value?.ToString(),
+                            FieldValue = row.Cells["FieldValue"].Value?.ToString()
+                        })
+                        .Where(f => !string.IsNullOrEmpty(f.FieldName))
+                        .ToList();
+
+                    // Check for empty field values
+                    var emptyFields = gridFields
+                        .Where(f => string.IsNullOrWhiteSpace(f.FieldValue))
+                        .Select(f => f.FieldName)
+                        .ToList();
+                    if (emptyFields.Any())
+                    {
+                        statusLabel2.Text = $"Group '{group}' has fields with empty values: {string.Join(", ", emptyFields)}";
+                        statusLabel2.ForeColor = Color.Red;
+                        _isSubmitting = false;
+                        UpdateControlStates();
+                        return;
+                    }
+
                     var groupData = _groups[group];
                     statusLabel2.Text = $"Submitting {group} documents...";
                     statusLabel2.ForeColor = Color.Blue;
