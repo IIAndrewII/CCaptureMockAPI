@@ -131,28 +131,30 @@
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tableLayoutPanel2.ColumnCount = 3;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tableLayoutPanel2.ColumnCount = 5;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             tableLayoutPanel2.Controls.Add(lblGroupName, 0, 0);
             tableLayoutPanel2.Controls.Add(txtGroupName, 0, 1);
-            tableLayoutPanel2.Controls.Add(lblBatchClassName, 1, 0);
-            tableLayoutPanel2.Controls.Add(txtBatchClassName, 1, 1);
-            tableLayoutPanel2.Controls.Add(lblSourceSystem, 2, 0);
-            tableLayoutPanel2.Controls.Add(txtSourceSystem, 2, 1);
+            tableLayoutPanel2.Controls.Add(lblBatchClassName, 2, 0);
+            tableLayoutPanel2.Controls.Add(txtBatchClassName, 2, 1);
+            tableLayoutPanel2.Controls.Add(lblSourceSystem, 4, 0);
+            tableLayoutPanel2.Controls.Add(txtSourceSystem, 4, 1);
             tableLayoutPanel2.Controls.Add(lblChannel, 0, 2);
             tableLayoutPanel2.Controls.Add(txtChannel, 0, 3);
-            tableLayoutPanel2.Controls.Add(lblSessionId, 1, 2);
-            tableLayoutPanel2.Controls.Add(txtSessionId, 1, 3);
-            tableLayoutPanel2.Controls.Add(lblMessageId, 2, 2);
-            tableLayoutPanel2.Controls.Add(txtMessageId, 2, 3);
+            tableLayoutPanel2.Controls.Add(lblSessionId, 2, 2);
+            tableLayoutPanel2.Controls.Add(txtSessionId, 2, 3);
+            tableLayoutPanel2.Controls.Add(lblMessageId, 4, 2);
+            tableLayoutPanel2.Controls.Add(txtMessageId, 4, 3);
             tableLayoutPanel2.Controls.Add(lblUserCode, 0, 4);
             tableLayoutPanel2.Controls.Add(txtUserCode, 0, 5);
-            tableLayoutPanel2.Controls.Add(lblInteractionDateTime, 1, 4);
-            tableLayoutPanel2.Controls.Add(txtInteractionDateTime, 1, 5);
-            tableLayoutPanel2.Controls.Add(lblRequestGuid, 2, 4);
-            tableLayoutPanel2.Controls.Add(txtRequestGuid, 2, 5);
+            tableLayoutPanel2.Controls.Add(lblInteractionDateTime, 2, 4);
+            tableLayoutPanel2.Controls.Add(txtInteractionDateTime, 2, 5);
+            tableLayoutPanel2.Controls.Add(lblRequestGuid, 4, 4);
+            tableLayoutPanel2.Controls.Add(txtRequestGuid, 4, 5);
             tableLayoutPanel2.Controls.Add(lblSubmittedAt, 0, 6);
             tableLayoutPanel2.Controls.Add(txtSubmittedAt, 0, 7);
             tableLayoutPanel2.Location = new Point(3, 53);
@@ -186,14 +188,14 @@
             txtGroupName.Location = new Point(3, 43);
             txtGroupName.Name = "txtGroupName";
             txtGroupName.ReadOnly = true;
-            txtGroupName.Size = new Size(258, 29);
+            txtGroupName.Size = new Size(245, 29);
             txtGroupName.TabIndex = 1;
             // 
             // lblBatchClassName
             // 
             lblBatchClassName.AutoSize = true;
             lblBatchClassName.Font = new Font("Segoe UI", 12F);
-            lblBatchClassName.Location = new Point(267, 0);
+            lblBatchClassName.Location = new Point(274, 0);
             lblBatchClassName.Name = "lblBatchClassName";
             lblBatchClassName.Size = new Size(137, 21);
             lblBatchClassName.TabIndex = 2;
@@ -203,17 +205,17 @@
             // 
             txtBatchClassName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtBatchClassName.Font = new Font("Segoe UI", 12F);
-            txtBatchClassName.Location = new Point(267, 43);
+            txtBatchClassName.Location = new Point(274, 43);
             txtBatchClassName.Name = "txtBatchClassName";
             txtBatchClassName.ReadOnly = true;
-            txtBatchClassName.Size = new Size(258, 29);
+            txtBatchClassName.Size = new Size(245, 29);
             txtBatchClassName.TabIndex = 2;
             // 
             // lblSourceSystem
             // 
             lblSourceSystem.AutoSize = true;
             lblSourceSystem.Font = new Font("Segoe UI", 12F);
-            lblSourceSystem.Location = new Point(531, 0);
+            lblSourceSystem.Location = new Point(545, 0);
             lblSourceSystem.Name = "lblSourceSystem";
             lblSourceSystem.Size = new Size(116, 21);
             lblSourceSystem.TabIndex = 4;
@@ -223,10 +225,10 @@
             // 
             txtSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtSourceSystem.Location = new Point(531, 43);
+            txtSourceSystem.Location = new Point(545, 43);
             txtSourceSystem.Name = "txtSourceSystem";
             txtSourceSystem.ReadOnly = true;
-            txtSourceSystem.Size = new Size(260, 29);
+            txtSourceSystem.Size = new Size(246, 29);
             txtSourceSystem.TabIndex = 3;
             // 
             // lblChannel
@@ -246,14 +248,14 @@
             txtChannel.Location = new Point(3, 123);
             txtChannel.Name = "txtChannel";
             txtChannel.ReadOnly = true;
-            txtChannel.Size = new Size(258, 29);
+            txtChannel.Size = new Size(245, 29);
             txtChannel.TabIndex = 4;
             // 
             // lblSessionId
             // 
             lblSessionId.AutoSize = true;
             lblSessionId.Font = new Font("Segoe UI", 12F);
-            lblSessionId.Location = new Point(267, 80);
+            lblSessionId.Location = new Point(274, 80);
             lblSessionId.Name = "lblSessionId";
             lblSessionId.Size = new Size(85, 21);
             lblSessionId.TabIndex = 8;
@@ -263,17 +265,17 @@
             // 
             txtSessionId.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSessionId.Font = new Font("Segoe UI", 12F);
-            txtSessionId.Location = new Point(267, 123);
+            txtSessionId.Location = new Point(274, 123);
             txtSessionId.Name = "txtSessionId";
             txtSessionId.ReadOnly = true;
-            txtSessionId.Size = new Size(258, 29);
+            txtSessionId.Size = new Size(245, 29);
             txtSessionId.TabIndex = 5;
             // 
             // lblMessageId
             // 
             lblMessageId.AutoSize = true;
             lblMessageId.Font = new Font("Segoe UI", 12F);
-            lblMessageId.Location = new Point(531, 80);
+            lblMessageId.Location = new Point(545, 80);
             lblMessageId.Name = "lblMessageId";
             lblMessageId.Size = new Size(93, 21);
             lblMessageId.TabIndex = 10;
@@ -283,10 +285,10 @@
             // 
             txtMessageId.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtMessageId.Font = new Font("Segoe UI", 12F);
-            txtMessageId.Location = new Point(531, 123);
+            txtMessageId.Location = new Point(545, 123);
             txtMessageId.Name = "txtMessageId";
             txtMessageId.ReadOnly = true;
-            txtMessageId.Size = new Size(260, 29);
+            txtMessageId.Size = new Size(246, 29);
             txtMessageId.TabIndex = 6;
             // 
             // lblUserCode
@@ -306,14 +308,14 @@
             txtUserCode.Location = new Point(3, 203);
             txtUserCode.Name = "txtUserCode";
             txtUserCode.ReadOnly = true;
-            txtUserCode.Size = new Size(258, 29);
+            txtUserCode.Size = new Size(245, 29);
             txtUserCode.TabIndex = 7;
             // 
             // lblInteractionDateTime
             // 
             lblInteractionDateTime.AutoSize = true;
             lblInteractionDateTime.Font = new Font("Segoe UI", 12F);
-            lblInteractionDateTime.Location = new Point(267, 160);
+            lblInteractionDateTime.Location = new Point(274, 160);
             lblInteractionDateTime.Name = "lblInteractionDateTime";
             lblInteractionDateTime.Size = new Size(161, 21);
             lblInteractionDateTime.TabIndex = 14;
@@ -323,17 +325,17 @@
             // 
             txtInteractionDateTime.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtInteractionDateTime.Font = new Font("Segoe UI", 12F);
-            txtInteractionDateTime.Location = new Point(267, 203);
+            txtInteractionDateTime.Location = new Point(274, 203);
             txtInteractionDateTime.Name = "txtInteractionDateTime";
             txtInteractionDateTime.ReadOnly = true;
-            txtInteractionDateTime.Size = new Size(258, 29);
+            txtInteractionDateTime.Size = new Size(245, 29);
             txtInteractionDateTime.TabIndex = 8;
             // 
             // lblRequestGuid
             // 
             lblRequestGuid.AutoSize = true;
             lblRequestGuid.Font = new Font("Segoe UI", 12F);
-            lblRequestGuid.Location = new Point(531, 160);
+            lblRequestGuid.Location = new Point(545, 160);
             lblRequestGuid.Name = "lblRequestGuid";
             lblRequestGuid.Size = new Size(110, 21);
             lblRequestGuid.TabIndex = 16;
@@ -343,10 +345,10 @@
             // 
             txtRequestGuid.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtRequestGuid.Font = new Font("Segoe UI", 12F);
-            txtRequestGuid.Location = new Point(531, 203);
+            txtRequestGuid.Location = new Point(545, 203);
             txtRequestGuid.Name = "txtRequestGuid";
             txtRequestGuid.ReadOnly = true;
-            txtRequestGuid.Size = new Size(260, 29);
+            txtRequestGuid.Size = new Size(246, 29);
             txtRequestGuid.TabIndex = 9;
             // 
             // lblSubmittedAt
@@ -366,7 +368,7 @@
             txtSubmittedAt.Location = new Point(3, 285);
             txtSubmittedAt.Name = "txtSubmittedAt";
             txtSubmittedAt.ReadOnly = true;
-            txtSubmittedAt.Size = new Size(258, 29);
+            txtSubmittedAt.Size = new Size(245, 29);
             txtSubmittedAt.TabIndex = 10;
             // 
             // lblDocuments

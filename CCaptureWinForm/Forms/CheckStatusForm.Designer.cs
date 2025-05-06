@@ -70,6 +70,9 @@
             btnExpandAll = new Button();
             btnCollapseAll = new Button();
             dataGridViewRequests = new DataGridView();
+            Select = new DataGridViewCheckBoxColumn();
+            RequestGuid = new DataGridViewTextBoxColumn();
+            Details = new DataGridViewButtonColumn();
             lblRequestGuid = new Label();
             btnCheckStatus = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
@@ -79,9 +82,6 @@
             statusLabel3 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
             errorProvider = new ErrorProvider(components);
-            Select = new DataGridViewCheckBoxColumn();
-            RequestGuid = new DataGridViewTextBoxColumn();
-            Details = new DataGridViewButtonColumn();
             checkStatusPanel.SuspendLayout();
             metadataTableLayout.SuspendLayout();
             tableLayout3.SuspendLayout();
@@ -107,23 +107,25 @@
             // metadataTableLayout
             // 
             metadataTableLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            metadataTableLayout.ColumnCount = 3;
-            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
-            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
-            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            metadataTableLayout.ColumnCount = 5;
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            metadataTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
             metadataTableLayout.Controls.Add(txtSourceSystem, 0, 1);
             metadataTableLayout.Controls.Add(lblSourceSystem, 0, 0);
-            metadataTableLayout.Controls.Add(txtChannel, 1, 1);
-            metadataTableLayout.Controls.Add(lblChannel, 1, 0);
-            metadataTableLayout.Controls.Add(txtSessionID, 2, 1);
-            metadataTableLayout.Controls.Add(lblSessionID, 2, 0);
+            metadataTableLayout.Controls.Add(txtChannel, 2, 1);
+            metadataTableLayout.Controls.Add(lblChannel, 2, 0);
+            metadataTableLayout.Controls.Add(txtSessionID, 4, 1);
+            metadataTableLayout.Controls.Add(lblSessionID, 4, 0);
             metadataTableLayout.Controls.Add(txtMessageID, 0, 3);
             metadataTableLayout.Controls.Add(lblMessageID, 0, 2);
-            metadataTableLayout.Controls.Add(txtUserCode, 1, 3);
-            metadataTableLayout.Controls.Add(lblUserCode, 1, 2);
-            metadataTableLayout.Controls.Add(lblApiUrl, 2, 2);
+            metadataTableLayout.Controls.Add(txtUserCode, 2, 3);
+            metadataTableLayout.Controls.Add(lblUserCode, 2, 2);
+            metadataTableLayout.Controls.Add(lblApiUrl, 4, 2);
             metadataTableLayout.Controls.Add(lblInteractionDate, 0, 4);
-            metadataTableLayout.Controls.Add(txtApiUrl, 2, 3);
+            metadataTableLayout.Controls.Add(txtApiUrl, 4, 3);
             metadataTableLayout.Controls.Add(pickerInteractionDateTime, 0, 5);
             metadataTableLayout.Location = new Point(12, 12);
             metadataTableLayout.Name = "metadataTableLayout";
@@ -143,7 +145,7 @@
             txtSourceSystem.Font = new Font("Segoe UI", 12F);
             txtSourceSystem.Location = new Point(3, 35);
             txtSourceSystem.Name = "txtSourceSystem";
-            txtSourceSystem.Size = new Size(412, 29);
+            txtSourceSystem.Size = new Size(399, 29);
             txtSourceSystem.TabIndex = 0;
             // 
             // lblSourceSystem
@@ -160,16 +162,16 @@
             // 
             txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(421, 35);
+            txtChannel.Location = new Point(428, 35);
             txtChannel.Name = "txtChannel";
-            txtChannel.Size = new Size(412, 29);
+            txtChannel.Size = new Size(399, 29);
             txtChannel.TabIndex = 1;
             // 
             // lblChannel
             // 
             lblChannel.AutoSize = true;
             lblChannel.Font = new Font("Segoe UI", 12F);
-            lblChannel.Location = new Point(421, 0);
+            lblChannel.Location = new Point(428, 0);
             lblChannel.Name = "lblChannel";
             lblChannel.Size = new Size(70, 21);
             lblChannel.TabIndex = 0;
@@ -179,16 +181,16 @@
             // 
             txtSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSessionID.Font = new Font("Segoe UI", 12F);
-            txtSessionID.Location = new Point(839, 35);
+            txtSessionID.Location = new Point(853, 35);
             txtSessionID.Name = "txtSessionID";
-            txtSessionID.Size = new Size(414, 29);
+            txtSessionID.Size = new Size(400, 29);
             txtSessionID.TabIndex = 2;
             // 
             // lblSessionID
             // 
             lblSessionID.AutoSize = true;
             lblSessionID.Font = new Font("Segoe UI", 12F);
-            lblSessionID.Location = new Point(839, 0);
+            lblSessionID.Location = new Point(853, 0);
             lblSessionID.Name = "lblSessionID";
             lblSessionID.Size = new Size(85, 21);
             lblSessionID.TabIndex = 0;
@@ -200,7 +202,7 @@
             txtMessageID.Font = new Font("Segoe UI", 12F);
             txtMessageID.Location = new Point(3, 105);
             txtMessageID.Name = "txtMessageID";
-            txtMessageID.Size = new Size(412, 29);
+            txtMessageID.Size = new Size(399, 29);
             txtMessageID.TabIndex = 3;
             // 
             // lblMessageID
@@ -217,16 +219,16 @@
             // 
             txtUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtUserCode.Font = new Font("Segoe UI", 12F);
-            txtUserCode.Location = new Point(421, 105);
+            txtUserCode.Location = new Point(428, 105);
             txtUserCode.Name = "txtUserCode";
-            txtUserCode.Size = new Size(412, 29);
+            txtUserCode.Size = new Size(399, 29);
             txtUserCode.TabIndex = 4;
             // 
             // lblUserCode
             // 
             lblUserCode.AutoSize = true;
             lblUserCode.Font = new Font("Segoe UI", 12F);
-            lblUserCode.Location = new Point(421, 70);
+            lblUserCode.Location = new Point(428, 70);
             lblUserCode.Name = "lblUserCode";
             lblUserCode.Size = new Size(64, 21);
             lblUserCode.TabIndex = 0;
@@ -236,7 +238,7 @@
             // 
             lblApiUrl.AutoSize = true;
             lblApiUrl.Font = new Font("Segoe UI", 12F);
-            lblApiUrl.Location = new Point(839, 70);
+            lblApiUrl.Location = new Point(853, 70);
             lblApiUrl.Name = "lblApiUrl";
             lblApiUrl.Size = new Size(69, 21);
             lblApiUrl.TabIndex = 7;
@@ -256,9 +258,9 @@
             // 
             txtApiUrl.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtApiUrl.Font = new Font("Segoe UI", 12F);
-            txtApiUrl.Location = new Point(839, 105);
+            txtApiUrl.Location = new Point(853, 105);
             txtApiUrl.Name = "txtApiUrl";
-            txtApiUrl.Size = new Size(414, 29);
+            txtApiUrl.Size = new Size(400, 29);
             txtApiUrl.TabIndex = 6;
             // 
             // pickerInteractionDateTime
@@ -269,7 +271,7 @@
             pickerInteractionDateTime.Format = DateTimePickerFormat.Custom;
             pickerInteractionDateTime.Location = new Point(3, 175);
             pickerInteractionDateTime.Name = "pickerInteractionDateTime";
-            pickerInteractionDateTime.Size = new Size(412, 29);
+            pickerInteractionDateTime.Size = new Size(399, 29);
             pickerInteractionDateTime.TabIndex = 5;
             // 
             // tableLayout3
@@ -371,6 +373,27 @@
             dataGridViewRequests.Size = new Size(466, 296);
             dataGridViewRequests.TabIndex = 1;
             // 
+            // Select
+            // 
+            Select.FillWeight = 39.17466F;
+            Select.HeaderText = "Select";
+            Select.Name = "Select";
+            // 
+            // RequestGuid
+            // 
+            RequestGuid.FillWeight = 215.140076F;
+            RequestGuid.HeaderText = "Request Guid";
+            RequestGuid.Name = "RequestGuid";
+            // 
+            // Details
+            // 
+            Details.DataPropertyName = "Details";
+            Details.FillWeight = 45.6852837F;
+            Details.HeaderText = "Details";
+            Details.Name = "Details";
+            Details.Text = "View Details";
+            Details.UseColumnTextForButtonValue = true;
+            // 
             // lblRequestGuid
             // 
             lblRequestGuid.AutoSize = true;
@@ -462,27 +485,6 @@
             // 
             errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
-            // 
-            // Select
-            // 
-            Select.FillWeight = 39.17466F;
-            Select.HeaderText = "Select";
-            Select.Name = "Select";
-            // 
-            // RequestGuid
-            // 
-            RequestGuid.FillWeight = 215.140076F;
-            RequestGuid.HeaderText = "Request Guid";
-            RequestGuid.Name = "RequestGuid";
-            // 
-            // Details
-            // 
-            Details.DataPropertyName = "Details";
-            Details.FillWeight = 45.6852837F;
-            Details.HeaderText = "Details";
-            Details.Name = "Details";
-            Details.Text = "View Details";
-            Details.UseColumnTextForButtonValue = true;
             // 
             // CheckStatusForm
             // 
