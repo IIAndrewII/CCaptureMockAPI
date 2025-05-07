@@ -34,7 +34,6 @@ namespace CCaptureWinForm
                 return;
 
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
-            // Attach Shown event for layout initialization
             this.Shown += SubmitForm_Shown;
         }
 
@@ -57,14 +56,11 @@ namespace CCaptureWinForm
 
         private void SubmitForm_Shown(object sender, EventArgs e)
         {
-            // Force layout recalculation after form is fully rendered
-            SubmitForm_Resize(this, EventArgs.Empty);
             tableLayout2.PerformLayout();
             metadataPanel.PerformLayout();
             submitPanel.PerformLayout();
             tableLayout2.Invalidate();
             tableLayout2.Refresh();
-            // Adjust for DPI scaling
             float dpiScale = CreateGraphics().DpiX / 96f;
             if (dpiScale != 1.0f)
             {
@@ -154,10 +150,9 @@ namespace CCaptureWinForm
             btnAddGroup.Click += btnAddGroup_Click;
             btnRemoveGroup.Click += btnRemoveGroup_Click;
             btnRemoveField.Click += btnRemoveField_Click;
-            btnAddField.Click += btnAddField_Click; // New event handler for Add Field button
+            btnAddField.Click += btnAddField_Click;
             dataGridViewGroups.SelectionChanged += dataGridViewGroups_SelectionChanged;
             dataGridViewGroups.CellValueChanged += dataGridViewGroups_CellValueChanged;
-            Resize += SubmitForm_Resize;
             cboBatchClassName.SelectedIndexChanged += cboBatchClassName_SelectedIndexChanged;
             dataGridViewDocuments.CellValueChanged += dataGridViewDocuments_CellValueChanged;
             dataGridViewFields.CellValueChanged += dataGridViewFields_CellValueChanged;
@@ -168,12 +163,8 @@ namespace CCaptureWinForm
             dataGridViewFields.RowsRemoved += (s, e) => UpdateControlStates();
             dataGridViewFields.RowsAdded += (s, e) => UpdateControlStates();
 
-            // Attach EnabledChanged handlers for styling
-            btnSubmitDocument.EnabledChanged += Control_EnabledChanged;
-            btnBrowseFile.EnabledChanged += Control_EnabledChanged;
-            btnRemoveFile.EnabledChanged += Control_EnabledChanged;
             btnRemoveField.EnabledChanged += Control_EnabledChanged;
-            btnAddField.EnabledChanged += Control_EnabledChanged; // New handler for Add Field button
+            btnAddField.EnabledChanged += Control_EnabledChanged;
             btnAddGroup.EnabledChanged += Control_EnabledChanged;
             btnRemoveGroup.EnabledChanged += Control_EnabledChanged;
             txtApiUrl.EnabledChanged += Control_EnabledChanged;
@@ -243,7 +234,6 @@ namespace CCaptureWinForm
             cboBatchClassName.Enabled = !_isSubmitting;
             pickerInteractionDateTime.Enabled = !_isSubmitting;
 
-            // Disable text boxes during submission
             txtApiUrl.Enabled = !_isSubmitting;
             txtSourceSystem.Enabled = !_isSubmitting;
             txtChannel.Enabled = !_isSubmitting;
@@ -251,12 +241,11 @@ namespace CCaptureWinForm
             txtSessionID.Enabled = !_isSubmitting;
             txtMessageID.Enabled = !_isSubmitting;
 
-            // Force style update
             Control_EnabledChanged(btnSubmitDocument, EventArgs.Empty);
             Control_EnabledChanged(btnBrowseFile, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveFile, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveField, EventArgs.Empty);
-            Control_EnabledChanged(btnAddField, EventArgs.Empty); // Style update for Add Field button
+            Control_EnabledChanged(btnAddField, EventArgs.Empty);
             Control_EnabledChanged(btnAddGroup, EventArgs.Empty);
             Control_EnabledChanged(btnRemoveGroup, EventArgs.Empty);
             Control_EnabledChanged(txtApiUrl, EventArgs.Empty);
@@ -276,7 +265,6 @@ namespace CCaptureWinForm
         {
             using (var form = new Form())
             {
-                // Form setup
                 form.Text = "Create New Group";
                 form.Size = new Size(300, 180);
                 form.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -284,7 +272,6 @@ namespace CCaptureWinForm
                 form.MinimizeBox = false;
                 form.StartPosition = FormStartPosition.CenterParent;
 
-                // Create a TableLayoutPanel for better control placement
                 var tableLayout = new TableLayoutPanel
                 {
                     Dock = DockStyle.Fill,
@@ -296,7 +283,6 @@ namespace CCaptureWinForm
                 tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 tableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-                // Label
                 var label = new Label
                 {
                     Text = "Enter Group Name:",
@@ -304,14 +290,12 @@ namespace CCaptureWinForm
                     Font = new Font("Segoe UI", 12F)
                 };
 
-                // TextBox
                 var textBox = new TextBox
                 {
                     Size = new Size(260, 20),
                     Font = new Font("Segoe UI", 12F)
                 };
 
-                // Button panel for OK and Cancel buttons
                 var buttonPanel = new FlowLayoutPanel
                 {
                     AutoSize = true,
@@ -336,29 +320,23 @@ namespace CCaptureWinForm
                     Margin = new Padding(5)
                 };
 
-                // Add buttons to button panel
                 buttonPanel.Controls.Add(okButton);
                 buttonPanel.Controls.Add(cancelButton);
 
-                // Add controls to TableLayoutPanel
                 tableLayout.Controls.Add(label, 0, 0);
                 tableLayout.Controls.Add(textBox, 0, 1);
                 tableLayout.Controls.Add(buttonPanel, 0, 2);
 
-                // Add TableLayoutPanel to form
                 form.Controls.Add(tableLayout);
 
-                // Set Accept and Cancel buttons
                 form.AcceptButton = okButton;
                 form.CancelButton = cancelButton;
 
-                // Handle form shown to ensure proper rendering
                 form.Shown += (s, e) =>
                 {
                     form.Refresh();
                 };
 
-                // Show dialog and process input
                 if (form.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(textBox.Text))
                 {
                     string groupName = textBox.Text.Trim();
@@ -393,8 +371,15 @@ namespace CCaptureWinForm
                 return;
             }
 
-            // Add a new field with the first available field name
-            string defaultFieldName = fieldNameColumn.Items[0].ToString();
+            // Find the first available field name not already used in the group
+            string defaultFieldName = fieldNameColumn.Items.Cast<string>()
+                .FirstOrDefault(name => !_groups[selectedGroup].Fields.Any(f => f.FieldName == name));
+            if (defaultFieldName == null)
+            {
+                MessageBox.Show("All available field names are already used.", "No Fields Available", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             var newField = new Field
             {
                 FieldName = defaultFieldName,
@@ -406,7 +391,11 @@ namespace CCaptureWinForm
                 var fieldType = await _apiDatabaseService.GetFieldTypeAsync(defaultFieldName);
                 _groups[selectedGroup].Fields.Add(newField);
                 int rowIndex = dataGridViewFields.Rows.Add(defaultFieldName, string.Empty, fieldType);
+                dataGridViewFields.Rows[rowIndex].Tag = defaultFieldName; // Set the Tag for the new row
                 dataGridViewFields.Rows[rowIndex].Selected = true;
+
+                // Update dropdown items to remove the selected FieldName
+                UpdateFieldNameDropdown(selectedGroup);
                 UpdateControlStates();
             }
             catch (Exception ex)
@@ -497,11 +486,53 @@ namespace CCaptureWinForm
                     {
                         int rowIndex = dataGridViewFields.Rows.Add(null, field.FieldValue);
                         if (!string.IsNullOrEmpty(field.FieldName) && fieldNameColumn.Items.Contains(field.FieldName))
+                        {
                             dataGridViewFields.Rows[rowIndex].Cells["FieldName"].Value = field.FieldName;
+                            dataGridViewFields.Rows[rowIndex].Tag = field.FieldName; // Set Tag for existing fields
+                            if (string.IsNullOrEmpty(dataGridViewFields.Rows[rowIndex].Cells["FieldType"].Value?.ToString()))
+                            {
+                                try
+                                {
+                                    var fieldType = _apiDatabaseService.GetFieldTypeAsync(field.FieldName).Result;
+                                    dataGridViewFields.Rows[rowIndex].Cells["FieldType"].Value = fieldType;
+                                }
+                                catch (Exception)
+                                {
+                                    // Ignore errors to avoid blocking UI
+                                }
+                            }
+                        }
                     }
+
+                    // Update dropdown items based on used FieldNames
+                    UpdateFieldNameDropdown(selectedGroup);
                 }
             }
             UpdateControlStates();
+        }
+
+        private void UpdateFieldNameDropdown(string selectedGroup)
+        {
+            var fieldNameColumn = (DataGridViewComboBoxColumn)dataGridViewFields.Columns["FieldName"];
+            var originalItems = fieldNameColumn.Items.Cast<string>().ToList();
+            var usedFieldNames = _groups[selectedGroup].Fields.Select(f => f.FieldName).ToList();
+
+            // Update Items for each cell's ComboBox
+            foreach (DataGridViewRow row in dataGridViewFields.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    var cell = (DataGridViewComboBoxCell)row.Cells["FieldName"];
+                    var currentValue = cell.Value?.ToString();
+                    cell.Items.Clear();
+                    // Add all original items except those used by other fields
+                    foreach (var item in originalItems)
+                    {
+                        if (!usedFieldNames.Contains(item) || item == currentValue)
+                            cell.Items.Add(item);
+                    }
+                }
+            }
         }
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
@@ -551,7 +582,6 @@ namespace CCaptureWinForm
                     statusLabel2.Text = "You're logged in!";
                     statusLabel2.ForeColor = Color.Green;
                     submitPanel.Visible = true;
-                    // Force layout refresh after login
                     SubmitForm_Shown(this, EventArgs.Empty);
                 }
                 else
@@ -560,17 +590,6 @@ namespace CCaptureWinForm
                     statusLabel2.ForeColor = Color.Red;
                 }
             }
-        }
-
-        private void SubmitForm_Resize(object sender, EventArgs e)
-        {
-            //if (metadataPanel != null && tableLayout2 != null)
-            //{
-            //    tableLayout2.Width = metadataPanel.ClientSize.Width - tableLayout2.Margin.Horizontal;
-            //    tableLayout2.Height = metadataPanel.ClientSize.Height - tableLayout2.Margin.Vertical - statusStrip2.Height;
-            //    tableLayout2.Invalidate();
-            //    tableLayout2.Refresh();
-            //}
         }
 
         private async void btnSubmitDocument_Click(object sender, EventArgs e)
@@ -598,7 +617,6 @@ namespace CCaptureWinForm
                     .Select(row => row.Cells["GroupName"].Value.ToString())
                     .ToList();
 
-                // Check if any errors were set
                 if (_errorProvider.GetError(cboBatchClassName) != "" ||
                     _errorProvider.GetError(txtSourceSystem) != "" ||
                     _errorProvider.GetError(txtChannel) != "" ||
@@ -642,7 +660,6 @@ namespace CCaptureWinForm
 
                 foreach (string group in checkedGroups.ToList())
                 {
-                    // Get field data from dataGridViewFields
                     var gridFields = dataGridViewFields.Rows.Cast<DataGridViewRow>()
                         .Where(row => !row.IsNewRow)
                         .Select(row => new
@@ -653,7 +670,6 @@ namespace CCaptureWinForm
                         .Where(f => !string.IsNullOrEmpty(f.FieldName))
                         .ToList();
 
-                    // Check for empty field values
                     var emptyFields = gridFields
                         .Where(f => string.IsNullOrWhiteSpace(f.FieldValue))
                         .Select(f => f.FieldName)
@@ -799,6 +815,7 @@ namespace CCaptureWinForm
                     dataGridViewFields.Rows.Remove(row);
                 }
             }
+            UpdateFieldNameDropdown(selectedGroup);
             UpdateControlStates();
         }
 
@@ -840,34 +857,93 @@ namespace CCaptureWinForm
 
         private async void dataGridViewFields_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index && e.RowIndex >= 0)
+            if (e.RowIndex < 0) return; // Ignore header row
+
+            var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
+            if (selectedRow == null)
             {
-                var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
-                var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-                if (selectedRow != null)
+                statusLabel2.Text = "Please select a group before editing fields.";
+                statusLabel2.ForeColor = Color.Red;
+                return;
+            }
+
+            string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
+            var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
+            var fieldValue = dataGridViewFields.Rows[e.RowIndex].Cells["FieldValue"].Value?.ToString();
+            var oldFieldName = dataGridViewFields.Rows[e.RowIndex].Tag as string;
+
+            if (e.ColumnIndex == dataGridViewFields.Columns["FieldName"].Index)
+            {
+                if (!string.IsNullOrEmpty(oldFieldName) && oldFieldName != fieldName)
                 {
-                    string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
-                    var fieldValue = dataGridViewFields.Rows[e.RowIndex].Cells["FieldValue"].Value?.ToString();
-                    var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
-                    if (!string.IsNullOrEmpty(fieldName))
+                    _groups[selectedGroup].Fields.RemoveAll(f => f.FieldName == oldFieldName);
+                }
+
+                if (string.IsNullOrWhiteSpace(fieldName))
+                {
+                    dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
+                }
+                else
+                {
+                    try
                     {
+                        var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
+                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
+
+                        var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
+                        if (existingField != null)
+                        {
+                            existingField.FieldName = fieldName;
+                            existingField.FieldValue = fieldValue ?? string.Empty;
+                        }
+                        else
+                        {
+                            _groups[selectedGroup].Fields.Add(new Field
+                            {
+                                FieldName = fieldName,
+                                FieldValue = fieldValue ?? string.Empty
+                            });
+                        }
+
+                        dataGridViewFields.Rows[e.RowIndex].Tag = fieldName;
+
+                        // Commit the edit and refresh the grid
+                        dataGridViewFields.EndEdit();
+                        dataGridViewFields.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        statusLabel2.Text = $"Failed to load field type: {ex.Message}";
+                        statusLabel2.ForeColor = Color.Red;
+                    }
+                }
+                UpdateFieldNameDropdown(selectedGroup);
+            }
+            else if (e.ColumnIndex == dataGridViewFields.Columns["FieldValue"].Index)
+            {
+                if (!string.IsNullOrWhiteSpace(fieldName))
+                {
+                    var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
+                    if (existingField != null)
+                    {
+                        existingField.FieldValue = fieldName;
+                        existingField.FieldValue = fieldValue ?? string.Empty;
+                    }
+                    else
+                    {
+                        _groups[selectedGroup].Fields.Add(new Field
+                        {
+                            FieldName = fieldName,
+                            FieldValue = fieldValue ?? string.Empty
+                        });
+
                         try
                         {
                             var fieldType = await _apiDatabaseService.GetFieldTypeAsync(fieldName);
                             dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = fieldType;
-
-                            if (existingField != null)
-                            {
-                                existingField.FieldValue = fieldValue ?? string.Empty;
-                            }
-                            else
-                            {
-                                _groups[selectedGroup].Fields.Add(new Field
-                                {
-                                    FieldName = fieldName,
-                                    FieldValue = fieldValue ?? string.Empty,
-                                });
-                            }
+                            dataGridViewFields.Rows[e.RowIndex].Tag = fieldName;
+                            dataGridViewFields.EndEdit();
+                            dataGridViewFields.Refresh();
                         }
                         catch (Exception ex)
                         {
@@ -875,26 +951,9 @@ namespace CCaptureWinForm
                             statusLabel2.ForeColor = Color.Red;
                         }
                     }
-                    else if (existingField != null)
-                    {
-                        _groups[selectedGroup].Fields.Remove(existingField);
-                        dataGridViewFields.Rows[e.RowIndex].Cells["FieldType"].Value = string.Empty;
-                    }
                 }
             }
-            else if (e.ColumnIndex == dataGridViewFields.Columns["FieldValue"].Index && e.RowIndex >= 0)
-            {
-                var selectedRow = dataGridViewGroups.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
-                if (selectedRow != null)
-                {
-                    string selectedGroup = selectedRow.Cells["GroupName"].Value.ToString();
-                    var fieldName = dataGridViewFields.Rows[e.RowIndex].Cells["FieldName"].Value?.ToString();
-                    var fieldValue = dataGridViewFields.Rows[e.RowIndex].Cells["FieldValue"].Value?.ToString();
-                    var existingField = _groups[selectedGroup].Fields.FirstOrDefault(f => f.FieldName == fieldName);
-                    if (existingField != null)
-                        existingField.FieldValue = fieldValue ?? string.Empty;
-                }
-            }
+
             UpdateControlStates();
         }
     }
