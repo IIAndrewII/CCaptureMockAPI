@@ -167,16 +167,16 @@ namespace CCaptureWinForm
             tableLayout2.Margin = new Padding(3, 4, 3, 4);
             tableLayout2.Name = "tableLayout2";
             tableLayout2.RowCount = 10;
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 53F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 250F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 61F));
-            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Absolute, 61F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 5.398111F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 7.152497F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 5.398111F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 7.152497F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 5.398111F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 7.152497F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 5.398111F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 40.48583F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 8.232119F));
+            tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 8.232119F));
             tableLayout2.Size = new Size(1435, 899);
             tableLayout2.TabIndex = 0;
             // 
@@ -185,7 +185,7 @@ namespace CCaptureWinForm
             cboBatchClassName.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             cboBatchClassName.Font = new Font("Segoe UI", 12F);
             cboBatchClassName.FormattingEnabled = true;
-            cboBatchClassName.Location = new Point(3, 48);
+            cboBatchClassName.Location = new Point(3, 62);
             cboBatchClassName.Margin = new Padding(3, 4, 3, 4);
             cboBatchClassName.Name = "cboBatchClassName";
             cboBatchClassName.Size = new Size(449, 36);
@@ -205,7 +205,7 @@ namespace CCaptureWinForm
             // 
             txtSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtSourceSystem.Location = new Point(481, 49);
+            txtSourceSystem.Location = new Point(481, 63);
             txtSourceSystem.Margin = new Padding(3, 4, 3, 4);
             txtSourceSystem.Name = "txtSourceSystem";
             txtSourceSystem.Size = new Size(449, 34);
@@ -225,7 +225,7 @@ namespace CCaptureWinForm
             // 
             txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(959, 49);
+            txtChannel.Location = new Point(959, 63);
             txtChannel.Margin = new Padding(3, 4, 3, 4);
             txtChannel.Name = "txtChannel";
             txtChannel.Size = new Size(449, 34);
@@ -245,7 +245,7 @@ namespace CCaptureWinForm
             // 
             txtUserCode.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtUserCode.Font = new Font("Segoe UI", 12F);
-            txtUserCode.Location = new Point(3, 142);
+            txtUserCode.Location = new Point(3, 175);
             txtUserCode.Margin = new Padding(3, 4, 3, 4);
             txtUserCode.Name = "txtUserCode";
             txtUserCode.Size = new Size(449, 34);
@@ -255,7 +255,7 @@ namespace CCaptureWinForm
             // 
             lblUserCode.AutoSize = true;
             lblUserCode.Font = new Font("Segoe UI", 12F);
-            lblUserCode.Location = new Point(3, 93);
+            lblUserCode.Location = new Point(3, 112);
             lblUserCode.Name = "lblUserCode";
             lblUserCode.Size = new Size(79, 28);
             lblUserCode.TabIndex = 0;
@@ -265,7 +265,7 @@ namespace CCaptureWinForm
             // 
             txtSessionID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtSessionID.Font = new Font("Segoe UI", 12F);
-            txtSessionID.Location = new Point(481, 142);
+            txtSessionID.Location = new Point(481, 175);
             txtSessionID.Margin = new Padding(3, 4, 3, 4);
             txtSessionID.Name = "txtSessionID";
             txtSessionID.Size = new Size(449, 34);
@@ -275,7 +275,7 @@ namespace CCaptureWinForm
             // 
             lblSessionID.AutoSize = true;
             lblSessionID.Font = new Font("Segoe UI", 12F);
-            lblSessionID.Location = new Point(481, 93);
+            lblSessionID.Location = new Point(481, 112);
             lblSessionID.Name = "lblSessionID";
             lblSessionID.Size = new Size(105, 28);
             lblSessionID.TabIndex = 0;
@@ -285,7 +285,7 @@ namespace CCaptureWinForm
             // 
             txtMessageID.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtMessageID.Font = new Font("Segoe UI", 12F);
-            txtMessageID.Location = new Point(959, 142);
+            txtMessageID.Location = new Point(959, 175);
             txtMessageID.Margin = new Padding(3, 4, 3, 4);
             txtMessageID.Name = "txtMessageID";
             txtMessageID.Size = new Size(449, 34);
@@ -295,7 +295,7 @@ namespace CCaptureWinForm
             // 
             lblMessageID.AutoSize = true;
             lblMessageID.Font = new Font("Segoe UI", 12F);
-            lblMessageID.Location = new Point(959, 93);
+            lblMessageID.Location = new Point(959, 112);
             lblMessageID.Name = "lblMessageID";
             lblMessageID.Size = new Size(116, 28);
             lblMessageID.TabIndex = 0;
@@ -305,7 +305,7 @@ namespace CCaptureWinForm
             // 
             lblInteractionDate.AutoSize = true;
             lblInteractionDate.Font = new Font("Segoe UI", 12F);
-            lblInteractionDate.Location = new Point(3, 186);
+            lblInteractionDate.Location = new Point(3, 224);
             lblInteractionDate.Name = "lblInteractionDate";
             lblInteractionDate.Size = new Size(203, 28);
             lblInteractionDate.TabIndex = 24;
@@ -317,7 +317,7 @@ namespace CCaptureWinForm
             pickerInteractionDateTime.CustomFormat = "ddd, dd MMM yyyy hh:mm tt";
             pickerInteractionDateTime.Font = new Font("Segoe UI", 12F);
             pickerInteractionDateTime.Format = DateTimePickerFormat.Custom;
-            pickerInteractionDateTime.Location = new Point(3, 235);
+            pickerInteractionDateTime.Location = new Point(3, 287);
             pickerInteractionDateTime.Margin = new Padding(3, 4, 3, 4);
             pickerInteractionDateTime.Name = "pickerInteractionDateTime";
             pickerInteractionDateTime.Size = new Size(449, 34);
@@ -327,7 +327,7 @@ namespace CCaptureWinForm
             // 
             lblApiUrl.AutoSize = true;
             lblApiUrl.Font = new Font("Segoe UI", 12F);
-            lblApiUrl.Location = new Point(481, 186);
+            lblApiUrl.Location = new Point(481, 224);
             lblApiUrl.Name = "lblApiUrl";
             lblApiUrl.Size = new Size(85, 28);
             lblApiUrl.TabIndex = 30;
@@ -337,7 +337,7 @@ namespace CCaptureWinForm
             // 
             txtApiUrl.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtApiUrl.Font = new Font("Segoe UI", 12F);
-            txtApiUrl.Location = new Point(481, 235);
+            txtApiUrl.Location = new Point(481, 287);
             txtApiUrl.Margin = new Padding(3, 4, 3, 4);
             txtApiUrl.Name = "txtApiUrl";
             txtApiUrl.Size = new Size(449, 34);
@@ -347,7 +347,7 @@ namespace CCaptureWinForm
             // 
             lblDocuments.AutoSize = true;
             lblDocuments.Font = new Font("Segoe UI", 12F);
-            lblDocuments.Location = new Point(3, 279);
+            lblDocuments.Location = new Point(3, 336);
             lblDocuments.Name = "lblDocuments";
             lblDocuments.Size = new Size(176, 28);
             lblDocuments.TabIndex = 12;
@@ -360,11 +360,11 @@ namespace CCaptureWinForm
             dataGridViewGroups.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewGroups.Dock = DockStyle.Fill;
             dataGridViewGroups.Font = new Font("Segoe UI", 12F);
-            dataGridViewGroups.Location = new Point(3, 323);
+            dataGridViewGroups.Location = new Point(3, 388);
             dataGridViewGroups.Margin = new Padding(3, 4, 3, 4);
             dataGridViewGroups.Name = "dataGridViewGroups";
             dataGridViewGroups.RowHeadersWidth = 51;
-            dataGridViewGroups.Size = new Size(449, 242);
+            dataGridViewGroups.Size = new Size(449, 355);
             dataGridViewGroups.TabIndex = 11;
             // 
             // tableLayoutPanel4
@@ -375,7 +375,7 @@ namespace CCaptureWinForm
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel4.Controls.Add(btnAddGroup, 0, 0);
             tableLayoutPanel4.Controls.Add(btnRemoveGroup, 1, 0);
-            tableLayoutPanel4.Location = new Point(3, 573);
+            tableLayoutPanel4.Location = new Point(3, 757);
             tableLayoutPanel4.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
@@ -417,7 +417,7 @@ namespace CCaptureWinForm
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F);
-            label1.Location = new Point(481, 279);
+            label1.Location = new Point(481, 336);
             label1.Name = "label1";
             label1.Size = new Size(115, 28);
             label1.TabIndex = 27;
@@ -430,11 +430,11 @@ namespace CCaptureWinForm
             dataGridViewDocuments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewDocuments.Dock = DockStyle.Fill;
             dataGridViewDocuments.Font = new Font("Segoe UI", 12F);
-            dataGridViewDocuments.Location = new Point(481, 323);
+            dataGridViewDocuments.Location = new Point(481, 388);
             dataGridViewDocuments.Margin = new Padding(3, 4, 3, 4);
             dataGridViewDocuments.Name = "dataGridViewDocuments";
             dataGridViewDocuments.RowHeadersWidth = 51;
-            dataGridViewDocuments.Size = new Size(449, 242);
+            dataGridViewDocuments.Size = new Size(449, 355);
             dataGridViewDocuments.TabIndex = 13;
             // 
             // tableLayoutPanel3
@@ -445,7 +445,7 @@ namespace CCaptureWinForm
             tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel3.Controls.Add(btnBrowseFile, 0, 0);
             tableLayoutPanel3.Controls.Add(btnRemoveFile, 1, 0);
-            tableLayoutPanel3.Location = new Point(481, 573);
+            tableLayoutPanel3.Location = new Point(481, 757);
             tableLayoutPanel3.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel3.Name = "tableLayoutPanel3";
             tableLayoutPanel3.RowCount = 1;
@@ -487,7 +487,7 @@ namespace CCaptureWinForm
             // 
             lblFields.AutoSize = true;
             lblFields.Font = new Font("Segoe UI", 12F);
-            lblFields.Location = new Point(959, 279);
+            lblFields.Location = new Point(959, 336);
             lblFields.Name = "lblFields";
             lblFields.Size = new Size(104, 28);
             lblFields.TabIndex = 11;
@@ -500,11 +500,11 @@ namespace CCaptureWinForm
             dataGridViewFields.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewFields.Dock = DockStyle.Fill;
             dataGridViewFields.Font = new Font("Segoe UI", 12F);
-            dataGridViewFields.Location = new Point(959, 323);
+            dataGridViewFields.Location = new Point(959, 388);
             dataGridViewFields.Margin = new Padding(3, 4, 3, 4);
             dataGridViewFields.Name = "dataGridViewFields";
             dataGridViewFields.RowHeadersWidth = 51;
-            dataGridViewFields.Size = new Size(449, 242);
+            dataGridViewFields.Size = new Size(449, 355);
             dataGridViewFields.TabIndex = 14;
             // 
             // btnSubmitDocument
@@ -514,7 +514,7 @@ namespace CCaptureWinForm
             btnSubmitDocument.FlatStyle = FlatStyle.Flat;
             btnSubmitDocument.Font = new Font("Segoe UI", 12F);
             btnSubmitDocument.ForeColor = Color.White;
-            btnSubmitDocument.Location = new Point(959, 738);
+            btnSubmitDocument.Location = new Point(959, 833);
             btnSubmitDocument.Margin = new Padding(3, 4, 3, 4);
             btnSubmitDocument.Name = "btnSubmitDocument";
             btnSubmitDocument.Size = new Size(449, 53);
@@ -530,7 +530,7 @@ namespace CCaptureWinForm
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52.9411774F));
             tableLayoutPanel1.Controls.Add(btnAddField, 0, 0);
             tableLayoutPanel1.Controls.Add(btnRemoveField, 1, 0);
-            tableLayoutPanel1.Location = new Point(959, 573);
+            tableLayoutPanel1.Location = new Point(959, 757);
             tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
