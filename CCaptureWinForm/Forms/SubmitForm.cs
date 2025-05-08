@@ -296,6 +296,16 @@ namespace CCaptureWinForm
                     Font = new Font("Segoe UI", 12F)
                 };
 
+                // Set default group name with counter
+                int counter = _groups.Count + 1;
+                string defaultGroupName;
+                do
+                {
+                    defaultGroupName = $"Group {counter}";
+                    counter++;
+                } while (_groups.ContainsKey(defaultGroupName));
+                textBox.Text = defaultGroupName;
+
                 var buttonPanel = new FlowLayoutPanel
                 {
                     AutoSize = true,
