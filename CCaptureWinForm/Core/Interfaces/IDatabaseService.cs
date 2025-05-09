@@ -1,3 +1,4 @@
+using CCaptureWinForm.Data;
 using CCaptureWinForm.Presentation.ViewModels;
 
 namespace CCaptureWinForm.Core.Interfaces
@@ -12,5 +13,6 @@ namespace CCaptureWinForm.Core.Interfaces
         Task<int> SaveVerificationResponseAsync(Core.Entities.VerificationResponse verificationResponse, string requestGuid);
         Task<bool> UpdateCheckedGuidAsync(string requestGuid);
         Task<List<string>> GetUncheckedRequestGuidsAsync();
+        Task<List<VerificationResponse>> GetAllVerificationResponses();
     }
 }

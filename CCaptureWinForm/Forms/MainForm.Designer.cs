@@ -7,6 +7,8 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem submitDocumentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem checkStatusToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewVerificationResponsesToolStripMenuItem;
+        private System.Windows.Forms.ListView verificationResponseListView;
 
         protected override void Dispose(bool disposing)
         {
@@ -24,6 +26,8 @@
             fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             submitDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             checkStatusToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            viewVerificationResponsesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            verificationResponseListView = new System.Windows.Forms.ListView();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -41,7 +45,8 @@
             // 
             fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
                 submitDocumentToolStripMenuItem,
-                checkStatusToolStripMenuItem});
+                checkStatusToolStripMenuItem,
+                viewVerificationResponsesToolStripMenuItem});
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             fileToolStripMenuItem.Text = "File";
@@ -49,14 +54,37 @@
             // submitDocumentToolStripMenuItem
             // 
             submitDocumentToolStripMenuItem.Name = "submitDocumentToolStripMenuItem";
-            submitDocumentToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            submitDocumentToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             submitDocumentToolStripMenuItem.Text = "Submit Document";
             // 
             // checkStatusToolStripMenuItem
             // 
             checkStatusToolStripMenuItem.Name = "checkStatusToolStripMenuItem";
-            checkStatusToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            checkStatusToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             checkStatusToolStripMenuItem.Text = "Check Status";
+            // 
+            // viewVerificationResponsesToolStripMenuItem
+            // 
+            viewVerificationResponsesToolStripMenuItem.Name = "viewVerificationResponsesToolStripMenuItem";
+            viewVerificationResponsesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            viewVerificationResponsesToolStripMenuItem.Text = "View Verification Responses";
+            // 
+            // verificationResponseListView
+            // 
+            verificationResponseListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+                new System.Windows.Forms.ColumnHeader() { Text = "Batch Name", Width = 200 },
+                new System.Windows.Forms.ColumnHeader() { Text = "Status", Width = 100 },
+                new System.Windows.Forms.ColumnHeader() { Text = "Execution Date", Width = 150 },
+                new System.Windows.Forms.ColumnHeader() { Text = "Error Message", Width = 300 }
+            });
+            verificationResponseListView.FullRowSelect = true;
+            verificationResponseListView.GridLines = true;
+            verificationResponseListView.Location = new System.Drawing.Point(0, 28);
+            verificationResponseListView.Name = "verificationResponseListView";
+            verificationResponseListView.Size = new System.Drawing.Size(1214, 591);
+            verificationResponseListView.TabIndex = 1;
+            verificationResponseListView.UseCompatibleStateImageBehavior = false;
+            verificationResponseListView.View = System.Windows.Forms.View.Details;
             // 
             // MainForm
             // 
