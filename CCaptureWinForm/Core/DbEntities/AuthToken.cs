@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CCaptureWinForm.Data;
+namespace CCaptureWinForm.Core.DbEntities;
 
 public partial class AuthToken
 {

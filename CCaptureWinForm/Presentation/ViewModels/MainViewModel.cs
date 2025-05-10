@@ -1,6 +1,6 @@
-﻿using CCaptureWinForm.Core.Entities;
+﻿using CCaptureWinForm.Core.ApiEntities;
+using CCaptureWinForm.Core.DbEntities;
 using CCaptureWinForm.Core.Interfaces;
-using CCaptureWinForm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -60,7 +60,7 @@ namespace CCaptureWinForm.Presentation.ViewModels
             string messageId,
             string userCode,
             string interactionDateTime,
-            List<Core.Entities.Field> fields,
+            List<Core.ApiEntities.Field> fields,
             string groupName,
             List<Document_Row> documents)
         {
@@ -100,7 +100,7 @@ namespace CCaptureWinForm.Presentation.ViewModels
                 }
 
                 // Prepare and submit to API
-                var documentList = documents.Select(doc => new Core.Entities.Document
+                var documentList = documents.Select(doc => new Core.ApiEntities.Document
                 {
                     FileName = _fileService.GetFileName(doc.FilePath),
                     Buffer = _fileService.ReadFileAsBase64(doc.FilePath),

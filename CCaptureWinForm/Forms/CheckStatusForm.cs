@@ -1,5 +1,4 @@
-﻿using CCaptureWinForm.Core.Entities;
-using CCaptureWinForm.Core.Interfaces;
+﻿using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Infrastructure.Services;
 using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CCaptureWinForm.Core.DbEntities;
 
 namespace CCaptureWinForm
 {
@@ -348,7 +348,7 @@ namespace CCaptureWinForm
                             var batchNode = requestNode.Nodes.Add("Batch");
                             batchNode.ForeColor = Color.Black;
 
-                            batchNode.Nodes.Add($"Id: {response.Batch.Id}").ForeColor = Color.Black;
+                            batchNode.Nodes.Add($"Id: {response.Batch.BatchId}").ForeColor = Color.Black;
                             batchNode.Nodes.Add($"Name: {response.Batch.Name}").ForeColor = Color.Black;
                             batchNode.Nodes.Add($"Creation Date: {response.Batch.CreationDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
                             batchNode.Nodes.Add($"Close Date: {response.Batch.CloseDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
@@ -372,11 +372,11 @@ namespace CCaptureWinForm
                                 }
                             }
 
-                            if (response.Batch.Documents?.Any() == true)
+                            if (response.Batch.VerificationDocuments?.Any() == true)
                             {
                                 var docsNode = batchNode.Nodes.Add("Documents");
                                 docsNode.ForeColor = Color.Black;
-                                foreach (var doc in response.Batch.Documents)
+                                foreach (var doc in response.Batch.VerificationDocuments)
                                 {
                                     var docNode = docsNode.Nodes.Add($"Document: {doc.Name}");
                                     docNode.ForeColor = Color.Black;

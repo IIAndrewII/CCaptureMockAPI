@@ -1,5 +1,5 @@
 ﻿// CCaptureMockApiClient.Infrastructure/Services/ApiService.cs
-using CCaptureWinForm.Core.Entities;
+using CCaptureWinForm.Core.ApiEntities;
 using CCaptureWinForm.Core.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

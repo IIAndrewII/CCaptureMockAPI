@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Core.Entities
+namespace CCaptureWinForm.Core.ApiEntities
 {
     public class VerificationStatusRequest
     {

@@ -1,4 +1,4 @@
-﻿using CCaptureWinForm.Core.Entities;
+﻿using CCaptureWinForm.Core.ApiEntities;
 using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace CCaptureWinForm.Data;
+namespace CCaptureWinForm.Core.DbEntities;
 
 public partial class CCaptureDbContext : DbContext
 {

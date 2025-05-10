@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CCaptureWinForm.Core.Entities
+namespace CCaptureWinForm.Core.ApiEntities
 {
     public class VerificationResponse
     {

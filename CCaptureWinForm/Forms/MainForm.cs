@@ -6,7 +6,7 @@ using System;
 using System.Windows.Forms;
 using VerificationResponseViewer;
 using System.Linq;
-using CCaptureWinForm.Core.Entities;
+using CCaptureWinForm.Core.ApiEntities;
 
 namespace CCaptureWinForm
 {

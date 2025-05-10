@@ -1,4 +1,4 @@
-﻿using CCaptureWinForm.Core.Entities;
+﻿using CCaptureWinForm.Core.ApiEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

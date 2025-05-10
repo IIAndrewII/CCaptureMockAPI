@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CCaptureWinForm.Data;
+namespace CCaptureWinForm.Core.DbEntities;
 
 public partial class DocumentField
 {

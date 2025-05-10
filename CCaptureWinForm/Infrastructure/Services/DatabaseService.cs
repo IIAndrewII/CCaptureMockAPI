@@ -1,5 +1,5 @@
-﻿using CCaptureWinForm.Core.Interfaces;
-using CCaptureWinForm.Data;
+﻿using CCaptureWinForm.Core.DbEntities;
+using CCaptureWinForm.Core.Interfaces;
 using CCaptureWinForm.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -124,12 +124,12 @@ namespace CCaptureWinForm.Infrastructure.Services
             }
         }
 
-        public async Task<int> SaveVerificationResponseAsync(Core.Entities.VerificationResponse verificationResponse, string requestGuid)
+        public async Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse, string requestGuid)
         {
             using (var context = CreateContext())
             {
                 // Map VerificationResponse
-                var efVerificationResponse = new Data.VerificationResponse
+                var efVerificationResponse = new VerificationResponse
                 {
                     Status = verificationResponse.Status,
                     ExecutionDate = verificationResponse.ExecutionDate,
@@ -178,7 +178,7 @@ namespace CCaptureWinForm.Infrastructure.Services
                     }).ToList() ?? new List<BatchState>();
 
                     // Map Documents
-                    efBatch.VerificationDocuments = verificationResponse.Batch.Documents?.Select(doc => new VerificationDocument
+                    efBatch.VerificationDocuments = verificationResponse.Batch.VerificationDocuments?.Select(doc => new VerificationDocument
                     {
                         Name = doc.Name,
                         // Map DocumentClass
