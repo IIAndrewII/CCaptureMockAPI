@@ -277,80 +277,8 @@ namespace CCaptureWinForm.Infrastructure.Services
             using (var context = CreateContext())
             {
                 var efVerificationResponses = await context.VerificationResponses
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.BatchClass)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.BatchFields)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.BatchStates)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.VerificationDocuments)
-                    //        .ThenInclude(vd => vd.DocumentClass)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.VerificationDocuments)
-                    //        .ThenInclude(vd => vd.DocumentFields)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.VerificationDocuments)
-                    //        .ThenInclude(vd => vd.Signatures)
-                    //.Include(vr => vr.Batch)
-                    //    .ThenInclude(b => b.VerificationDocuments)
-                    //        .ThenInclude(vd => vd.Pages)
-                    //            .ThenInclude(p => p.PageTypes)
                     .ToListAsync();
-
                 return efVerificationResponses;
-                //return efVerificationResponses.Select(efVerificationResponse => new VerificationResponse
-                //{
-                //    Status = efVerificationResponse.Status,
-                //    ExecutionDate = efVerificationResponse.ExecutionDate,
-                //    ErrorMessage = efVerificationResponse.ErrorMessage,
-                //    Batch = efVerificationResponse.Batch != null ? new Batch
-                //    {
-                //        BatchId = efVerificationResponse.Batch.BatchId,
-                //        Name = efVerificationResponse.Batch.Name,
-                //        CreationDate = efVerificationResponse.Batch.CreationDate,
-                //        CloseDate = efVerificationResponse.Batch.CloseDate,
-                //        BatchClass = efVerificationResponse.Batch.BatchClass != null
-                //            ? new BatchClass { Name = efVerificationResponse.Batch.BatchClass.Name }
-                //            : null,
-                //        BatchFields = efVerificationResponse.Batch.BatchFields?.Select(bf => new BatchField
-                //        {
-                //            Name = bf.Name,
-                //            Value = bf.Value,
-                //            Confidence = (float)bf.Confidence
-                //        }).ToList(),
-                //        BatchStates = efVerificationResponse.Batch.BatchStates?.Select(bs => new BatchState
-                //        {
-                //            Value = bs.Value,
-                //            TrackDate = bs.TrackDate,
-                //            Workstation = bs.Workstation
-                //        }).ToList(),
-                //        VerificationDocuments = efVerificationResponse.Batch.VerificationDocuments?.Select(vd => new VerificationDocument
-                //        {
-                //            Name = vd.Name,
-                //            DocumentClass = vd.DocumentClass != null
-                //                ? new VerificationDocumentClass { Name = vd.DocumentClass.Name }
-                //                : null,
-                //            DocumentFields = (ICollection<DocumentField>)(vd.DocumentFields?.Select(df => (object)new
-                //            {
-                //                Name = df.Name,
-                //                Value = df.Value,
-                //                Confidence = df.Confidence
-                //            }).ToList()),
-                //            Signatures = (ICollection<Signature>)(vd.Signatures?.Select(s => JsonSerializer.Deserialize<object>(s.SignatureData)).ToList()),
-                //            Pages = vd.Pages?.Select(p => new Page
-                //            {
-                //                FileName = p.FileName,
-                //                Sections = (string)(p.Sections != null ? JsonSerializer.Deserialize<object>(p.Sections) : null),
-                //                PageTypes = p.PageTypes?.Select(pt => new PageType
-                //                {
-                //                    Name = pt.Name,
-                //                    Confidence = (float)pt.Confidence
-                //                }).ToList()
-                //            }).ToList()
-                //        }).ToList()
-                //    } : null
-                //}).ToList();
             }
         }
     }
