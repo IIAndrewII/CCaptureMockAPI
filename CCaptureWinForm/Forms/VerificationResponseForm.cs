@@ -1,227 +1,241 @@
-﻿using System;
+﻿using CCaptureWinForm.Core.Interfaces;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text.Json;
 using System.Windows.Forms;
-using CCaptureWinForm.Core.ApiEntities;
+using CCaptureWinForm.Core.DbEntities;
 
-namespace VerificationResponseViewer
+namespace CCaptureWinForm
 {
     public partial class VerificationResponseForm : Form
     {
-        private object _selectedObject;
+        private readonly IDatabaseService _databaseService;
+        private readonly IConfiguration _configuration;
         private List<VerificationResponse> _verificationResponses;
-        private ComboBox comboBoxResponses;
-        private TextBox searchBox;
-        private TextBox filterTextBox;
 
-        public VerificationResponseForm(List<VerificationResponse> verificationResponses)
+        public VerificationResponseForm(IDatabaseService databaseService, IConfiguration configuration)
         {
-            _verificationResponses = verificationResponses.OrderByDescending(vr => vr.ExecutionDate).ToList();
             InitializeComponent();
-            InitializeComboBox();
-            InitializeFilter();
-            InitializeSearch();
-            if (_verificationResponses.Any())
-            {
-                InitializeTreeView(_verificationResponses.First());
-                InitializeDocumentsGrid(_verificationResponses.First());
-                comboBoxResponses.SelectedIndex = 0;
-            }
+            _databaseService = databaseService;
+            _configuration = configuration;
+            _verificationResponses = new List<VerificationResponse>();
+
+            ConfigureDataGridViewResponses();
+            ConfigureTreeView();
+            AttachEventHandlers();
+            LoadVerificationResponsesAsync();
         }
 
-        private void InitializeComboBox()
+        private void ConfigureDataGridViewResponses()
         {
-            comboBoxResponses = new ComboBox
-            {
-                Dock = DockStyle.Top,
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            comboBoxResponses.SelectedIndexChanged += ComboBoxResponses_SelectedIndexChanged;
-
-            UpdateComboBoxItems(_verificationResponses);
-
-            splitContainer.Panel1.Controls.Add(comboBoxResponses);
+            dataGridViewResponses.AllowUserToAddRows = false;
+            dataGridViewResponses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewResponses.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        private void InitializeFilter()
+        private void ConfigureTreeView()
         {
-            filterTextBox = new TextBox
+            VerificationStatusTree.Nodes.Clear();
+            VerificationStatusTree.Font = new Font("Segoe UI", 12F);
+            VerificationStatusTree.ShowLines = true;
+            VerificationStatusTree.ShowPlusMinus = true;
+            VerificationStatusTree.CollapseAll();
+        }
+
+        private void AttachEventHandlers()
+        {
+            btnExpandAll.Click += btnExpandAll_Click;
+            btnCollapseAll.Click += btnCollapseAll_Click;
+            dataGridViewResponses.SelectionChanged += DataGridViewResponses_SelectionChanged;
+        }
+
+        private async void LoadVerificationResponsesAsync()
+        {
+            try
             {
-                Dock = DockStyle.Top,
-                PlaceholderText = "Filter by batch name or status"
-            };
-            filterTextBox.TextChanged += (s, e) =>
-            {
-                var filter = filterTextBox.Text.ToLower();
-                var filteredResponses = _verificationResponses
-                    //.Where(vr => vr.Batch.Name.ToLower().Contains(filter) || vr.Status.ToLower().Contains(filter))
-                    .Where(vr => vr.Batch.Name.ToLower().Contains(filter))
-                    .ToList();
-                comboBoxResponses.Items.Clear();
-                UpdateComboBoxItems(filteredResponses);
-                if (filteredResponses.Any())
+                statusLabel.Text = "Loading verification responses...";
+                statusLabel.ForeColor = Color.Blue;
+
+                _verificationResponses = (await _databaseService.GetAllVerificationResponses()).ToList();
+                dataGridViewResponses.DataSource = _verificationResponses.Select(r => new
                 {
-                    comboBoxResponses.SelectedIndex = 0;
-                    InitializeTreeView(filteredResponses.First());
-                    InitializeDocumentsGrid(filteredResponses.First());
-                }
-            };
-            splitContainer.Panel1.Controls.Add(filterTextBox);
+                    r.ExecutionDate,
+                    r.ErrorMessage,
+                    r.RequestGuid,
+                    r.SourceSystem,
+                    r.Channel,
+                    r.SessionId,
+                    r.MessageId,
+                    r.UserId,
+                    r.InteractionDateTime
+                }).ToList();
+
+                statusLabel.Text = "Verification responses loaded.";
+                statusLabel.ForeColor = Color.Green;
+            }
+            catch (Exception ex)
+            {
+                statusLabel.Text = $"Error loading responses: {ex.Message}";
+                statusLabel.ForeColor = Color.Red;
+            }
         }
 
-        private void InitializeSearch()
+        private void btnExpandAll_Click(object sender, EventArgs e)
         {
-            searchBox = new TextBox
+            VerificationStatusTree.ExpandAll();
+        }
+
+        private void btnCollapseAll_Click(object sender, EventArgs e)
+        {
+            VerificationStatusTree.CollapseAll();
+        }
+
+        private void DataGridViewResponses_SelectionChanged(object sender, EventArgs e)
+        {
+            VerificationStatusTree.Nodes.Clear();
+
+            if (dataGridViewResponses.SelectedRows.Count > 0)
             {
-                Dock = DockStyle.Top,
-                PlaceholderText = "Search tree view"
-            };
-            searchBox.TextChanged += (s, e) =>
-            {
-                var searchText = searchBox.Text.ToLower();
-                foreach (TreeNode node in treeView.Nodes)
+                var selectedRow = dataGridViewResponses.SelectedRows[0];
+                var requestGuid = selectedRow.Cells["RequestGuid"].Value?.ToString();
+
+                if (!string.IsNullOrWhiteSpace(requestGuid))
                 {
-                    SearchNodes(node, searchText);
+                    try
+                    {
+                        var response = _verificationResponses.FirstOrDefault(r => r.RequestGuid == requestGuid);
+
+                        if (response != null && !string.IsNullOrEmpty(response.ResponseJson))
+                        {
+                            var deserializedResponse = JsonSerializer.Deserialize<VerificationResponse>(response.ResponseJson, new JsonSerializerOptions
+                            {
+                                PropertyNameCaseInsensitive = true
+                            });
+
+                            PopulateTreeView(deserializedResponse, requestGuid);
+                        }
+                        else
+                        {
+                            var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                            requestNode.ForeColor = Color.Black;
+                            var errorNode = requestNode.Nodes.Add("Error: No JSON response available");
+                            errorNode.ForeColor = Color.Red;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+                        requestNode.ForeColor = Color.Black;
+                        var errorNode = requestNode.Nodes.Add($"Error: {ex.Message}");
+                        errorNode.ForeColor = Color.Red;
+                    }
                 }
-            };
-            splitContainer.Panel1.Controls.Add(searchBox);
-        }
-
-        private void UpdateComboBoxItems(List<VerificationResponse> responses)
-        {
-            comboBoxResponses.Items.Clear();
-            for (int i = 0; i < responses.Count; i++)
-            {
-                comboBoxResponses.Items.Add($"Response {i + 1} - Batch: {responses[i].Batch.Name} ({responses[i].ExecutionDate})");
             }
+
+            VerificationStatusTree.CollapseAll();
         }
 
-        private void ComboBoxResponses_SelectedIndexChanged(object sender, EventArgs e)
+        private void PopulateTreeView(VerificationResponse response, string requestGuid)
         {
-            if (comboBoxResponses.SelectedIndex >= 0)
-            {
-                var verificationResponse = _verificationResponses[comboBoxResponses.SelectedIndex];
-                InitializeTreeView(verificationResponse);
-                InitializeDocumentsGrid(verificationResponse);
-            }
-        }
+            var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
+            requestNode.ForeColor = Color.Black;
 
-        private void InitializeTreeView(VerificationResponse verificationResponse)
-        {
-            treeView.Nodes.Clear();
-            var rootNode = treeView.Nodes.Add($"VerificationResponse (Date: {verificationResponse.ExecutionDate})");
-            rootNode.Tag = verificationResponse;
-            rootNode.ImageIndex = 0;
-            rootNode.SelectedImageIndex = 0;
+            var statusNode = requestNode.Nodes.Add($"Status: {response.Status}");
+            statusNode.ForeColor = response.Status == 0 ? Color.Green : Color.Red;
 
-            // Add basic verification response properties
-            rootNode.Nodes.Add($"Status: {verificationResponse.Status}");
-            rootNode.Nodes.Add($"Execution Date: {verificationResponse.ExecutionDate}");
-            if (!string.IsNullOrEmpty(verificationResponse.ErrorMessage))
+            var executionDateNode = requestNode.Nodes.Add($"Execution Date: {response.ExecutionDate:yyyy-MM-dd HH:mm:ss}");
+            executionDateNode.ForeColor = Color.Black;
+
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
             {
-                var errorNode = rootNode.Nodes.Add($"Error: {verificationResponse.ErrorMessage}");
+                var errorNode = requestNode.Nodes.Add($"Error Message: {response.ErrorMessage}");
                 errorNode.ForeColor = Color.Red;
             }
 
-            // Add Batch information
-            if (verificationResponse.Batch != null)
+            if (response.Batch != null)
             {
-                var batchNode = rootNode.Nodes.Add($"Batch: {verificationResponse.Batch.Name}");
-                batchNode.Tag = verificationResponse.Batch;
-                batchNode.ImageIndex = 1;
-                batchNode.SelectedImageIndex = 1;
+                var batchNode = requestNode.Nodes.Add("Batch");
+                batchNode.ForeColor = Color.Black;
 
-                batchNode.Nodes.Add($"Creation Date: {verificationResponse.Batch.CreationDate}");
-                batchNode.Nodes.Add($"Close Date: {verificationResponse.Batch.CloseDate}");
+                batchNode.Nodes.Add($"Id: {response.Batch.BatchId}").ForeColor = Color.Black;
+                batchNode.Nodes.Add($"Name: {response.Batch.Name}").ForeColor = Color.Black;
+                batchNode.Nodes.Add($"Creation Date: {response.Batch.CreationDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
+                batchNode.Nodes.Add($"Close Date: {response.Batch.CloseDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
 
-                // Batch Class
-                if (verificationResponse.Batch.BatchClass != null)
+                if (response.Batch.BatchClass != null)
                 {
-                    batchNode.Nodes.Add($"Batch Class: {verificationResponse.Batch.BatchClass.Name}");
+                    var batchClassNode = batchNode.Nodes.Add($"Batch Class: {response.Batch.BatchClass.Name}");
+                    batchClassNode.ForeColor = Color.Black;
                 }
 
-                // Batch Fields
-                if (verificationResponse.Batch.BatchFields?.Count > 0)
+                if (response.Batch.BatchFields?.Any() == true)
                 {
                     var fieldsNode = batchNode.Nodes.Add("Batch Fields");
-                    foreach (var field in verificationResponse.Batch.BatchFields)
+                    fieldsNode.ForeColor = Color.Black;
+                    foreach (var field in response.Batch.BatchFields)
                     {
-                        var fieldNode = fieldsNode.Nodes.Add($"{field.Name}: {field.Value} (Confidence: {field.Confidence})");
-                        fieldNode.Tag = field;
+                        var fieldNode = fieldsNode.Nodes.Add($"Field: {field.Name}");
+                        fieldNode.ForeColor = Color.Black;
+                        fieldNode.Nodes.Add($"Value: {field.Value}").ForeColor = Color.Black;
+                        fieldNode.Nodes.Add($"Confidence: {field.Confidence}").ForeColor = Color.Black;
                     }
                 }
 
-                // Batch States
-                if (verificationResponse.Batch.BatchStates?.Count > 0)
+                if (response.Batch.VerificationDocuments?.Any() == true)
+                {
+                    var docsNode = batchNode.Nodes.Add("Documents");
+                    docsNode.ForeColor = Color.Black;
+                    foreach (var doc in response.Batch.VerificationDocuments)
+                    {
+                        var docNode = docsNode.Nodes.Add($"Document: {doc.Name}");
+                        docNode.ForeColor = Color.Black;
+
+                        if (doc.DocumentClass != null)
+                        {
+                            docNode.Nodes.Add($"Document Class: {doc.DocumentClass.Name}").ForeColor = Color.Black;
+                        }
+
+                        if (doc.Pages?.Any() == true)
+                        {
+                            var pagesNode = docNode.Nodes.Add("Pages");
+                            pagesNode.ForeColor = Color.Black;
+                            foreach (var page in doc.Pages)
+                            {
+                                var pageNode = pagesNode.Nodes.Add($"Page: {page.FileName}");
+                                pageNode.ForeColor = Color.Black;
+
+                                if (page.PageTypes?.Any() == true)
+                                {
+                                    var pageTypesNode = pageNode.Nodes.Add("Page Types");
+                                    pageTypesNode.ForeColor = Color.Black;
+                                    foreach (var pageType in page.PageTypes)
+                                    {
+                                        var pageTypeNode = pageTypesNode.Nodes.Add($"Type: {pageType.Name}");
+                                        pageTypeNode.ForeColor = Color.Black;
+                                        pageTypeNode.Nodes.Add($"Confidence: {pageType.Confidence}").ForeColor = Color.Black;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (response.Batch.BatchStates?.Any() == true)
                 {
                     var statesNode = batchNode.Nodes.Add("Batch States");
-                    foreach (var state in verificationResponse.Batch.BatchStates)
+                    statesNode.ForeColor = Color.Black;
+                    foreach (var state in response.Batch.BatchStates)
                     {
-                        var stateNode = statesNode.Nodes.Add($"{state.Value} at {state.TrackDate} (Workstation: {state.Workstation})");
-                        stateNode.Tag = state;
+                        var stateNode = statesNode.Nodes.Add($"State: {state.Value}");
+                        stateNode.ForeColor = Color.Black;
+                        stateNode.Nodes.Add($"Track Date: {state.TrackDate:yyyy-MM-dd HH:mm:ss}").ForeColor = Color.Black;
+                        stateNode.Nodes.Add($"Workstation: {state.Workstation}").ForeColor = Color.Black;
                     }
                 }
             }
-
-            treeView.ExpandAll();
-        }
-
-        private void InitializeDocumentsGrid(VerificationResponse verificationResponse)
-        {
-            documentsGrid.Rows.Clear();
-            documentsGrid.Columns.Clear();
-
-            documentsGrid.Columns.Add("Name", "Document Name");
-            documentsGrid.Columns.Add("Class", "Document Class");
-            documentsGrid.Columns.Add("FieldCount", "Field Count");
-            documentsGrid.Columns.Add("SignatureCount", "Signature Count");
-            documentsGrid.Columns.Add("PageCount", "Page Count");
-
-            foreach (var doc in verificationResponse.Batch?.Documents ?? new List<VerificationDocument>())
-            {
-                documentsGrid.Rows.Add(
-                    doc.Name,
-                    doc.DocumentClass?.Name ?? "N/A",
-                    doc.DocumentFields?.Count ?? 0,
-                    doc.Signatures?.Count ?? 0,
-                    doc.Pages?.Count ?? 0
-                );
-            }
-        }
-
-        private void SearchNodes(TreeNode node, string searchText)
-        {
-            node.BackColor = node.Text.ToLower().Contains(searchText) ? Color.Yellow : Color.White;
-            foreach (TreeNode child in node.Nodes)
-            {
-                SearchNodes(child, searchText);
-            }
-        }
-
-        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            _selectedObject = e.Node.Tag;
-            propertyGrid.SelectedObject = _selectedObject;
-        }
-
-        private void treeView_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
-        {
-            //if (e.Node.Tag is VerificationResponse vr)
-            //{
-            //    e.Node.ToolTipText = $"ID: {vr.VerificationResponseId}\nStatus: {vr.Status}\nDate: {vr.ExecutionDate}";
-            //}
-            //else 
-            if (e.Node.Tag is Batch batch)
-            {
-                e.Node.ToolTipText = $"Name: {batch.Name}\nCreated: {batch.CreationDate}";
-            }
-        }
-
-        private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            treeView.Refresh();
-            documentsGrid.Refresh();
         }
     }
 }
