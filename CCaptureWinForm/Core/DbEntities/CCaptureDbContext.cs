@@ -253,7 +253,14 @@ public partial class CCaptureDbContext : DbContext
 
             entity.HasIndex(e => e.BatchId, "IX_VerificationResponses_BatchId");
 
+            entity.Property(e => e.Channel).HasMaxLength(50);
             entity.Property(e => e.ExecutionDate).HasColumnType("datetime");
+            entity.Property(e => e.InteractionDateTime).HasColumnType("datetime");
+            entity.Property(e => e.MessageId).HasMaxLength(100);
+            entity.Property(e => e.RequestGuid).HasMaxLength(36);
+            entity.Property(e => e.SessionId).HasMaxLength(100);
+            entity.Property(e => e.SourceSystem).HasMaxLength(50);
+            entity.Property(e => e.UserId).HasMaxLength(50);
 
             entity.HasOne(d => d.Batch).WithMany(p => p.VerificationResponses)
                 .HasForeignKey(d => d.BatchId)

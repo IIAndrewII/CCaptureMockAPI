@@ -15,5 +15,21 @@ public partial class VerificationResponse
 
     public string? ErrorMessage { get; set; }
 
+    public string? RequestGuid { get; set; }
+
+    public string? SourceSystem { get; set; }
+
+    public string? Channel { get; set; }
+
+    public string? SessionId { get; set; }
+
+    public string? MessageId { get; set; }
+
+    public string? UserId { get; set; }
+
+    public DateTime? InteractionDateTime { get; set; }
+
+    public string? ResponseJson { get; set; }
+
     public virtual Batch? Batch { get; set; }
 }
