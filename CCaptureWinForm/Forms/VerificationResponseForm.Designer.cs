@@ -183,9 +183,9 @@
             lblVerificationResponses.Font = new Font("Segoe UI", 12F);
             lblVerificationResponses.Location = new Point(3, 2);
             lblVerificationResponses.Name = "lblVerificationResponses";
-            lblVerificationResponses.Size = new Size(169, 21);
+            lblVerificationResponses.Size = new Size(168, 21);
             lblVerificationResponses.TabIndex = 0;
-            lblVerificationResponses.Text = "Verification Responses:";
+            lblVerificationResponses.Text = "Check Status Requests:";
             // 
             // statusStrip
             // 

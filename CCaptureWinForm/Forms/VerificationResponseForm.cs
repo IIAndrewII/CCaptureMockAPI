@@ -63,15 +63,15 @@ namespace CCaptureWinForm
                 _verificationResponses = (await _databaseService.GetAllVerificationResponses()).ToList();
                 dataGridViewResponses.DataSource = _verificationResponses.Select(r => new
                 {
-                    r.ExecutionDate,
-                    r.ErrorMessage,
+                    r.InteractionDateTime,
                     r.RequestGuid,
                     r.SourceSystem,
                     r.Channel,
                     r.SessionId,
                     r.MessageId,
                     r.UserId,
-                    r.InteractionDateTime
+                    //r.ExecutionDate,
+                    r.ErrorMessage
                 }).ToList();
 
                 statusLabel.Text = "Verification responses loaded.";
