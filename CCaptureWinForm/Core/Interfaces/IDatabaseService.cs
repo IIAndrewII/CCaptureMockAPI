@@ -10,7 +10,7 @@ namespace CCaptureWinForm.Core.Interfaces
         Task SaveDocumentAsync(int submissionId, string filePath, string pageType, string fileName);
         Task SaveFieldAsync(int submissionId, string fieldName, string fieldValue, string fieldType);
         Task<SubmissionDetails> GetSubmissionDetailsAsync(string requestGuid);
-        Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse, string requestGuid);
+        Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse);
         Task<bool> UpdateCheckedGuidAsync(string requestGuid);
         Task<List<string>> GetUncheckedRequestGuidsAsync();
         Task<List<VerificationResponse>> GetAllVerificationResponses();

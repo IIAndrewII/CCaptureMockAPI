@@ -124,7 +124,7 @@ namespace CCaptureWinForm.Infrastructure.Services
             }
         }
 
-        public async Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse, string requestGuid)
+        public async Task<int> SaveVerificationResponseAsync(VerificationResponse verificationResponse)
         {
             using (var context = CreateContext())
             {
@@ -133,8 +133,17 @@ namespace CCaptureWinForm.Infrastructure.Services
                 {
                     Status = verificationResponse.Status,
                     ExecutionDate = verificationResponse.ExecutionDate,
-                    ErrorMessage = verificationResponse.ErrorMessage
+                    ErrorMessage = verificationResponse.ErrorMessage,
+                    RequestGuid = verificationResponse.RequestGuid,
+                    SourceSystem = verificationResponse.SourceSystem,
+                    Channel = verificationResponse.Channel,
+                    SessionId = verificationResponse.SessionId,
+                    MessageId = verificationResponse.MessageId,
+                    UserId = verificationResponse.UserId,
+                    InteractionDateTime = verificationResponse.InteractionDateTime,
+                    ResponseJson = verificationResponse.ResponseJson
                 };
+
 
                 // Map Batch
                 if (verificationResponse.Batch != null)

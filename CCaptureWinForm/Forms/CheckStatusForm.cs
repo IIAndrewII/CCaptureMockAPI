@@ -315,7 +315,16 @@ namespace CCaptureWinForm
                             PropertyNameCaseInsensitive = true
                         });
 
-                        await _databaseService.SaveVerificationResponseAsync(response, requestGuid);
+                        response.RequestGuid = requestGuid;
+                        response.SourceSystem = txtSourceSystem.Text;
+                        response.Channel = txtChannel.Text;
+                        response.SessionId = txtSessionID.Text;
+                        response.MessageId = txtMessageID.Text;
+                        response.UserId = txtUserCode.Text;
+                        response.InteractionDateTime = pickerInteractionDateTime.Value;
+                        response.ResponseJson = responseJson;
+
+                        await _databaseService.SaveVerificationResponseAsync(response);
 
                         var updateResult = await _databaseService.UpdateCheckedGuidAsync(requestGuid);
                         if (!updateResult)
