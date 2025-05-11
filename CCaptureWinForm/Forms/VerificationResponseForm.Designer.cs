@@ -29,6 +29,7 @@
             mainPanel = new Panel();
             tableLayout = new TableLayoutPanel();
             treeButtonLayout = new TableLayoutPanel();
+            btnRefresh = new Button();
             btnExpandAll = new Button();
             btnCollapseAll = new Button();
             VerificationStatusTree = new TreeView();
@@ -70,29 +71,47 @@
             tableLayout.Margin = new Padding(3, 2, 3, 2);
             tableLayout.Name = "tableLayout";
             tableLayout.RowCount = 5;
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
-            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 4.094555F));
+            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 42.2119064F));
+            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 4.094555F));
+            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 42.2119064F));
+            tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 7.387083F));
             tableLayout.Size = new Size(1044, 567);
             tableLayout.TabIndex = 0;
             // 
             // treeButtonLayout
             // 
-            treeButtonLayout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            treeButtonLayout.ColumnCount = 2;
-            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            treeButtonLayout.Controls.Add(btnExpandAll, 0, 0);
-            treeButtonLayout.Controls.Add(btnCollapseAll, 1, 0);
-            treeButtonLayout.Location = new Point(787, 510);
+            treeButtonLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            treeButtonLayout.ColumnCount = 4;
+            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            treeButtonLayout.Controls.Add(btnRefresh, 0, 0);
+            treeButtonLayout.Controls.Add(btnExpandAll, 2, 0);
+            treeButtonLayout.Controls.Add(btnCollapseAll, 3, 0);
+            treeButtonLayout.Location = new Point(3, 526);
             treeButtonLayout.Margin = new Padding(3, 2, 3, 2);
             treeButtonLayout.Name = "treeButtonLayout";
             treeButtonLayout.RowCount = 1;
             treeButtonLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            treeButtonLayout.Size = new Size(254, 40);
+            treeButtonLayout.Size = new Size(1038, 39);
             treeButtonLayout.TabIndex = 4;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnRefresh.BackColor = Color.ForestGreen;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.Font = new Font("Segoe UI", 12F);
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.Location = new Point(3, 2);
+            btnRefresh.Margin = new Padding(3, 2, 3, 2);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(253, 35);
+            btnRefresh.TabIndex = 2;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = false;
             // 
             // btnExpandAll
             // 
@@ -101,10 +120,10 @@
             btnExpandAll.FlatStyle = FlatStyle.Flat;
             btnExpandAll.Font = new Font("Segoe UI", 12F);
             btnExpandAll.ForeColor = Color.White;
-            btnExpandAll.Location = new Point(3, 2);
+            btnExpandAll.Location = new Point(521, 2);
             btnExpandAll.Margin = new Padding(3, 2, 3, 2);
             btnExpandAll.Name = "btnExpandAll";
-            btnExpandAll.Size = new Size(121, 35);
+            btnExpandAll.Size = new Size(253, 35);
             btnExpandAll.TabIndex = 0;
             btnExpandAll.Text = "Expand All";
             btnExpandAll.UseVisualStyleBackColor = false;
@@ -116,10 +135,10 @@
             btnCollapseAll.FlatStyle = FlatStyle.Flat;
             btnCollapseAll.Font = new Font("Segoe UI", 12F);
             btnCollapseAll.ForeColor = Color.White;
-            btnCollapseAll.Location = new Point(130, 2);
+            btnCollapseAll.Location = new Point(780, 2);
             btnCollapseAll.Margin = new Padding(3, 2, 3, 2);
             btnCollapseAll.Name = "btnCollapseAll";
-            btnCollapseAll.Size = new Size(121, 35);
+            btnCollapseAll.Size = new Size(255, 35);
             btnCollapseAll.TabIndex = 1;
             btnCollapseAll.Text = "Collapse All";
             btnCollapseAll.UseVisualStyleBackColor = false;
@@ -128,10 +147,10 @@
             // 
             VerificationStatusTree.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             VerificationStatusTree.Font = new Font("Segoe UI", 12F);
-            VerificationStatusTree.Location = new Point(3, 284);
+            VerificationStatusTree.Location = new Point(3, 287);
             VerificationStatusTree.Margin = new Padding(3, 2, 3, 2);
             VerificationStatusTree.Name = "VerificationStatusTree";
-            VerificationStatusTree.Size = new Size(1038, 222);
+            VerificationStatusTree.Size = new Size(1038, 235);
             VerificationStatusTree.TabIndex = 3;
             // 
             // lblVerificationStatus
@@ -139,7 +158,7 @@
             lblVerificationStatus.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblVerificationStatus.AutoSize = true;
             lblVerificationStatus.Font = new Font("Segoe UI", 12F);
-            lblVerificationStatus.Location = new Point(3, 261);
+            lblVerificationStatus.Location = new Point(3, 264);
             lblVerificationStatus.Name = "lblVerificationStatus";
             lblVerificationStatus.Size = new Size(137, 21);
             lblVerificationStatus.TabIndex = 2;
@@ -150,11 +169,11 @@
             dataGridViewResponses.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewResponses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewResponses.Font = new Font("Segoe UI", 12F);
-            dataGridViewResponses.Location = new Point(3, 30);
+            dataGridViewResponses.Location = new Point(3, 25);
             dataGridViewResponses.Margin = new Padding(3, 2, 3, 2);
             dataGridViewResponses.Name = "dataGridViewResponses";
             dataGridViewResponses.RowHeadersWidth = 51;
-            dataGridViewResponses.Size = new Size(1038, 222);
+            dataGridViewResponses.Size = new Size(1038, 235);
             dataGridViewResponses.TabIndex = 1;
             // 
             // lblVerificationResponses
@@ -162,7 +181,7 @@
             lblVerificationResponses.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblVerificationResponses.AutoSize = true;
             lblVerificationResponses.Font = new Font("Segoe UI", 12F);
-            lblVerificationResponses.Location = new Point(3, 7);
+            lblVerificationResponses.Location = new Point(3, 2);
             lblVerificationResponses.Name = "lblVerificationResponses";
             lblVerificationResponses.Size = new Size(169, 21);
             lblVerificationResponses.TabIndex = 0;
@@ -203,5 +222,6 @@
             statusStrip.PerformLayout();
             ResumeLayout(false);
         }
+        private Button btnRefresh;
     }
 }

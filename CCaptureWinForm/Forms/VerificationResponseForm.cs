@@ -49,6 +49,7 @@ namespace CCaptureWinForm
         {
             btnExpandAll.Click += btnExpandAll_Click;
             btnCollapseAll.Click += btnCollapseAll_Click;
+            btnRefresh.Click += btnRefresh_Click;
             dataGridViewResponses.SelectionChanged += DataGridViewResponses_SelectionChanged;
         }
 
@@ -91,6 +92,11 @@ namespace CCaptureWinForm
         private void btnCollapseAll_Click(object sender, EventArgs e)
         {
             VerificationStatusTree.CollapseAll();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadVerificationResponsesAsync();
         }
 
         private void DataGridViewResponses_SelectionChanged(object sender, EventArgs e)
