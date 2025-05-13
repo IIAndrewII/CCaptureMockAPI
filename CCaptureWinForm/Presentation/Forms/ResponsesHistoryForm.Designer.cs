@@ -12,7 +12,6 @@
         private System.Windows.Forms.TableLayoutPanel treeButtonLayout;
         private System.Windows.Forms.Button btnExpandAll;
         private System.Windows.Forms.Button btnCollapseAll;
-        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnApplyFilters;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
@@ -41,33 +40,33 @@
         {
             mainPanel = new Panel();
             tableLayout = new TableLayoutPanel();
-            filterLayout = new TableLayoutPanel();
-            lblStartDate = new Label();
-            datePickerStart = new DateTimePicker();
-            lblEndDate = new Label();
-            datePickerEnd = new DateTimePicker();
-            lblStatus = new Label();
-            comboBoxStatus = new ComboBox();
-            lblSourceSystem = new Label();
-            txtSourceSystem = new TextBox();
-            lblChannel = new Label();
-            txtChannel = new TextBox();
-            btnApplyFilters = new Button();
             lblVerificationResponses = new Label();
             dataGridViewResponses = new DataGridView();
             lblVerificationStatus = new Label();
             VerificationStatusTree = new TreeView();
             treeButtonLayout = new TableLayoutPanel();
-            btnRefresh = new Button();
             btnExpandAll = new Button();
             btnCollapseAll = new Button();
+            filterLayout = new TableLayoutPanel();
+            lblStartDate = new Label();
+            lblEndDate = new Label();
+            lblStatus = new Label();
+            lblSourceSystem = new Label();
+            lblChannel = new Label();
+            btnApplyFilters = new Button();
+            txtChannel = new TextBox();
+            txtSourceSystem = new TextBox();
+            comboBoxStatus = new ComboBox();
+            datePickerEnd = new DateTimePicker();
+            datePickerStart = new DateTimePicker();
             statusStrip = new StatusStrip();
             statusLabel = new ToolStripStatusLabel();
+            btnClean = new Button();
             mainPanel.SuspendLayout();
             tableLayout.SuspendLayout();
-            filterLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewResponses).BeginInit();
             treeButtonLayout.SuspendLayout();
+            filterLayout.SuspendLayout();
             statusStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -104,154 +103,6 @@
             tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 6F));
             tableLayout.Size = new Size(1193, 756);
             tableLayout.TabIndex = 0;
-            // 
-            // filterLayout
-            // 
-            filterLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            filterLayout.ColumnCount = 11;
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            filterLayout.Controls.Add(lblStartDate, 0, 0);
-            filterLayout.Controls.Add(datePickerStart, 1, 0);
-            filterLayout.Controls.Add(lblEndDate, 2, 0);
-            filterLayout.Controls.Add(datePickerEnd, 3, 0);
-            filterLayout.Controls.Add(lblStatus, 4, 0);
-            filterLayout.Controls.Add(comboBoxStatus, 5, 0);
-            filterLayout.Controls.Add(lblSourceSystem, 6, 0);
-            filterLayout.Controls.Add(txtSourceSystem, 7, 0);
-            filterLayout.Controls.Add(lblChannel, 8, 0);
-            filterLayout.Controls.Add(txtChannel, 9, 0);
-            filterLayout.Controls.Add(btnApplyFilters, 10, 0);
-            filterLayout.Location = new Point(3, 3);
-            filterLayout.Name = "filterLayout";
-            filterLayout.RowCount = 1;
-            filterLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            filterLayout.Size = new Size(1187, 69);
-            filterLayout.TabIndex = 5;
-            // 
-            // lblStartDate
-            // 
-            lblStartDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblStartDate.AutoSize = true;
-            lblStartDate.Font = new Font("Segoe UI", 12F);
-            lblStartDate.Location = new Point(3, 6);
-            lblStartDate.Name = "lblStartDate";
-            lblStartDate.Size = new Size(101, 56);
-            lblStartDate.TabIndex = 0;
-            lblStartDate.Text = "Start Date:";
-            // 
-            // datePickerStart
-            // 
-            datePickerStart.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            datePickerStart.Font = new Font("Segoe UI", 12F);
-            datePickerStart.Location = new Point(110, 17);
-            datePickerStart.Name = "datePickerStart";
-            datePickerStart.Size = new Size(155, 34);
-            datePickerStart.TabIndex = 1;
-            // 
-            // lblEndDate
-            // 
-            lblEndDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblEndDate.AutoSize = true;
-            lblEndDate.Font = new Font("Segoe UI", 12F);
-            lblEndDate.Location = new Point(271, 6);
-            lblEndDate.Name = "lblEndDate";
-            lblEndDate.Size = new Size(47, 56);
-            lblEndDate.TabIndex = 2;
-            lblEndDate.Text = "End:";
-            // 
-            // datePickerEnd
-            // 
-            datePickerEnd.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            datePickerEnd.Font = new Font("Segoe UI", 12F);
-            datePickerEnd.Location = new Point(324, 17);
-            datePickerEnd.Name = "datePickerEnd";
-            datePickerEnd.Size = new Size(155, 34);
-            datePickerEnd.TabIndex = 3;
-            // 
-            // lblStatus
-            // 
-            lblStatus.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblStatus.AutoSize = true;
-            lblStatus.Font = new Font("Segoe UI", 12F);
-            lblStatus.Location = new Point(485, 6);
-            lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(47, 56);
-            lblStatus.TabIndex = 4;
-            lblStatus.Text = "Status:";
-            // 
-            // comboBoxStatus
-            // 
-            comboBoxStatus.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            comboBoxStatus.Font = new Font("Segoe UI", 12F);
-            comboBoxStatus.FormattingEnabled = true;
-            comboBoxStatus.Location = new Point(538, 16);
-            comboBoxStatus.Name = "comboBoxStatus";
-            comboBoxStatus.Size = new Size(101, 36);
-            comboBoxStatus.TabIndex = 5;
-            // 
-            // lblSourceSystem
-            // 
-            lblSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblSourceSystem.AutoSize = true;
-            lblSourceSystem.Font = new Font("Segoe UI", 12F);
-            lblSourceSystem.Location = new Point(645, 20);
-            lblSourceSystem.Name = "lblSourceSystem";
-            lblSourceSystem.Size = new Size(155, 28);
-            lblSourceSystem.TabIndex = 6;
-            lblSourceSystem.Text = "Source System:";
-            // 
-            // txtSourceSystem
-            // 
-            txtSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            txtSourceSystem.Font = new Font("Segoe UI", 12F);
-            txtSourceSystem.Location = new Point(806, 17);
-            txtSourceSystem.Name = "txtSourceSystem";
-            txtSourceSystem.Size = new Size(47, 34);
-            txtSourceSystem.TabIndex = 7;
-            // 
-            // lblChannel
-            // 
-            lblChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            lblChannel.AutoSize = true;
-            lblChannel.Font = new Font("Segoe UI", 12F);
-            lblChannel.Location = new Point(859, 20);
-            lblChannel.Name = "lblChannel";
-            lblChannel.Size = new Size(101, 28);
-            lblChannel.TabIndex = 8;
-            lblChannel.Text = "Channel:";
-            // 
-            // txtChannel
-            // 
-            txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            txtChannel.Font = new Font("Segoe UI", 12F);
-            txtChannel.Location = new Point(966, 17);
-            txtChannel.Name = "txtChannel";
-            txtChannel.Size = new Size(101, 34);
-            txtChannel.TabIndex = 9;
-            // 
-            // btnApplyFilters
-            // 
-            btnApplyFilters.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnApplyFilters.BackColor = Color.ForestGreen;
-            btnApplyFilters.FlatStyle = FlatStyle.Flat;
-            btnApplyFilters.Font = new Font("Segoe UI", 12F);
-            btnApplyFilters.ForeColor = Color.White;
-            btnApplyFilters.Location = new Point(1073, 3);
-            btnApplyFilters.Name = "btnApplyFilters";
-            btnApplyFilters.Size = new Size(111, 63);
-            btnApplyFilters.TabIndex = 10;
-            btnApplyFilters.Text = "Apply Filters";
-            btnApplyFilters.UseVisualStyleBackColor = false;
             // 
             // lblVerificationResponses
             // 
@@ -303,7 +154,6 @@
             treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             treeButtonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            treeButtonLayout.Controls.Add(btnRefresh, 0, 0);
             treeButtonLayout.Controls.Add(btnExpandAll, 2, 0);
             treeButtonLayout.Controls.Add(btnCollapseAll, 3, 0);
             treeButtonLayout.Location = new Point(3, 712);
@@ -312,20 +162,6 @@
             treeButtonLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             treeButtonLayout.Size = new Size(1187, 41);
             treeButtonLayout.TabIndex = 4;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            btnRefresh.BackColor = Color.ForestGreen;
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.Font = new Font("Segoe UI", 12F);
-            btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(3, 3);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(290, 35);
-            btnRefresh.TabIndex = 2;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = false;
             // 
             // btnExpandAll
             // 
@@ -355,6 +191,159 @@
             btnCollapseAll.Text = "Collapse All";
             btnCollapseAll.UseVisualStyleBackColor = false;
             // 
+            // filterLayout
+            // 
+            filterLayout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            filterLayout.ColumnCount = 12;
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.987009F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.329004F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.9870119F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.329004F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.9870119F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.329004F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.9870119F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.329004F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.658008F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.76190472F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.658008F));
+            filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 8.658008F));
+            filterLayout.Controls.Add(lblStartDate, 0, 0);
+            filterLayout.Controls.Add(lblEndDate, 2, 0);
+            filterLayout.Controls.Add(lblStatus, 4, 0);
+            filterLayout.Controls.Add(lblSourceSystem, 6, 0);
+            filterLayout.Controls.Add(lblChannel, 8, 0);
+            filterLayout.Controls.Add(btnApplyFilters, 11, 1);
+            filterLayout.Controls.Add(txtChannel, 8, 1);
+            filterLayout.Controls.Add(txtSourceSystem, 6, 1);
+            filterLayout.Controls.Add(comboBoxStatus, 4, 1);
+            filterLayout.Controls.Add(datePickerEnd, 2, 1);
+            filterLayout.Controls.Add(datePickerStart, 0, 1);
+            filterLayout.Controls.Add(btnClean, 10, 1);
+            filterLayout.Location = new Point(3, 3);
+            filterLayout.Name = "filterLayout";
+            filterLayout.RowCount = 2;
+            filterLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            filterLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
+            filterLayout.Size = new Size(1187, 69);
+            filterLayout.TabIndex = 5;
+            // 
+            // lblStartDate
+            // 
+            lblStartDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblStartDate.AutoSize = true;
+            lblStartDate.Font = new Font("Segoe UI", 12F);
+            lblStartDate.Location = new Point(3, 0);
+            lblStartDate.Name = "lblStartDate";
+            lblStartDate.Size = new Size(148, 27);
+            lblStartDate.TabIndex = 0;
+            lblStartDate.Text = "Start Date:";
+            // 
+            // lblEndDate
+            // 
+            lblEndDate.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblEndDate.AutoSize = true;
+            lblEndDate.Font = new Font("Segoe UI", 12F);
+            lblEndDate.Location = new Point(208, 0);
+            lblEndDate.Name = "lblEndDate";
+            lblEndDate.Size = new Size(148, 27);
+            lblEndDate.TabIndex = 2;
+            lblEndDate.Text = "End:";
+            // 
+            // lblStatus
+            // 
+            lblStatus.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblStatus.AutoSize = true;
+            lblStatus.Font = new Font("Segoe UI", 12F);
+            lblStatus.Location = new Point(413, 0);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(148, 27);
+            lblStatus.TabIndex = 4;
+            lblStatus.Text = "Status:";
+            // 
+            // lblSourceSystem
+            // 
+            lblSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblSourceSystem.AutoSize = true;
+            lblSourceSystem.Font = new Font("Segoe UI", 12F);
+            lblSourceSystem.Location = new Point(618, 0);
+            lblSourceSystem.Name = "lblSourceSystem";
+            lblSourceSystem.Size = new Size(148, 27);
+            lblSourceSystem.TabIndex = 6;
+            lblSourceSystem.Text = "Source System:";
+            // 
+            // lblChannel
+            // 
+            lblChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblChannel.AutoSize = true;
+            lblChannel.Font = new Font("Segoe UI", 12F);
+            lblChannel.Location = new Point(823, 0);
+            lblChannel.Name = "lblChannel";
+            lblChannel.Size = new Size(96, 27);
+            lblChannel.TabIndex = 8;
+            lblChannel.Text = "Channel:";
+            // 
+            // btnApplyFilters
+            // 
+            btnApplyFilters.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnApplyFilters.BackColor = Color.ForestGreen;
+            btnApplyFilters.FlatStyle = FlatStyle.Flat;
+            btnApplyFilters.Font = new Font("Segoe UI", 12F);
+            btnApplyFilters.ForeColor = Color.White;
+            btnApplyFilters.Location = new Point(1083, 30);
+            btnApplyFilters.Name = "btnApplyFilters";
+            btnApplyFilters.Size = new Size(101, 36);
+            btnApplyFilters.TabIndex = 10;
+            btnApplyFilters.Text = "Apply Filters";
+            btnApplyFilters.UseVisualStyleBackColor = false;
+            // 
+            // txtChannel
+            // 
+            txtChannel.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtChannel.Font = new Font("Segoe UI", 12F);
+            txtChannel.Location = new Point(823, 31);
+            txtChannel.Name = "txtChannel";
+            txtChannel.Size = new Size(96, 34);
+            txtChannel.TabIndex = 9;
+            // 
+            // txtSourceSystem
+            // 
+            txtSourceSystem.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtSourceSystem.Font = new Font("Segoe UI", 12F);
+            txtSourceSystem.Location = new Point(618, 31);
+            txtSourceSystem.Name = "txtSourceSystem";
+            txtSourceSystem.Size = new Size(148, 34);
+            txtSourceSystem.TabIndex = 7;
+            // 
+            // comboBoxStatus
+            // 
+            comboBoxStatus.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            comboBoxStatus.Font = new Font("Segoe UI", 12F);
+            comboBoxStatus.FormattingEnabled = true;
+            comboBoxStatus.Location = new Point(413, 30);
+            comboBoxStatus.Name = "comboBoxStatus";
+            comboBoxStatus.Size = new Size(148, 36);
+            comboBoxStatus.TabIndex = 5;
+            // 
+            // datePickerEnd
+            // 
+            datePickerEnd.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            datePickerEnd.Font = new Font("Segoe UI", 12F);
+            datePickerEnd.Format = DateTimePickerFormat.Short;
+            datePickerEnd.Location = new Point(208, 31);
+            datePickerEnd.Name = "datePickerEnd";
+            datePickerEnd.Size = new Size(148, 34);
+            datePickerEnd.TabIndex = 3;
+            // 
+            // datePickerStart
+            // 
+            datePickerStart.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            datePickerStart.Font = new Font("Segoe UI", 12F);
+            datePickerStart.Format = DateTimePickerFormat.Short;
+            datePickerStart.Location = new Point(3, 31);
+            datePickerStart.Name = "datePickerStart";
+            datePickerStart.Size = new Size(148, 34);
+            datePickerStart.TabIndex = 1;
+            // 
             // statusStrip
             // 
             statusStrip.Font = new Font("Segoe UI", 10F);
@@ -370,6 +359,20 @@
             statusLabel.Name = "statusLabel";
             statusLabel.Size = new Size(0, 16);
             // 
+            // btnClean
+            // 
+            btnClean.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnClean.BackColor = Color.FromArgb(192, 192, 0);
+            btnClean.FlatStyle = FlatStyle.Flat;
+            btnClean.Font = new Font("Segoe UI", 12F);
+            btnClean.ForeColor = Color.White;
+            btnClean.Location = new Point(981, 30);
+            btnClean.Name = "btnClean";
+            btnClean.Size = new Size(96, 35);
+            btnClean.TabIndex = 11;
+            btnClean.Text = "Clean";
+            btnClean.UseVisualStyleBackColor = false;
+            // 
             // ResponsesHistoryForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -383,13 +386,14 @@
             mainPanel.PerformLayout();
             tableLayout.ResumeLayout(false);
             tableLayout.PerformLayout();
-            filterLayout.ResumeLayout(false);
-            filterLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewResponses).EndInit();
             treeButtonLayout.ResumeLayout(false);
+            filterLayout.ResumeLayout(false);
+            filterLayout.PerformLayout();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
             ResumeLayout(false);
         }
+        private Button btnClean;
     }
 }

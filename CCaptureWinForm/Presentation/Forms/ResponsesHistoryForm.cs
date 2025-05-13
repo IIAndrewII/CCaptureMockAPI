@@ -63,7 +63,7 @@ namespace CCaptureWinForm
         {
             btnExpandAll.Click += btnExpandAll_Click;
             btnCollapseAll.Click += btnCollapseAll_Click;
-            btnRefresh.Click += btnRefresh_Click;
+            btnClean.Click += btnClean_Click;
             btnApplyFilters.Click += btnApplyFilters_Click;
             dataGridViewResponses.SelectionChanged += DataGridViewResponses_SelectionChanged;
         }
@@ -126,11 +126,6 @@ namespace CCaptureWinForm
         private void btnCollapseAll_Click(object sender, EventArgs e)
         {
             VerificationStatusTree.CollapseAll();
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            LoadVerificationResponsesAsync();
         }
 
         private void DataGridViewResponses_SelectionChanged(object sender, EventArgs e)
@@ -277,6 +272,34 @@ namespace CCaptureWinForm
                     }
                 }
             }
+        }
+
+        private void btnClean_Click(object sender, EventArgs e)
+        {
+            // Clear the internal data collection
+            _verificationResponses.Clear();
+
+            // Reset DataGridView
+            dataGridViewResponses.DataSource = null;
+
+            // Reset TreeView
+            VerificationStatusTree.Nodes.Clear();
+
+            // Reset filter controls to default values
+            comboBoxStatus.SelectedIndex = 0; // Select "All"
+            datePickerStart.Value = DateTime.Now.AddDays(-30); // Default to last 30 days
+            datePickerEnd.Value = DateTime.Now; // Default to today
+            datePickerStart.Checked = true; // Enable start date
+            datePickerEnd.Checked = true; // Enable end date
+            txtSourceSystem.Text = string.Empty; // Clear source system
+            txtChannel.Text = string.Empty; // Clear channel
+
+            // Reset status label
+            statusLabel.Text = "Ready";
+            statusLabel.ForeColor = Color.Black;
+
+            // Reconfigure TreeView to ensure it matches initial setup
+            ConfigureTreeView();
         }
     }
 }

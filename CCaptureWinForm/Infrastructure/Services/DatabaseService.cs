@@ -283,11 +283,11 @@ namespace CCaptureWinForm.Infrastructure.Services
         }
 
         public async Task<List<VerificationResponseViewModel>> GetFilteredVerificationResponses(
-            DateTime? startDate = null,
-            DateTime? endDate = null,
-            int? status = null,
-            string? sourceSystem = null,
-            string? channel = null)
+     DateTime? startDate = null,
+     DateTime? endDate = null,
+     int? status = null,
+     string? sourceSystem = null,
+     string? channel = null)
         {
             using (var context = CreateContext())
             {
@@ -296,12 +296,18 @@ namespace CCaptureWinForm.Infrastructure.Services
                     .ThenInclude(b => b.BatchClass)
                     .AsQueryable();
 
-                // Apply filters
+                // Normalize dates to handle same-day filtering
                 if (startDate.HasValue)
-                    query = query.Where(vr => vr.InteractionDateTime >= startDate.Value);
+                {
+                    var start = startDate.Value.Date; // Midnight of start date
+                    query = query.Where(vr => vr.InteractionDateTime >= start);
+                }
 
                 if (endDate.HasValue)
-                    query = query.Where(vr => vr.InteractionDateTime <= endDate.Value);
+                {
+                    var end = endDate.Value.Date.AddDays(1).AddTicks(-1); // End of end date
+                    query = query.Where(vr => vr.InteractionDateTime <= end);
+                }
 
                 if (status.HasValue)
                     query = query.Where(vr => vr.Status == status.Value);
