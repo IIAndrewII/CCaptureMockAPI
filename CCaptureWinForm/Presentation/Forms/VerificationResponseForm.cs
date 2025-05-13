@@ -69,9 +69,9 @@ namespace CCaptureWinForm
                     r.Channel,
                     r.SessionId,
                     r.MessageId,
-                    r.UserId,
+                    r.UserId
                     //r.ExecutionDate,
-                    r.ErrorMessage
+                    //r.ErrorMessage
                 }).ToList();
 
                 statusLabel.Text = "Verification responses loaded.";

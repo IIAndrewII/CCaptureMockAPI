@@ -20,6 +20,7 @@ namespace CCaptureWinForm
         private readonly ErrorProvider _errorProvider;
         private Dictionary<string, GroupData> _groups;
         private bool _isSubmitting = false;
+        private ToolStripProgressBar _progressBar; // Progress bar
 
         private class GroupData
         {
@@ -35,6 +36,16 @@ namespace CCaptureWinForm
 
             _errorProvider = new ErrorProvider(this) { BlinkStyle = ErrorBlinkStyle.NeverBlink };
             this.Shown += SubmitForm_Shown;
+
+            // Initialize the progress bar
+            _progressBar = new ToolStripProgressBar
+            {
+                Name = "toolStripProgressBar1",
+                Size = new Size(200, 16),
+                Visible = false,
+                Alignment = ToolStripItemAlignment.Right // Align to the right of statusStrip2
+            };
+            statusStrip2.Items.Add(_progressBar); // Add to statusStrip2
         }
 
         public SubmitForm(IApiDatabaseService apiDatabaseService, IDatabaseService databaseService, IConfiguration configuration, MainViewModel viewModel)
@@ -225,7 +236,7 @@ namespace CCaptureWinForm
             btnBrowseFile.Enabled = hasGroups && !_isSubmitting;
             btnRemoveFile.Enabled = hasGroups && hasDocuments && !_isSubmitting;
             btnRemoveField.Enabled = hasGroups && hasFields && !_isSubmitting;
-            btnAddField.Enabled = hasGroups && !_isSubmitting; // Enable Add Field when a group is selected
+            btnAddField.Enabled = hasGroups && !_isSubmitting;
             btnRemoveGroup.Enabled = hasGroups && !_isSubmitting;
             btnAddGroup.Enabled = !_isSubmitting;
             dataGridViewDocuments.Enabled = hasGroups && !_isSubmitting;
@@ -241,24 +252,30 @@ namespace CCaptureWinForm
             txtSessionID.Enabled = !_isSubmitting;
             txtMessageID.Enabled = !_isSubmitting;
 
-            Control_EnabledChanged(btnSubmitDocument, EventArgs.Empty);
-            Control_EnabledChanged(btnBrowseFile, EventArgs.Empty);
-            Control_EnabledChanged(btnRemoveFile, EventArgs.Empty);
-            Control_EnabledChanged(btnRemoveField, EventArgs.Empty);
-            Control_EnabledChanged(btnAddField, EventArgs.Empty);
-            Control_EnabledChanged(btnAddGroup, EventArgs.Empty);
-            Control_EnabledChanged(btnRemoveGroup, EventArgs.Empty);
-            Control_EnabledChanged(txtApiUrl, EventArgs.Empty);
-            Control_EnabledChanged(txtSourceSystem, EventArgs.Empty);
-            Control_EnabledChanged(txtChannel, EventArgs.Empty);
-            Control_EnabledChanged(txtUserCode, EventArgs.Empty);
-            Control_EnabledChanged(txtSessionID, EventArgs.Empty);
-            Control_EnabledChanged(txtMessageID, EventArgs.Empty);
-            Control_EnabledChanged(cboBatchClassName, EventArgs.Empty);
-            Control_EnabledChanged(dataGridViewGroups, EventArgs.Empty);
-            Control_EnabledChanged(dataGridViewDocuments, EventArgs.Empty);
-            Control_EnabledChanged(dataGridViewFields, EventArgs.Empty);
-            Control_EnabledChanged(pickerInteractionDateTime, EventArgs.Empty);
+            // Update visual styles for all controls
+            foreach (Control control in new Control[] {
+        btnSubmitDocument,
+        btnBrowseFile,
+        btnRemoveFile,
+        btnRemoveField,
+        btnAddField,
+        btnAddGroup,
+        btnRemoveGroup,
+        txtApiUrl,
+        txtSourceSystem,
+        txtChannel,
+        txtUserCode,
+        txtSessionID,
+        txtMessageID,
+        cboBatchClassName,
+        dataGridViewGroups,
+        dataGridViewDocuments,
+        dataGridViewFields,
+        pickerInteractionDateTime
+    })
+            {
+                Control_EnabledChanged(control, EventArgs.Empty);
+            }
         }
 
         private void AddNewGroup()
@@ -609,6 +626,7 @@ namespace CCaptureWinForm
                 _isSubmitting = true;
                 UpdateControlStates();
                 _errorProvider.Clear();
+
                 if (cboBatchClassName.SelectedIndex == -1)
                     _errorProvider.SetError(cboBatchClassName, "Please select a batch category.");
                 if (string.IsNullOrWhiteSpace(txtSourceSystem.Text))
@@ -636,8 +654,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Please enter all needed data.";
                     statusLabel2.ForeColor = Color.Red;
-                    _isSubmitting = false;
-                    UpdateControlStates();
+                    _progressBar.Visible = false;
                     return;
                 }
 
@@ -645,8 +662,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Please check at least one group to submit.";
                     statusLabel2.ForeColor = Color.Red;
-                    _isSubmitting = false;
-                    UpdateControlStates();
+                    _progressBar.Visible = false;
                     return;
                 }
 
@@ -655,8 +671,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = $"The following groups have no documents: {string.Join(", ", emptyGroups)}";
                     statusLabel2.ForeColor = Color.Red;
-                    _isSubmitting = false;
-                    UpdateControlStates();
+                    _progressBar.Visible = false;
                     return;
                 }
 
@@ -667,6 +682,11 @@ namespace CCaptureWinForm
                 }
                 var apiService = new ApiService(apiUrl);
                 _viewModel.UpdateApiService(apiService);
+
+                // Initialize progress bar
+                _progressBar.Visible = true;
+                _progressBar.Value = 0;
+                _progressBar.Maximum = checkedGroups.Count;
 
                 foreach (string group in checkedGroups.ToList())
                 {
@@ -688,8 +708,7 @@ namespace CCaptureWinForm
                     {
                         statusLabel2.Text = $"Group '{group}' has fields with empty values: {string.Join(", ", emptyFields)}";
                         statusLabel2.ForeColor = Color.Red;
-                        _isSubmitting = false;
-                        UpdateControlStates();
+                        _progressBar.Visible = false;
                         return;
                     }
 
@@ -717,12 +736,19 @@ namespace CCaptureWinForm
                         .FirstOrDefault(r => r.Cells["GroupName"].Value?.ToString() == group);
                     if (rowToRemove != null)
                         dataGridViewGroups.Rows.Remove(rowToRemove);
+
+                    _progressBar.Value++;
+                    Application.DoEvents();
                 }
 
                 UpdateDocumentAndFieldGrid();
+                _progressBar.Visible = false;
+                statusLabel2.Text = "Submission completed.";
+                statusLabel2.ForeColor = Color.Green;
             }
             catch (Exception ex)
             {
+                _progressBar.Visible = false;
                 statusLabel2.Text = ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401")
                     ? "Unauthorized. Please log in again."
                     : $"Submission failed: {ex.Message}";
@@ -734,6 +760,7 @@ namespace CCaptureWinForm
             {
                 _isSubmitting = false;
                 UpdateControlStates();
+                _progressBar.Visible = false;
             }
         }
 

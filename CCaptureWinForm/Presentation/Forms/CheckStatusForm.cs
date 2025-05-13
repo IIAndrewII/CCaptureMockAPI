@@ -84,31 +84,7 @@ namespace CCaptureWinForm
 
         private void ConfigureDataGridViewRequests()
         {
-            //if (dataGridViewRequests.Columns.Count == 0)
-            //{
-            //    dataGridViewRequests.Columns.Add(new DataGridViewCheckBoxColumn
-            //    {
-            //        HeaderText = "Select",
-            //        Name = "Select",
-            //        Width = 50
-            //    });
-            //    dataGridViewRequests.Columns.Add(new DataGridViewTextBoxColumn
-            //    {
-            //        HeaderText = "Request Guid",
-            //        Name = "RequestGuid",
-            //        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            //    });
-            //    dataGridViewRequests.Columns.Add(new DataGridViewButtonColumn
-            //    {
-            //        HeaderText = "Details",
-            //        Name = "Details",
-            //        Text = "View Details",
-            //        UseColumnTextForButtonValue = true,
-            //        Width = 100
-            //    });
-            //}
-            //dataGridViewRequests.AllowUserToAddRows = false;
-            //dataGridViewRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            // Configure DataGridView as needed
         }
 
         private void ConfigureTreeView()
@@ -230,11 +206,64 @@ namespace CCaptureWinForm
             }
         }
 
+        private void UpdateButtonStates(bool isProcessing)
+        {
+            btnCheckStatus.Enabled = !isProcessing;
+            btnExpandAll.Enabled = !isProcessing;
+            btnCollapseAll.Enabled = !isProcessing;
+            btnCheckAll.Enabled = !isProcessing;
+            btnUncheckAll.Enabled = !isProcessing;
+            txtApiUrl.Enabled = !isProcessing;
+            txtSourceSystem.Enabled = !isProcessing;
+            txtChannel.Enabled = !isProcessing;
+            txtSessionID.Enabled = !isProcessing;
+            txtMessageID.Enabled = !isProcessing;
+            txtUserCode.Enabled = !isProcessing;
+            pickerInteractionDateTime.Enabled = !isProcessing;
+            dataGridViewRequests.Enabled = !isProcessing;
+
+            // Update visual styles for buttons and controls
+            foreach (Control control in new Control[] {
+                        btnCheckStatus,
+                        btnExpandAll,
+                        btnCollapseAll,
+                        btnCheckAll,
+                        btnUncheckAll,
+                        txtApiUrl,
+                        txtSourceSystem,
+                        txtChannel,
+                        txtSessionID,
+                        txtMessageID,
+                        txtUserCode,
+                        pickerInteractionDateTime,
+                        dataGridViewRequests
+                    })
+            {
+                if (control.Enabled)
+                {
+                    control.BackColor = SystemColors.Window;
+                    if (control is Button button)
+                        button.BackColor = Color.FromArgb(0, 122, 204); // RoyalBlue or similar
+                    if (control is TextBox || control is DateTimePicker)
+                        control.ForeColor = SystemColors.WindowText;
+                }
+                else
+                {
+                    control.BackColor = Color.FromArgb(230, 230, 230);
+                    if (control is Button button)
+                        button.BackColor = Color.FromArgb(200, 200, 200);
+                    if (control is TextBox || control is DateTimePicker)
+                        control.ForeColor = Color.DimGray;
+                }
+            }
+        }
+
         private async void btnCheckStatus_Click(object sender, EventArgs e)
         {
             try
             {
                 _errorProvider.Clear();
+                UpdateButtonStates(true); // Disable buttons
 
                 // Validate metadata inputs
                 if (string.IsNullOrWhiteSpace(txtSourceSystem.Text))
@@ -257,19 +286,15 @@ namespace CCaptureWinForm
                     .Distinct()
                     .ToList();
 
-                //if (!requestGuids.Any())
-                //    _errorProvider.SetError(dataGridViewRequests, "Please select at least one valid Request Guid.");
-
-
                 if (_errorProvider.GetError(txtSourceSystem) != "" ||
                     _errorProvider.GetError(txtChannel) != "" ||
                     _errorProvider.GetError(txtSessionID) != "" ||
                     _errorProvider.GetError(txtMessageID) != "" ||
-                    _errorProvider.GetError(txtUserCode) != "" ||
-                    _errorProvider.GetError(dataGridViewRequests) != "")
+                    _errorProvider.GetError(txtUserCode) != "")
                 {
-                    statusLabel3.Text = "Please fill in all required fields and select at least one valid Request Guid.";
+                    statusLabel3.Text = "Please fill in all required fields.";
                     statusLabel3.ForeColor = Color.Red;
+                    UpdateButtonStates(false); // Re-enable buttons
                     return;
                 }
 
@@ -277,6 +302,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Please select at least one valid Request Guid.";
                     statusLabel3.ForeColor = Color.Red;
+                    UpdateButtonStates(false); // Re-enable buttons
                     return;
                 }
 
@@ -457,6 +483,10 @@ namespace CCaptureWinForm
                 statusLabel3.ForeColor = Color.Red;
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                     ShowLoginForm();
+            }
+            finally
+            {
+                UpdateButtonStates(false); // Re-enable buttons
             }
         }
 

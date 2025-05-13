@@ -131,7 +131,7 @@ namespace CCaptureWinForm
             metadataPanel.Location = new Point(0, 0);
             metadataPanel.Margin = new Padding(3, 4, 3, 4);
             metadataPanel.Name = "metadataPanel";
-            metadataPanel.Size = new Size(1375, 711);
+            metadataPanel.Size = new Size(1375, 709);
             metadataPanel.TabIndex = 9;
             // 
             // tableLayout2
@@ -184,7 +184,7 @@ namespace CCaptureWinForm
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 40.48583F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 8.232119F));
             tableLayout2.RowStyles.Add(new RowStyle(SizeType.Percent, 8.232119F));
-            tableLayout2.Size = new Size(1375, 711);
+            tableLayout2.Size = new Size(1375, 709);
             tableLayout2.TabIndex = 0;
             // 
             // cboBatchClassName
@@ -596,7 +596,7 @@ namespace CCaptureWinForm
             btnSubmitDocument.FlatStyle = FlatStyle.Flat;
             btnSubmitDocument.Font = new Font("Segoe UI", 12F);
             btnSubmitDocument.ForeColor = Color.White;
-            btnSubmitDocument.Location = new Point(917, 652);
+            btnSubmitDocument.Location = new Point(917, 651);
             btnSubmitDocument.Margin = new Padding(3, 4, 3, 4);
             btnSubmitDocument.Name = "btnSubmitDocument";
             btnSubmitDocument.Size = new Size(428, 53);
@@ -655,16 +655,16 @@ namespace CCaptureWinForm
             statusStrip2.Font = new Font("Segoe UI", 10F);
             statusStrip2.ImageScalingSize = new Size(20, 20);
             statusStrip2.Items.AddRange(new ToolStripItem[] { statusLabel2 });
-            statusStrip2.Location = new Point(0, 711);
+            statusStrip2.Location = new Point(0, 709);
             statusStrip2.Name = "statusStrip2";
             statusStrip2.Padding = new Padding(1, 0, 16, 0);
-            statusStrip2.Size = new Size(1375, 22);
+            statusStrip2.Size = new Size(1375, 24);
             statusStrip2.TabIndex = 11;
             // 
             // statusLabel2
             // 
             statusLabel2.Name = "statusLabel2";
-            statusLabel2.Size = new Size(0, 16);
+            statusLabel2.Size = new Size(0, 18);
             // 
             // errorProvider
             // 
