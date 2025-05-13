@@ -17,5 +17,6 @@ namespace CCaptureWinForm.Presentation.ViewModels
         public string? SessionId { get; set; }
         public string? MessageId { get; set; }
         public string? UserId { get; set; }
+        public string? ResponseJson { get; set; }
     }
 }

@@ -285,10 +285,9 @@ namespace CCaptureWinForm.Infrastructure.Services
         public async Task<List<VerificationResponseViewModel>> GetFilteredVerificationResponses(
             DateTime? startDate = null,
             DateTime? endDate = null,
+            int? status = null,
             string? sourceSystem = null,
-            string? channel = null,
-            string? userId = null,
-            int? status = null)
+            string? channel = null)
         {
             using (var context = CreateContext())
             {
@@ -304,19 +303,16 @@ namespace CCaptureWinForm.Infrastructure.Services
                 if (endDate.HasValue)
                     query = query.Where(vr => vr.InteractionDateTime <= endDate.Value);
 
+                if (status.HasValue)
+                    query = query.Where(vr => vr.Status == status.Value);
+
                 if (!string.IsNullOrEmpty(sourceSystem))
                     query = query.Where(vr => vr.SourceSystem == sourceSystem);
 
                 if (!string.IsNullOrEmpty(channel))
                     query = query.Where(vr => vr.Channel == channel);
 
-                if (!string.IsNullOrEmpty(userId))
-                    query = query.Where(vr => vr.UserId == userId);
-
-                if (status.HasValue)
-                    query = query.Where(vr => vr.Status == status.Value);
-
-                var result = await query
+                var efVerificationResponses = await query
                     .Select(vr => new VerificationResponseViewModel
                     {
                         InteractionDateTime = vr.InteractionDateTime,
@@ -329,11 +325,12 @@ namespace CCaptureWinForm.Infrastructure.Services
                         Channel = vr.Channel,
                         SessionId = vr.SessionId,
                         MessageId = vr.MessageId,
-                        UserId = vr.UserId
+                        UserId = vr.UserId,
+                        ResponseJson = vr.ResponseJson
                     })
                     .ToListAsync();
 
-                return result;
+                return efVerificationResponses;
             }
         }
     }
