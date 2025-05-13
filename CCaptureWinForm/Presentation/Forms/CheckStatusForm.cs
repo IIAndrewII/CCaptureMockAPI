@@ -51,6 +51,7 @@ namespace CCaptureWinForm
             var appPassword = _configuration["AppPassword"];
             await loginAsync(appName, appLogin, appPassword);
             await PopulateUncheckedGuidsAsync();
+            UpdateButtonStates(false); // Set initial button states
         }
 
         private async Task PopulateUncheckedGuidsAsync()
@@ -75,6 +76,7 @@ namespace CCaptureWinForm
                 }
 
                 dataGridViewRequests.Refresh();
+                UpdateButtonStates(false); // Update button states after adding rows
             }
             catch (Exception ex)
             {
@@ -105,6 +107,89 @@ namespace CCaptureWinForm
             btnUncheckAll.Click += btnUncheckAll_Click;
             dataGridViewRequests.DataError += DataGridViewRequests_DataError;
             dataGridViewRequests.CellContentClick += DataGridViewRequests_CellContentClick;
+
+            // DataGridView events for checkbox changes
+            dataGridViewRequests.CellValueChanged += (s, e) => UpdateButtonStates(false);
+            dataGridViewRequests.CurrentCellDirtyStateChanged += (s, e) =>
+            {
+                if (dataGridViewRequests.IsCurrentCellDirty)
+                {
+                    dataGridViewRequests.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                }
+            };
+
+            // TreeView events for node changes
+            VerificationStatusTree.AfterExpand += (s, e) => UpdateButtonStates(false);
+            VerificationStatusTree.AfterCollapse += (s, e) => UpdateButtonStates(false);
+        }
+
+        private void UpdateButtonStates(bool isProcessing)
+        {
+            // Determine button states when not processing
+            bool canCheckStatus = !isProcessing && dataGridViewRequests.Rows
+                .Cast<DataGridViewRow>()
+                .Any(row => row.Cells["Select"].Value is true &&
+                            !string.IsNullOrWhiteSpace(row.Cells["RequestGuid"].Value?.ToString()) &&
+                            Guid.TryParse(row.Cells["RequestGuid"].Value?.ToString(), out _));
+
+            bool hasRows = !isProcessing && dataGridViewRequests.Rows.Count > 0;
+            bool canCheckAll = hasRows && dataGridViewRequests.Rows
+                .Cast<DataGridViewRow>()
+                .Any(row => row.Cells["Select"].Value is not true);
+            bool canUncheckAll = hasRows && dataGridViewRequests.Rows
+                .Cast<DataGridViewRow>()
+                .Any(row => row.Cells["Select"].Value is true);
+            bool hasTreeNodes = !isProcessing && VerificationStatusTree.Nodes.Count > 0;
+
+            // Apply enabled states
+            btnCheckStatus.Enabled = canCheckStatus;
+            btnCheckAll.Enabled = canCheckAll;
+            btnUncheckAll.Enabled = canUncheckAll;
+            btnExpandAll.Enabled = hasTreeNodes;
+            btnCollapseAll.Enabled = hasTreeNodes;
+            txtApiUrl.Enabled = !isProcessing;
+            txtSourceSystem.Enabled = !isProcessing;
+            txtChannel.Enabled = !isProcessing;
+            txtSessionID.Enabled = !isProcessing;
+            txtMessageID.Enabled = !isProcessing;
+            txtUserCode.Enabled = !isProcessing;
+            pickerInteractionDateTime.Enabled = !isProcessing;
+            dataGridViewRequests.Enabled = !isProcessing;
+
+            // Update visual styles for buttons and controls
+            foreach (Control control in new Control[] {
+                btnCheckStatus,
+                btnExpandAll,
+                btnCollapseAll,
+                btnCheckAll,
+                btnUncheckAll,
+                txtApiUrl,
+                txtSourceSystem,
+                txtChannel,
+                txtSessionID,
+                txtMessageID,
+                txtUserCode,
+                pickerInteractionDateTime,
+                dataGridViewRequests
+            })
+            {
+                if (control.Enabled)
+                {
+                    control.BackColor = SystemColors.Window;
+                    if (control is Button button)
+                        button.BackColor = Color.FromArgb(0, 122, 204); // RoyalBlue
+                    if (control is TextBox || control is DateTimePicker)
+                        control.ForeColor = SystemColors.WindowText;
+                }
+                else
+                {
+                    control.BackColor = Color.FromArgb(230, 230, 230);
+                    if (control is Button button)
+                        button.BackColor = Color.FromArgb(200, 200, 200);
+                    if (control is TextBox || control is DateTimePicker)
+                        control.ForeColor = Color.DimGray;
+                }
+            }
         }
 
         private void btnCheckAll_Click(object sender, EventArgs e)
@@ -113,6 +198,7 @@ namespace CCaptureWinForm
             {
                 row.Cells["Select"].Value = true;
             }
+            UpdateButtonStates(false); // Update button states after checking all
         }
 
         private void btnUncheckAll_Click(object sender, EventArgs e)
@@ -121,6 +207,7 @@ namespace CCaptureWinForm
             {
                 row.Cells["Select"].Value = false;
             }
+            UpdateButtonStates(false); // Update button states after unchecking all
         }
 
         private async void DataGridViewRequests_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -149,11 +236,13 @@ namespace CCaptureWinForm
         private void btnExpandAll_Click(object sender, EventArgs e)
         {
             VerificationStatusTree.ExpandAll();
+            UpdateButtonStates(false); // Update button states after expanding
         }
 
         private void btnCollapseAll_Click(object sender, EventArgs e)
         {
             VerificationStatusTree.CollapseAll();
+            UpdateButtonStates(false); // Update button states after collapsing
         }
 
         private async Task loginAsync(string appName, string appLogin, string appPassword)
@@ -204,58 +293,7 @@ namespace CCaptureWinForm
                     statusLabel3.ForeColor = Color.Red;
                 }
             }
-        }
-
-        private void UpdateButtonStates(bool isProcessing)
-        {
-            btnCheckStatus.Enabled = !isProcessing;
-            btnExpandAll.Enabled = !isProcessing;
-            btnCollapseAll.Enabled = !isProcessing;
-            btnCheckAll.Enabled = !isProcessing;
-            btnUncheckAll.Enabled = !isProcessing;
-            txtApiUrl.Enabled = !isProcessing;
-            txtSourceSystem.Enabled = !isProcessing;
-            txtChannel.Enabled = !isProcessing;
-            txtSessionID.Enabled = !isProcessing;
-            txtMessageID.Enabled = !isProcessing;
-            txtUserCode.Enabled = !isProcessing;
-            pickerInteractionDateTime.Enabled = !isProcessing;
-            dataGridViewRequests.Enabled = !isProcessing;
-
-            // Update visual styles for buttons and controls
-            foreach (Control control in new Control[] {
-                        btnCheckStatus,
-                        btnExpandAll,
-                        btnCollapseAll,
-                        btnCheckAll,
-                        btnUncheckAll,
-                        txtApiUrl,
-                        txtSourceSystem,
-                        txtChannel,
-                        txtSessionID,
-                        txtMessageID,
-                        txtUserCode,
-                        pickerInteractionDateTime,
-                        dataGridViewRequests
-                    })
-            {
-                if (control.Enabled)
-                {
-                    control.BackColor = SystemColors.Window;
-                    if (control is Button button)
-                        button.BackColor = Color.FromArgb(0, 122, 204); // RoyalBlue or similar
-                    if (control is TextBox || control is DateTimePicker)
-                        control.ForeColor = SystemColors.WindowText;
-                }
-                else
-                {
-                    control.BackColor = Color.FromArgb(230, 230, 230);
-                    if (control is Button button)
-                        button.BackColor = Color.FromArgb(200, 200, 200);
-                    if (control is TextBox || control is DateTimePicker)
-                        control.ForeColor = Color.DimGray;
-                }
-            }
+            UpdateButtonStates(false); // Update button states after login attempt
         }
 
         private async void btnCheckStatus_Click(object sender, EventArgs e)
@@ -263,7 +301,7 @@ namespace CCaptureWinForm
             try
             {
                 _errorProvider.Clear();
-                UpdateButtonStates(true); // Disable buttons
+                UpdateButtonStates(true); // Disable buttons during processing
 
                 // Validate metadata inputs
                 if (string.IsNullOrWhiteSpace(txtSourceSystem.Text))
