@@ -51,10 +51,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\CheckStatusForm.cs">
+    <Compile Update="Presentation\Forms\CheckStatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\SubmitForm.cs" />
+    <Compile Update="Presentation\Forms\SubmitForm.cs" />
   </ItemGroup>
 
 </Project>
