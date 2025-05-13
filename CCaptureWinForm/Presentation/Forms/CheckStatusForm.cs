@@ -257,6 +257,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Configuration settings are missing.";
                     statusLabel3.ForeColor = Color.Red;
+                    MessageBox.Show("Configuration settings are missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowLoginForm();
                     return;
                 }
@@ -272,6 +273,7 @@ namespace CCaptureWinForm
                     ? "Unauthorized configuration settings."
                     : $"Login failed: {ex.Message}";
                 statusLabel3.ForeColor = Color.Red;
+                MessageBox.Show(statusLabel3.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ShowLoginForm();
             }
         }
@@ -291,6 +293,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Login failed. Please try again.";
                     statusLabel3.ForeColor = Color.Red;
+                    MessageBox.Show("Login failed. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             UpdateButtonStates(false); // Update button states after login attempt
@@ -332,6 +335,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Please fill in all required fields.";
                     statusLabel3.ForeColor = Color.Red;
+                    MessageBox.Show("Please fill in all required fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     UpdateButtonStates(false); // Re-enable buttons
                     return;
                 }
@@ -340,6 +344,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel3.Text = "Please select at least one valid Request Guid.";
                     statusLabel3.ForeColor = Color.Red;
+                    MessageBox.Show("Please select at least one valid Request Guid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     UpdateButtonStates(false); // Re-enable buttons
                     return;
                 }
@@ -519,6 +524,7 @@ namespace CCaptureWinForm
                 toolStripProgressBar1.Visible = false;
                 statusLabel3.Text = $"Error: {ex.Message}";
                 statusLabel3.ForeColor = Color.Red;
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                     ShowLoginForm();
             }

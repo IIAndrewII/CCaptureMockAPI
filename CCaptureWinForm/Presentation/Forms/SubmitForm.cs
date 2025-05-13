@@ -254,25 +254,25 @@ namespace CCaptureWinForm
 
             // Update visual styles for all controls
             foreach (Control control in new Control[] {
-        btnSubmitDocument,
-        btnBrowseFile,
-        btnRemoveFile,
-        btnRemoveField,
-        btnAddField,
-        btnAddGroup,
-        btnRemoveGroup,
-        txtApiUrl,
-        txtSourceSystem,
-        txtChannel,
-        txtUserCode,
-        txtSessionID,
-        txtMessageID,
-        cboBatchClassName,
-        dataGridViewGroups,
-        dataGridViewDocuments,
-        dataGridViewFields,
-        pickerInteractionDateTime
-    })
+                btnSubmitDocument,
+                btnBrowseFile,
+                btnRemoveFile,
+                btnRemoveField,
+                btnAddField,
+                btnAddGroup,
+                btnRemoveGroup,
+                txtApiUrl,
+                txtSourceSystem,
+                txtChannel,
+                txtUserCode,
+                txtSessionID,
+                txtMessageID,
+                cboBatchClassName,
+                dataGridViewGroups,
+                dataGridViewDocuments,
+                dataGridViewFields,
+                pickerInteractionDateTime
+            })
             {
                 Control_EnabledChanged(control, EventArgs.Empty);
             }
@@ -429,6 +429,7 @@ namespace CCaptureWinForm
             {
                 statusLabel2.Text = $"Failed to add field: {ex.Message}";
                 statusLabel2.ForeColor = Color.Red;
+                MessageBox.Show($"Failed to add field: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -446,6 +447,7 @@ namespace CCaptureWinForm
             {
                 statusLabel2.Text = $"Failed to load Batch Class Names: {ex.Message}";
                 statusLabel2.ForeColor = Color.Red;
+                MessageBox.Show($"Failed to load Batch Class Names: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -474,6 +476,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = $"Failed to load page types or field names: {ex.Message}";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show($"Failed to load page types or field names: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -574,6 +577,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Configuration settings are missing.";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show("Configuration settings are missing.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowLoginForm();
                     return;
                 }
@@ -589,6 +593,7 @@ namespace CCaptureWinForm
                     ? "Unauthorized configuration settings."
                     : $"Login failed: {ex.Message}";
                 statusLabel2.ForeColor = Color.Red;
+                MessageBox.Show(statusLabel2.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ShowLoginForm();
             }
         }
@@ -615,6 +620,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Login failed. Please try again.";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show("Login failed. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -654,6 +660,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Please enter all needed data.";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show("Please enter all needed data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _progressBar.Visible = false;
                     return;
                 }
@@ -662,6 +669,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = "Please check at least one group to submit.";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show("Please check at least one group to submit.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _progressBar.Visible = false;
                     return;
                 }
@@ -671,6 +679,7 @@ namespace CCaptureWinForm
                 {
                     statusLabel2.Text = $"The following groups have no documents: {string.Join(", ", emptyGroups)}";
                     statusLabel2.ForeColor = Color.Red;
+                    MessageBox.Show($"The following groups have no documents: {string.Join(", ", emptyGroups)}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _progressBar.Visible = false;
                     return;
                 }
@@ -708,6 +717,7 @@ namespace CCaptureWinForm
                     {
                         statusLabel2.Text = $"Group '{group}' has fields with empty values: {string.Join(", ", emptyFields)}";
                         statusLabel2.ForeColor = Color.Red;
+                        MessageBox.Show($"Group '{group}' has fields with empty values: {string.Join(", ", emptyFields)}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         _progressBar.Visible = false;
                         return;
                     }
@@ -753,6 +763,7 @@ namespace CCaptureWinForm
                     ? "Unauthorized. Please log in again."
                     : $"Submission failed: {ex.Message}";
                 statusLabel2.ForeColor = Color.Red;
+                MessageBox.Show(statusLabel2.Text, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 if (ex.Message.ToLower().Contains("unauthorized") || ex.Message.Contains("401"))
                     ShowLoginForm();
             }
@@ -901,6 +912,7 @@ namespace CCaptureWinForm
             {
                 statusLabel2.Text = "Please select a group before editing fields.";
                 statusLabel2.ForeColor = Color.Red;
+                MessageBox.Show("Please select a group before editing fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -952,6 +964,7 @@ namespace CCaptureWinForm
                     {
                         statusLabel2.Text = $"Failed to load field type: {ex.Message}";
                         statusLabel2.ForeColor = Color.Red;
+                        MessageBox.Show($"Failed to load field type: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 UpdateFieldNameDropdown(selectedGroup);
@@ -986,6 +999,7 @@ namespace CCaptureWinForm
                         {
                             statusLabel2.Text = $"Failed to load field type: {ex.Message}";
                             statusLabel2.ForeColor = Color.Red;
+                            MessageBox.Show($"Failed to load field type: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
