@@ -10,13 +10,13 @@ using CCaptureWinForm.Core.DbEntities;
 
 namespace CCaptureWinForm
 {
-    public partial class VerificationResponseForm : Form
+    public partial class ResponsesHistoryForm : Form
     {
         private readonly IDatabaseService _databaseService;
         private readonly IConfiguration _configuration;
         private List<VerificationResponse> _verificationResponses;
 
-        public VerificationResponseForm(IDatabaseService databaseService, IConfiguration configuration)
+        public ResponsesHistoryForm(IDatabaseService databaseService, IConfiguration configuration)
         {
             InitializeComponent();
             _databaseService = databaseService;

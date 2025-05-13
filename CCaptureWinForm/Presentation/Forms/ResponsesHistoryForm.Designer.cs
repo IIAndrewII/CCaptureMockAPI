@@ -1,6 +1,6 @@
 ﻿namespace CCaptureWinForm
 {
-    partial class VerificationResponseForm
+    partial class ResponsesHistoryForm
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.Panel mainPanel;
@@ -52,9 +52,8 @@
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Font = new Font("Segoe UI", 12F);
             mainPanel.Location = new Point(0, 0);
-            mainPanel.Margin = new Padding(3, 2, 3, 2);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1050, 600);
+            mainPanel.Size = new Size(1200, 800);
             mainPanel.TabIndex = 0;
             // 
             // tableLayout
@@ -67,8 +66,7 @@
             tableLayout.Controls.Add(lblVerificationStatus, 0, 2);
             tableLayout.Controls.Add(dataGridViewResponses, 0, 1);
             tableLayout.Controls.Add(lblVerificationResponses, 0, 0);
-            tableLayout.Location = new Point(3, 9);
-            tableLayout.Margin = new Padding(3, 2, 3, 2);
+            tableLayout.Location = new Point(3, 12);
             tableLayout.Name = "tableLayout";
             tableLayout.RowCount = 5;
             tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 4.094555F));
@@ -76,7 +74,7 @@
             tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 4.094555F));
             tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 42.2119064F));
             tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 7.387083F));
-            tableLayout.Size = new Size(1044, 567);
+            tableLayout.Size = new Size(1193, 756);
             tableLayout.TabIndex = 0;
             // 
             // treeButtonLayout
@@ -90,12 +88,11 @@
             treeButtonLayout.Controls.Add(btnRefresh, 0, 0);
             treeButtonLayout.Controls.Add(btnExpandAll, 2, 0);
             treeButtonLayout.Controls.Add(btnCollapseAll, 3, 0);
-            treeButtonLayout.Location = new Point(3, 526);
-            treeButtonLayout.Margin = new Padding(3, 2, 3, 2);
+            treeButtonLayout.Location = new Point(3, 701);
             treeButtonLayout.Name = "treeButtonLayout";
             treeButtonLayout.RowCount = 1;
             treeButtonLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            treeButtonLayout.Size = new Size(1038, 39);
+            treeButtonLayout.Size = new Size(1187, 52);
             treeButtonLayout.TabIndex = 4;
             // 
             // btnRefresh
@@ -105,10 +102,9 @@
             btnRefresh.FlatStyle = FlatStyle.Flat;
             btnRefresh.Font = new Font("Segoe UI", 12F);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(3, 2);
-            btnRefresh.Margin = new Padding(3, 2, 3, 2);
+            btnRefresh.Location = new Point(3, 3);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(253, 35);
+            btnRefresh.Size = new Size(290, 46);
             btnRefresh.TabIndex = 2;
             btnRefresh.Text = "Refresh";
             btnRefresh.UseVisualStyleBackColor = false;
@@ -120,10 +116,9 @@
             btnExpandAll.FlatStyle = FlatStyle.Flat;
             btnExpandAll.Font = new Font("Segoe UI", 12F);
             btnExpandAll.ForeColor = Color.White;
-            btnExpandAll.Location = new Point(521, 2);
-            btnExpandAll.Margin = new Padding(3, 2, 3, 2);
+            btnExpandAll.Location = new Point(595, 3);
             btnExpandAll.Name = "btnExpandAll";
-            btnExpandAll.Size = new Size(253, 35);
+            btnExpandAll.Size = new Size(290, 46);
             btnExpandAll.TabIndex = 0;
             btnExpandAll.Text = "Expand All";
             btnExpandAll.UseVisualStyleBackColor = false;
@@ -135,10 +130,9 @@
             btnCollapseAll.FlatStyle = FlatStyle.Flat;
             btnCollapseAll.Font = new Font("Segoe UI", 12F);
             btnCollapseAll.ForeColor = Color.White;
-            btnCollapseAll.Location = new Point(780, 2);
-            btnCollapseAll.Margin = new Padding(3, 2, 3, 2);
+            btnCollapseAll.Location = new Point(891, 3);
             btnCollapseAll.Name = "btnCollapseAll";
-            btnCollapseAll.Size = new Size(255, 35);
+            btnCollapseAll.Size = new Size(293, 46);
             btnCollapseAll.TabIndex = 1;
             btnCollapseAll.Text = "Collapse All";
             btnCollapseAll.UseVisualStyleBackColor = false;
@@ -147,10 +141,9 @@
             // 
             VerificationStatusTree.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             VerificationStatusTree.Font = new Font("Segoe UI", 12F);
-            VerificationStatusTree.Location = new Point(3, 287);
-            VerificationStatusTree.Margin = new Padding(3, 2, 3, 2);
+            VerificationStatusTree.Location = new Point(3, 382);
             VerificationStatusTree.Name = "VerificationStatusTree";
-            VerificationStatusTree.Size = new Size(1038, 235);
+            VerificationStatusTree.Size = new Size(1187, 313);
             VerificationStatusTree.TabIndex = 3;
             // 
             // lblVerificationStatus
@@ -158,9 +151,9 @@
             lblVerificationStatus.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblVerificationStatus.AutoSize = true;
             lblVerificationStatus.Font = new Font("Segoe UI", 12F);
-            lblVerificationStatus.Location = new Point(3, 264);
+            lblVerificationStatus.Location = new Point(3, 351);
             lblVerificationStatus.Name = "lblVerificationStatus";
-            lblVerificationStatus.Size = new Size(137, 21);
+            lblVerificationStatus.Size = new Size(172, 28);
             lblVerificationStatus.TabIndex = 2;
             lblVerificationStatus.Text = "Verification Status:";
             // 
@@ -169,11 +162,10 @@
             dataGridViewResponses.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewResponses.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewResponses.Font = new Font("Segoe UI", 12F);
-            dataGridViewResponses.Location = new Point(3, 25);
-            dataGridViewResponses.Margin = new Padding(3, 2, 3, 2);
+            dataGridViewResponses.Location = new Point(3, 33);
             dataGridViewResponses.Name = "dataGridViewResponses";
             dataGridViewResponses.RowHeadersWidth = 51;
-            dataGridViewResponses.Size = new Size(1038, 235);
+            dataGridViewResponses.Size = new Size(1187, 313);
             dataGridViewResponses.TabIndex = 1;
             // 
             // lblVerificationResponses
@@ -183,35 +175,34 @@
             lblVerificationResponses.Font = new Font("Segoe UI", 12F);
             lblVerificationResponses.Location = new Point(3, 2);
             lblVerificationResponses.Name = "lblVerificationResponses";
-            lblVerificationResponses.Size = new Size(168, 21);
+            lblVerificationResponses.Size = new Size(208, 28);
             lblVerificationResponses.TabIndex = 0;
             lblVerificationResponses.Text = "Check Status Requests:";
             // 
             // statusStrip
             // 
             statusStrip.Font = new Font("Segoe UI", 10F);
+            statusStrip.ImageScalingSize = new Size(20, 20);
             statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
-            statusStrip.Location = new Point(0, 578);
+            statusStrip.Location = new Point(0, 778);
             statusStrip.Name = "statusStrip";
-            statusStrip.Padding = new Padding(1, 0, 12, 0);
-            statusStrip.Size = new Size(1050, 22);
+            statusStrip.Size = new Size(1200, 22);
             statusStrip.TabIndex = 1;
             // 
             // statusLabel
             // 
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(0, 17);
+            statusLabel.Size = new Size(0, 16);
             // 
-            // VerificationResponseForm
+            // ResponsesHistoryForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 245, 245);
-            ClientSize = new Size(1050, 600);
+            ClientSize = new Size(1200, 800);
             Controls.Add(mainPanel);
-            Margin = new Padding(3, 2, 3, 2);
-            Name = "VerificationResponseForm";
-            Text = "Verification Responses";
+            Name = "ResponsesHistoryForm";
+            Text = "Responses History";
             mainPanel.ResumeLayout(false);
             mainPanel.PerformLayout();
             tableLayout.ResumeLayout(false);

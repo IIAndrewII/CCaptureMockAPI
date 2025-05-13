@@ -84,10 +84,10 @@ namespace CCaptureWinForm
 
         private void OpenVerificationResponseForm()
         {
-            var existingForm = this.MdiChildren.OfType<VerificationResponseForm>().FirstOrDefault();
+            var existingForm = this.MdiChildren.OfType<ResponsesHistoryForm>().FirstOrDefault();
             if (existingForm == null)
             {
-                var verificationResponseForm = new VerificationResponseForm(_databaseService, _configuration)
+                var verificationResponseForm = new ResponsesHistoryForm(_databaseService, _configuration)
                 {
                     MdiParent = this,
                     WindowState = FormWindowState.Maximized
