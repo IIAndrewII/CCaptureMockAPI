@@ -1,6 +1,6 @@
-﻿using CCaptureWinForm.Core.ApiEntities;
-using CCaptureWinForm.Core.DbEntities;
-using CCaptureWinForm.Core.Interfaces;
+﻿using Konecta.Tools.CCaptureClient.Core.ApiEntities;
+using Konecta.Tools.CCaptureClient.Core.DbEntities;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Presentation.ViewModels
+namespace Konecta.Tools.CCaptureClient.Presentation.ViewModels
 {
     public class MainViewModel
     {

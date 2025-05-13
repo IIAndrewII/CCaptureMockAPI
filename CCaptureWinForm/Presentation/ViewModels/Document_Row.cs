@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Presentation.ViewModels
+namespace Konecta.Tools.CCaptureClient.Presentation.ViewModels
 {
     public class Document_Row
     {

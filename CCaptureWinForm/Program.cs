@@ -2,10 +2,10 @@ using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using CCaptureWinForm.Infrastructure.Services;
-using CCaptureWinForm.Core.Interfaces;
+using Konecta.Tools.CCaptureClient.Infrastructure.Services;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
 
-namespace CCaptureWinForm
+namespace Konecta.Tools.CCaptureClient
 {
     internal static class Program
     {

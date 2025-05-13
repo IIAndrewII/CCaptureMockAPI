@@ -1,4 +1,4 @@
-﻿namespace CCaptureWinForm
+﻿namespace Konecta.Tools.CCaptureClient
 {
     partial class CheckStatusForm
     {

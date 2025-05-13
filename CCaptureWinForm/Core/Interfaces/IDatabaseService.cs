@@ -1,7 +1,7 @@
-using CCaptureWinForm.Core.DbEntities;
-using CCaptureWinForm.Presentation.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.DbEntities;
+using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 
-namespace CCaptureWinForm.Core.Interfaces
+namespace Konecta.Tools.CCaptureClient.Core.Interfaces
 {
     public interface IDatabaseService
     {

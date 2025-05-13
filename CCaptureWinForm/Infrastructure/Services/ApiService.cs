@@ -1,6 +1,6 @@
 ﻿// CCaptureMockApiClient.Infrastructure/Services/ApiService.cs
-using CCaptureWinForm.Core.ApiEntities;
-using CCaptureWinForm.Core.Interfaces;
+using Konecta.Tools.CCaptureClient.Core.ApiEntities;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Infrastructure.Services
+namespace Konecta.Tools.CCaptureClient.Infrastructure.Services
 {
     public class ApiService : IApiService
     {

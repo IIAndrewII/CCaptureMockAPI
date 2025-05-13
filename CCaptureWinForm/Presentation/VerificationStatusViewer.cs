@@ -4,7 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
 
-namespace CCaptureWinForm.Presentation
+namespace Konecta.Tools.CCaptureClient.Presentation
 {
     public class VerificationStatusViewer : UserControl
     {

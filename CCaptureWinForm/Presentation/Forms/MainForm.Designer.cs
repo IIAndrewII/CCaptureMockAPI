@@ -1,4 +1,4 @@
-﻿namespace CCaptureWinForm
+﻿namespace Konecta.Tools.CCaptureClient
 {
     partial class MainForm
     {
@@ -36,8 +36,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(7, 3, 0, 3);
-            menuStrip1.Size = new Size(1387, 30);
+            menuStrip1.Size = new Size(1214, 24);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -45,25 +44,25 @@
             // 
             fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { submitDocumentToolStripMenuItem, checkStatusToolStripMenuItem, viewVerificationResponsesToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(46, 24);
+            fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
             // 
             // submitDocumentToolStripMenuItem
             // 
             submitDocumentToolStripMenuItem.Name = "submitDocumentToolStripMenuItem";
-            submitDocumentToolStripMenuItem.Size = new Size(224, 26);
+            submitDocumentToolStripMenuItem.Size = new Size(171, 22);
             submitDocumentToolStripMenuItem.Text = "Submit Document";
             // 
             // checkStatusToolStripMenuItem
             // 
             checkStatusToolStripMenuItem.Name = "checkStatusToolStripMenuItem";
-            checkStatusToolStripMenuItem.Size = new Size(224, 26);
+            checkStatusToolStripMenuItem.Size = new Size(171, 22);
             checkStatusToolStripMenuItem.Text = "Check Status";
             // 
             // viewVerificationResponsesToolStripMenuItem
             // 
             viewVerificationResponsesToolStripMenuItem.Name = "viewVerificationResponsesToolStripMenuItem";
-            viewVerificationResponsesToolStripMenuItem.Size = new Size(224, 26);
+            viewVerificationResponsesToolStripMenuItem.Size = new Size(171, 22);
             viewVerificationResponsesToolStripMenuItem.Text = "Responses History";
             // 
             // verificationResponseListView
@@ -79,16 +78,17 @@
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 245, 245);
-            ClientSize = new Size(1387, 825);
+            ClientSize = new Size(1214, 619);
             Controls.Add(menuStrip1);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
-            MinimumSize = new Size(800, 495);
+            Margin = new Padding(3, 2, 3, 2);
+            MinimumSize = new Size(702, 381);
             Name = "MainForm";
-            Text = "CCapture Mock API Client";
+            Text = "CCapture Desktop Client";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

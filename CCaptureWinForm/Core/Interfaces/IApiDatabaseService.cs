@@ -1,4 +1,4 @@
-namespace CCaptureWinForm.Core.Interfaces
+namespace Konecta.Tools.CCaptureClient.Core.Interfaces
 {
     public interface IApiDatabaseService
     {

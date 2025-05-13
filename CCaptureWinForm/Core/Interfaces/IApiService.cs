@@ -1,11 +1,11 @@
-﻿using CCaptureWinForm.Core.ApiEntities;
+﻿using Konecta.Tools.CCaptureClient.Core.ApiEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Core.Interfaces
+namespace Konecta.Tools.CCaptureClient.Core.Interfaces
 {
     public interface IApiService
     {

@@ -1,15 +1,15 @@
-﻿using CCaptureWinForm.Core.ApiEntities;
-using CCaptureWinForm.Core.Interfaces;
-using CCaptureWinForm.Presentation.ViewModels;
+﻿using Konecta.Tools.CCaptureClient.Core.ApiEntities;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
+using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using CCaptureWinForm.Infrastructure.Services;
+using Konecta.Tools.CCaptureClient.Infrastructure.Services;
 
-namespace CCaptureWinForm
+namespace Konecta.Tools.CCaptureClient
 {
     public partial class SubmitForm : Form
     {

@@ -1,11 +1,11 @@
-﻿using CCaptureWinForm.Core.DbEntities;
+﻿using Konecta.Tools.CCaptureClient.Core.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Presentation.ViewModels
+namespace Konecta.Tools.CCaptureClient.Presentation.ViewModels
 {
     public class SubmissionDetailsViewModel
     {

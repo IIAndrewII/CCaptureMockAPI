@@ -1,13 +1,13 @@
-using CCaptureWinForm.Core.Interfaces;
-using CCaptureWinForm.Infrastructure.Services;
-using CCaptureWinForm.Presentation.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
+using Konecta.Tools.CCaptureClient.Infrastructure.Services;
+using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Windows.Forms;
 using System.Linq;
-using CCaptureWinForm.Core.ApiEntities;
+using Konecta.Tools.CCaptureClient.Core.ApiEntities;
 
-namespace CCaptureWinForm
+namespace Konecta.Tools.CCaptureClient
 {
     public partial class MainForm : Form
     {

@@ -1,11 +1,11 @@
-﻿using CCaptureWinForm.Core.Interfaces;
+﻿using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Infrastructure.Services
+namespace Konecta.Tools.CCaptureClient.Infrastructure.Services
 {
     public class FileService : IFileService
     {

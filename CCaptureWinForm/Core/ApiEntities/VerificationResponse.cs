@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CCaptureWinForm.Core.ApiEntities
+namespace Konecta.Tools.CCaptureClient.Core.ApiEntities
 {
     public class VerificationResponse
     {

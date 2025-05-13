@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CCaptureWinForm.Core.DbEntities;
+namespace Konecta.Tools.CCaptureClient.Core.DbEntities;
 
 public partial class AuthToken
 {

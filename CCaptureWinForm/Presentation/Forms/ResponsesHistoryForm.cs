@@ -1,4 +1,4 @@
-﻿using CCaptureWinForm.Core.Interfaces;
+﻿using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
-using CCaptureWinForm.Core.DbEntities;
-using CCaptureWinForm.Presentation.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.DbEntities;
+using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 using System.Windows.Forms.VisualStyles;
 
-namespace CCaptureWinForm
+namespace Konecta.Tools.CCaptureClient
 {
     public partial class ResponsesHistoryForm : Form
     {

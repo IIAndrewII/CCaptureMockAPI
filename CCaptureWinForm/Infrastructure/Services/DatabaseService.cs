@@ -1,6 +1,6 @@
-﻿using CCaptureWinForm.Core.DbEntities;
-using CCaptureWinForm.Core.Interfaces;
-using CCaptureWinForm.Presentation.ViewModels;
+﻿using Konecta.Tools.CCaptureClient.Core.DbEntities;
+using Konecta.Tools.CCaptureClient.Core.Interfaces;
+using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Infrastructure.Services
+namespace Konecta.Tools.CCaptureClient.Infrastructure.Services
 {
     public class DatabaseService : IDatabaseService
     {

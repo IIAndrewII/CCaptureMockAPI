@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CCaptureWinForm.Core.DbEntities;
+namespace Konecta.Tools.CCaptureClient.Core.DbEntities;
 
 public partial class DocumentField
 {

@@ -1,11 +1,11 @@
-﻿using CCaptureWinForm.Core.Interfaces;
+﻿using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Infrastructure.Services
+namespace Konecta.Tools.CCaptureClient.Infrastructure.Services
 {
     public class ApiDatabaseService : IApiDatabaseService
     {

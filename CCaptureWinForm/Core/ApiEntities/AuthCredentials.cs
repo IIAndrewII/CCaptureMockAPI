@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CCaptureWinForm.Core.ApiEntities
+namespace Konecta.Tools.CCaptureClient.Core.ApiEntities
 {
     public class AuthCredentials
     {

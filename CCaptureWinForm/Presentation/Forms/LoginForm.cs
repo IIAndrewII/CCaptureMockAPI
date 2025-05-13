@@ -1,9 +1,9 @@
-﻿using CCaptureWinForm.Presentation.ViewModels;
+﻿using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace CCaptureWinForm
+namespace Konecta.Tools.CCaptureClient
 {
     public partial class LoginForm : Form
     {
