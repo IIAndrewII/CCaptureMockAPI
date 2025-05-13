@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
 using CCaptureWinForm.Core.DbEntities;
+using CCaptureWinForm.Presentation.ViewModels;
+using System.Windows.Forms.VisualStyles;
 
 namespace CCaptureWinForm
 {
@@ -14,17 +16,18 @@ namespace CCaptureWinForm
     {
         private readonly IDatabaseService _databaseService;
         private readonly IConfiguration _configuration;
-        private List<VerificationResponse> _verificationResponses;
+        private List<VerificationResponseViewModel> _verificationResponses;
 
         public ResponsesHistoryForm(IDatabaseService databaseService, IConfiguration configuration)
         {
             InitializeComponent();
             _databaseService = databaseService;
             _configuration = configuration;
-            _verificationResponses = new List<VerificationResponse>();
+            _verificationResponses = new List<VerificationResponseViewModel>();
 
             ConfigureDataGridViewResponses();
             ConfigureTreeView();
+            ConfigureFilterControls();
             AttachEventHandlers();
             LoadVerificationResponsesAsync();
         }
@@ -45,11 +48,23 @@ namespace CCaptureWinForm
             VerificationStatusTree.CollapseAll();
         }
 
+        private void ConfigureFilterControls()
+        {
+            // Populate status combo box
+            comboBoxStatus.Items.AddRange(new[] { "All", "OK", "KO" });
+            comboBoxStatus.SelectedIndex = 0;
+
+            // Set default date range (e.g., last 30 days)
+            datePickerStart.Value = DateTime.Now.AddDays(-30);
+            datePickerEnd.Value = DateTime.Now;
+        }
+
         private void AttachEventHandlers()
         {
             btnExpandAll.Click += btnExpandAll_Click;
             btnCollapseAll.Click += btnCollapseAll_Click;
             btnRefresh.Click += btnRefresh_Click;
+            btnApplyFilters.Click += btnApplyFilters_Click;
             dataGridViewResponses.SelectionChanged += DataGridViewResponses_SelectionChanged;
         }
 
@@ -60,12 +75,27 @@ namespace CCaptureWinForm
                 statusLabel.Text = "Loading verification responses...";
                 statusLabel.ForeColor = Color.Blue;
 
-                _verificationResponses = (await _databaseService.GetAllVerificationResponses()).ToList();
+                // Get filter parameters
+                DateTime? startDate = datePickerStart.Checked ? datePickerStart.Value : null;
+                DateTime? endDate = datePickerEnd.Checked ? datePickerEnd.Value : null;
+                int? status = comboBoxStatus.SelectedIndex switch
+                {
+                    1 => 0, // OK
+                    2 => 1, // KO
+                    _ => null // All
+                };
+                string sourceSystem = string.IsNullOrWhiteSpace(txtSourceSystem.Text) ? null : txtSourceSystem.Text;
+                string channel = string.IsNullOrWhiteSpace(txtChannel.Text) ? null : txtChannel.Text;
+
+                _verificationResponses = await _databaseService.GetFilteredVerificationResponses(
+                    startDate, endDate, status, sourceSystem, channel);
+
                 dataGridViewResponses.DataSource = _verificationResponses.Select(r => new
                 {
                     r.InteractionDateTime,
                     r.RequestGuid,
                     r.Status,
+                    r.BatchClassName,
                     r.SourceSystem,
                     r.Channel,
                     r.SessionId,
@@ -73,7 +103,7 @@ namespace CCaptureWinForm
                     r.UserId
                 }).ToList();
 
-                statusLabel.Text = "Verification responses loaded.";
+                statusLabel.Text = $"Loaded {_verificationResponses.Count} responses.";
                 statusLabel.ForeColor = Color.Green;
             }
             catch (Exception ex)
@@ -81,6 +111,11 @@ namespace CCaptureWinForm
                 statusLabel.Text = $"Error loading responses: {ex.Message}";
                 statusLabel.ForeColor = Color.Red;
             }
+        }
+
+        private void btnApplyFilters_Click(object sender, EventArgs e)
+        {
+            LoadVerificationResponsesAsync();
         }
 
         private void btnExpandAll_Click(object sender, EventArgs e)
@@ -115,10 +150,11 @@ namespace CCaptureWinForm
 
                         if (response != null && !string.IsNullOrEmpty(response.ResponseJson))
                         {
-                            var deserializedResponse = JsonSerializer.Deserialize<VerificationResponse>(response.ResponseJson, new JsonSerializerOptions
-                            {
-                                PropertyNameCaseInsensitive = true
-                            });
+                            var deserializedResponse = JsonSerializer.Deserialize<VerificationResponse>(
+                                response.ResponseJson, new JsonSerializerOptions
+                                {
+                                    PropertyNameCaseInsensitive = true
+                                });
 
                             PopulateTreeView(deserializedResponse, requestGuid);
                         }
@@ -148,7 +184,7 @@ namespace CCaptureWinForm
             var requestNode = VerificationStatusTree.Nodes.Add($"Request Guid: {requestGuid}");
             requestNode.ForeColor = Color.Black;
 
-            var statusNode = requestNode.Nodes.Add($"Status: {response.Status}");
+            var statusNode = requestNode.Nodes.Add($"Status: {(response.Status == 0 ? "OK" : "KO")}");
             statusNode.ForeColor = response.Status == 0 ? Color.Green : Color.Red;
 
             var executionDateNode = requestNode.Nodes.Add($"Execution Date: {response.ExecutionDate:yyyy-MM-dd HH:mm:ss}");

@@ -14,5 +14,11 @@ namespace CCaptureWinForm.Core.Interfaces
         Task<bool> UpdateCheckedGuidAsync(string requestGuid);
         Task<List<string>> GetUncheckedRequestGuidsAsync();
         Task<List<VerificationResponse>> GetAllVerificationResponses();
+        Task<List<VerificationResponseViewModel>> GetFilteredVerificationResponses(
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            int? status = null,
+            string? sourceSystem = null,
+            string? channel = null);
     }
 }
