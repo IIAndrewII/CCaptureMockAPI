@@ -29,7 +29,7 @@ namespace CCaptureWinForm
             ConfigureTreeView();
             ConfigureFilterControls();
             AttachEventHandlers();
-            LoadVerificationResponsesAsync();
+            //LoadVerificationResponsesAsync();
         }
 
         private void ConfigureDataGridViewResponses()
