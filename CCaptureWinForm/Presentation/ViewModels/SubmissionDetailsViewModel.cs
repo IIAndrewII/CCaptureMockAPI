@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CCaptureWinForm.Presentation.ViewModels
 {
-    public class SubmissionDetails
+    public class SubmissionDetailsViewModel
     {
         public Submission Submission { get; set; }
         public string GroupName { get; set; }

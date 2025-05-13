@@ -65,13 +65,12 @@ namespace CCaptureWinForm
                 {
                     r.InteractionDateTime,
                     r.RequestGuid,
+                    r.Status,
                     r.SourceSystem,
                     r.Channel,
                     r.SessionId,
                     r.MessageId,
                     r.UserId
-                    //r.ExecutionDate,
-                    //r.ErrorMessage
                 }).ToList();
 
                 statusLabel.Text = "Verification responses loaded.";

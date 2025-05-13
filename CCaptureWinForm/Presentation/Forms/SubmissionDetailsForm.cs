@@ -9,7 +9,7 @@ namespace CCaptureWinForm
 {
     public partial class SubmissionDetailsForm : Form
     {
-        public SubmissionDetailsForm(SubmissionDetails details)
+        public SubmissionDetailsForm(SubmissionDetailsViewModel details)
         {
             InitializeComponent();
             PopulateDetails(details);
@@ -17,7 +17,7 @@ namespace CCaptureWinForm
             dataGridViewDocuments.CellDoubleClick += DataGridViewDocuments_CellDoubleClick;
         }
 
-        private void PopulateDetails(SubmissionDetails details)
+        private void PopulateDetails(SubmissionDetailsViewModel details)
         {
             if (details == null)
             {

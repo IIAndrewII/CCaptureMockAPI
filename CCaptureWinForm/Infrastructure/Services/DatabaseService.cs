@@ -101,7 +101,7 @@ namespace CCaptureWinForm.Infrastructure.Services
             }
         }
 
-        public async Task<SubmissionDetails> GetSubmissionDetailsAsync(string requestGuid)
+        public async Task<SubmissionDetailsViewModel> GetSubmissionDetailsAsync(string requestGuid)
         {
             using (var context = CreateContext())
             {
@@ -114,7 +114,7 @@ namespace CCaptureWinForm.Infrastructure.Services
                 if (submission == null)
                     return null;
 
-                return new SubmissionDetails
+                return new SubmissionDetailsViewModel
                 {
                     Submission = submission,
                     GroupName = submission.Group?.GroupName,
@@ -279,6 +279,61 @@ namespace CCaptureWinForm.Infrastructure.Services
                 var efVerificationResponses = await context.VerificationResponses
                     .ToListAsync();
                 return efVerificationResponses;
+            }
+        }
+
+        public async Task<List<VerificationResponseViewModel>> GetFilteredVerificationResponses(
+            DateTime? startDate = null,
+            DateTime? endDate = null,
+            string? sourceSystem = null,
+            string? channel = null,
+            string? userId = null,
+            int? status = null)
+        {
+            using (var context = CreateContext())
+            {
+                var query = context.VerificationResponses
+                    .Include(vr => vr.Batch)
+                    .ThenInclude(b => b.BatchClass)
+                    .AsQueryable();
+
+                // Apply filters
+                if (startDate.HasValue)
+                    query = query.Where(vr => vr.InteractionDateTime >= startDate.Value);
+
+                if (endDate.HasValue)
+                    query = query.Where(vr => vr.InteractionDateTime <= endDate.Value);
+
+                if (!string.IsNullOrEmpty(sourceSystem))
+                    query = query.Where(vr => vr.SourceSystem == sourceSystem);
+
+                if (!string.IsNullOrEmpty(channel))
+                    query = query.Where(vr => vr.Channel == channel);
+
+                if (!string.IsNullOrEmpty(userId))
+                    query = query.Where(vr => vr.UserId == userId);
+
+                if (status.HasValue)
+                    query = query.Where(vr => vr.Status == status.Value);
+
+                var result = await query
+                    .Select(vr => new VerificationResponseViewModel
+                    {
+                        InteractionDateTime = vr.InteractionDateTime,
+                        RequestGuid = vr.RequestGuid,
+                        Status = vr.Status == 0 ? "OK" : "KO",
+                        BatchClassName = vr.Batch != null && vr.Batch.BatchClass != null
+                            ? vr.Batch.BatchClass.Name
+                            : null,
+                        SourceSystem = vr.SourceSystem,
+                        Channel = vr.Channel,
+                        SessionId = vr.SessionId,
+                        MessageId = vr.MessageId,
+                        UserId = vr.UserId
+                    })
+                    .ToListAsync();
+
+                return result;
             }
         }
     }
