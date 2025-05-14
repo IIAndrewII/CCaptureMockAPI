@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Windows.Forms;
 using Core.DbEntities;
 using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
-using Konecta.Tools.CCaptureClient.Core.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.Models;
 using System.Windows.Forms.VisualStyles;
 
 namespace Konecta.Tools.CCaptureClient
@@ -17,14 +17,14 @@ namespace Konecta.Tools.CCaptureClient
     {
         private readonly IDatabaseService _databaseService;
         private readonly IConfiguration _configuration;
-        private List<VerificationResponseViewModel> _verificationResponses;
+        private List<VerificationResponseModel> _verificationResponses;
 
         public ResponsesHistoryForm(IDatabaseService databaseService, IConfiguration configuration)
         {
             InitializeComponent();
             _databaseService = databaseService;
             _configuration = configuration;
-            _verificationResponses = new List<VerificationResponseViewModel>();
+            _verificationResponses = new List<VerificationResponseModel>();
 
             ConfigureDataGridViewResponses();
             ConfigureTreeView();

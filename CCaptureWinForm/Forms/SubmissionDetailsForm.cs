@@ -1,4 +1,4 @@
-﻿using Konecta.Tools.CCaptureClient.Core.ViewModels;
+﻿using Konecta.Tools.CCaptureClient.Core.Models;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,7 +10,7 @@ namespace Konecta.Tools.CCaptureClient
 {
     public partial class SubmissionDetailsForm : Form
     {
-        public SubmissionDetailsForm(SubmissionDetailsViewModel details)
+        public SubmissionDetailsForm(SubmissionDetailsModel details)
         {
             InitializeComponent();
             PopulateDetails(details);
@@ -18,7 +18,7 @@ namespace Konecta.Tools.CCaptureClient
             dataGridViewDocuments.CellDoubleClick += DataGridViewDocuments_CellDoubleClick;
         }
 
-        private void PopulateDetails(SubmissionDetailsViewModel details)
+        private void PopulateDetails(SubmissionDetailsModel details)
         {
             if (details == null)
             {

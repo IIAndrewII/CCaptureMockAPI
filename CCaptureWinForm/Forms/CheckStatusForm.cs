@@ -1,7 +1,7 @@
 ﻿using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Konecta.Tools.CCaptureClient.Infrastructure.Services;
 using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
-using Konecta.Tools.CCaptureClient.Core.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.Models;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Drawing;
