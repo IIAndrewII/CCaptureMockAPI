@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
-using Konecta.Tools.CCaptureClient.Core.DbEntities;
-using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
+using Core.DbEntities;
+using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.ViewModels;
 using System.Windows.Forms.VisualStyles;
 
 namespace Konecta.Tools.CCaptureClient

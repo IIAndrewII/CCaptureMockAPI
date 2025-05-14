@@ -1,9 +1,10 @@
-﻿using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
+﻿using Konecta.Tools.CCaptureClient.Core.ViewModels;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics; // Required for Process.Start
 using System.IO; // Required for File.Exists
+using Core.DbEntities;
 
 namespace Konecta.Tools.CCaptureClient
 {

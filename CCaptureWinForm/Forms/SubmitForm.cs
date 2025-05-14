@@ -1,6 +1,6 @@
 ﻿using Konecta.Tools.CCaptureClient.Core.ApiEntities;
 using Konecta.Tools.CCaptureClient.Core.Interfaces;
-using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
+using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;

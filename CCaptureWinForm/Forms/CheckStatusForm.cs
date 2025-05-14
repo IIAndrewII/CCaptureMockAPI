@@ -1,6 +1,7 @@
 ﻿using Konecta.Tools.CCaptureClient.Core.Interfaces;
 using Konecta.Tools.CCaptureClient.Infrastructure.Services;
-using Konecta.Tools.CCaptureClient.Presentation.ViewModels;
+using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
+using Konecta.Tools.CCaptureClient.Core.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Konecta.Tools.CCaptureClient.Core.DbEntities;
+using Core.DbEntities;
 
 namespace Konecta.Tools.CCaptureClient
 {
