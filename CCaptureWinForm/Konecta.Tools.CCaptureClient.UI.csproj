@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>CCaptureDesktopClient</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -42,8 +43,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CCapture Desktop Client\Konecta.Tools.CCaptureClient.Core\Core.csproj" />
-    <ProjectReference Include="..\..\CCapture Desktop Client\Konecta.Tools.CCaptureClient.Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\CCapture Desktop Client\Konecta.Tools.CCaptureClient.Core\Konecta.Tools.CCaptureClient.Core.csproj" />
+    <ProjectReference Include="..\..\CCapture Desktop Client\Konecta.Tools.CCaptureClient.Infrastructure\Konecta.Tools.CCaptureClient.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
