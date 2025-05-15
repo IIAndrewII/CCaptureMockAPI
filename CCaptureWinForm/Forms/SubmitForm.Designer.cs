@@ -645,7 +645,7 @@ namespace Konecta.Tools.CCaptureClient.UI.Forms
             // 
             statusLabel2.AutoSize = false;
             statusLabel2.Name = "statusLabel2";
-            statusLabel2.Size = new Size(800, 25);
+            statusLabel2.Size = new Size(1000, 25);
             statusLabel2.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // toolStripProgressBar1
