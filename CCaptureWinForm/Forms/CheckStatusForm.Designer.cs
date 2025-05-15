@@ -240,7 +240,7 @@
             lblUserCode.Name = "lblUserCode";
             lblUserCode.Size = new Size(79, 28);
             lblUserCode.TabIndex = 0;
-            lblUserCode.Text = "User ID:";
+            lblUserCode.Text = "User Code:";
             // 
             // lblApiUrl
             // 

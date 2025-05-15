@@ -390,7 +390,7 @@ namespace Konecta.Tools.CCaptureClient.UI.Forms
                         response.Channel = txtChannel.Text;
                         response.SessionId = txtSessionID.Text;
                         response.MessageId = txtMessageID.Text;
-                        response.UserId = txtUserCode.Text;
+                        response.UserCode = txtUserCode.Text;
                         response.InteractionDateTime = pickerInteractionDateTime.Value;
                         response.ResponseJson = responseJson;
 

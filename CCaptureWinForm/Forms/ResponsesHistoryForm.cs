@@ -101,7 +101,7 @@ namespace Konecta.Tools.CCaptureClient.UI.Forms
                     r.Channel,
                     r.SessionId,
                     r.MessageId,
-                    r.UserId
+                    r.UserCode
                 }).ToList();
 
                 statusLabel.Text = $"Loaded {_verificationResponses.Count} responses.";
