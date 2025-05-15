@@ -87,9 +87,15 @@ namespace Konecta.Tools.CCaptureClient.UI.Forms
                 };
                 string sourceSystem = string.IsNullOrWhiteSpace(txtSourceSystem.Text) ? null : txtSourceSystem.Text;
                 string channel = string.IsNullOrWhiteSpace(txtChannel.Text) ? null : txtChannel.Text;
+                string requestGuid = string.IsNullOrWhiteSpace(txtRequestGuid.Text) ? null : txtRequestGuid.Text;
+                string batchClassName = string.IsNullOrWhiteSpace(txtBatchClassName.Text) ? null : txtBatchClassName.Text;
+                string sessionId = string.IsNullOrWhiteSpace(txtSessionId.Text) ? null : txtSessionId.Text;
+                string messageId = string.IsNullOrWhiteSpace(txtMessageId.Text) ? null : txtMessageId.Text;
+                string userCode = string.IsNullOrWhiteSpace(txtUserCode.Text) ? null : txtUserCode.Text;
 
                 _verificationResponses = await _databaseService.GetFilteredVerificationResponses(
-                    startDate, endDate, status, sourceSystem, channel);
+                    startDate, endDate, status, sourceSystem, channel,
+                    requestGuid, batchClassName, sessionId, messageId, userCode);
 
                 dataGridViewResponses.DataSource = _verificationResponses.Select(r => new
                 {
