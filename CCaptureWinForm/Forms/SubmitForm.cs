@@ -1,6 +1,6 @@
 ﻿using Konecta.Tools.CCaptureClient.Core.ApiEntities;
 using Konecta.Tools.CCaptureClient.Core.Interfaces;
-using Konecta.Tools.CCaptureClient.CCaptureClientUI.ViewModels;
+using Konecta.Tools.CCaptureClient.UI.ViewModels;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Konecta.Tools.CCaptureClient.Infrastructure.Services;
 
-namespace Konecta.Tools.CCaptureClient
+namespace Konecta.Tools.CCaptureClient.UI.Forms
 {
     public partial class SubmitForm : Form
     {

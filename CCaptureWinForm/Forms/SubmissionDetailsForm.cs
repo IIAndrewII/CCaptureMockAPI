@@ -4,9 +4,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Diagnostics; // Required for Process.Start
 using System.IO; // Required for File.Exists
-using Core.DbEntities;
 
-namespace Konecta.Tools.CCaptureClient
+namespace Konecta.Tools.CCaptureClient.UI.Forms
 {
     public partial class SubmissionDetailsForm : Form
     {

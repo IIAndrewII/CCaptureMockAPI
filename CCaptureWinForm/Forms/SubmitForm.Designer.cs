@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Konecta.Tools.CCaptureClient
+namespace Konecta.Tools.CCaptureClient.UI.Forms
 {
     partial class SubmitForm
     {
