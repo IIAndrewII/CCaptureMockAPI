@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CCaptureDesktopClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3aa261eafe1019ce242fb90879ca56fea940f3c9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6bf9327e293ba05ad7dd0ac59be42558893de438")]
 [assembly: System.Reflection.AssemblyProductAttribute("CCaptureDesktopClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CCaptureDesktopClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
