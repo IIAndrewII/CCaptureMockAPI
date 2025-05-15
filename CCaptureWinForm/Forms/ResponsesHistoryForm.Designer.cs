@@ -502,7 +502,7 @@
             // 
             // statusStrip
             // 
-            statusStrip.Font = new Font("Segoe UI", 10F);
+            statusStrip.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             statusStrip.ImageScalingSize = new Size(20, 20);
             statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
             statusStrip.Location = new Point(0, 578);

@@ -7974,9 +7974,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI.csproj",
+      "projectUniqueName": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI2.csproj",
       "projectName": "CCaptureDesktopClient",
-      "projectPath": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI.csproj",
+      "projectPath": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI2.csproj",
       "packagesPath": "C:\\Users\\Andrew\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\obj\\",
       "projectStyle": "PackageReference",

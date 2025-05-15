@@ -25,7 +25,7 @@ namespace Konecta.Tools.CCaptureClient.UI.Forms
             _databaseService = databaseService;
             _configuration = configuration;
             _verificationResponses = new List<VerificationResponseModel>();
-
+            
             ConfigureDataGridViewResponses();
             ConfigureTreeView();
             ConfigureFilterControls();

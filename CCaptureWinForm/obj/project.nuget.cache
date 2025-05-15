@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "61cgJC81dI8=",
+  "dgSpecHash": "Pf79cQL36Bw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI.csproj",
+  "projectFilePath": "C:\\Users\\Andrew\\source\\repos\\CCaptureMockAPI\\CCaptureWinForm\\Konecta.Tools.CCaptureClient.UI2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Andrew\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Andrew\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

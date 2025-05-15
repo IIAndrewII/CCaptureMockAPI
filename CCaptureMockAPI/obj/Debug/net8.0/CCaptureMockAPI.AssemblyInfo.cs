@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CCaptureMockAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc167123a50e9fe0926ef5844a085087372550e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73b5404d073ecf4d21ed0ce781557f30e40ef545")]
 [assembly: System.Reflection.AssemblyProductAttribute("CCaptureMockAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CCaptureMockAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
