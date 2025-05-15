@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "CCaptureMockAPI\\CCaptureMockAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "CCaptureWinForm\\CCaptureWinForm.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,131 @@
+[
+  {
+    "ContainingType": "CCaptureMockApi.Controllers.AuthController",
+    "Method": "GetToken",
+    "RelativePath": "ProcessDocument/GetToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "credentials",
+        "Type": "CCaptureMockApi.Models.Credentials",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CCaptureMockApi.Controllers.DocumentController",
+    "Method": "InsertDocumentVerification",
+    "RelativePath": "ProcessDocument/MockService",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "requestGuid",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "responseBody",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CCaptureMockApi.Controllers.DocumentController",
+    "Method": "ReadDocumentVerification",
+    "RelativePath": "ProcessDocument/ReadDocumentVerification",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sourceSystem",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "channel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "interactionDate-Time",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sessionID",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "messageID",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userCode",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "requestGuid",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CCaptureMockApi.Controllers.DocumentController",
+    "Method": "StartDocumentVerification",
+    "RelativePath": "ProcessDocument/StartDocumentVerification",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sourceSystem",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "channel",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "interactionDate-Time",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sessionID",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "messageID",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userCode",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "request",
+        "Type": "CCaptureMockAPI.Models.DocumentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
