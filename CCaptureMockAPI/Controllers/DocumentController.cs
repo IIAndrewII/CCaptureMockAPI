@@ -57,7 +57,7 @@ namespace CCaptureMockApi.Controllers
         public async Task<IActionResult> StartDocumentVerification(
         [FromHeader] string sourceSystem,
         [FromHeader] string channel,
-        [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+        [FromHeader(Name = "interactionDateTime")] string interactionDateTime,
         [FromHeader] string sessionID,
         [FromHeader] string messageID,
         [FromHeader] string userCode,
@@ -232,16 +232,20 @@ namespace CCaptureMockApi.Controllers
             await Task.Delay(4000);
 
             // Return the RequestGuid as part of the response
-            return Ok(new { RequestGuid = requestGuid });
+            return Ok(new VerificationResponse { RequestGuid = requestGuid });
         }
 
-
+        public class VerificationResponse
+        {
+            [System.Text.Json.Serialization.JsonPropertyName("RequestGuid")]
+            public Guid RequestGuid { get; set; }
+        }
 
         //    [HttpGet("ReadDocumentVerification")]
         //    public IActionResult ReadDocumentVerification(
         //[FromHeader] string sourceSystem,
         //[FromHeader] string channel,
-        //[FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+        //[FromHeader(Name = "interactionDateTime")] string interactionDateTime,
         //[FromHeader] string sessionID,
         //[FromHeader] string messageID,
         //[FromHeader] string userCode,
@@ -367,7 +371,7 @@ namespace CCaptureMockApi.Controllers
         public async Task<IActionResult> ReadDocumentVerification(
         [FromHeader] string sourceSystem,
         [FromHeader] string channel,
-        [FromHeader(Name = "interactionDate-Time")] string interactionDateTime,
+        [FromHeader(Name = "interactionDateTime")] string interactionDateTime,
         [FromHeader] string sessionID,
         [FromHeader] string messageID,
         [FromHeader] string userCode,
