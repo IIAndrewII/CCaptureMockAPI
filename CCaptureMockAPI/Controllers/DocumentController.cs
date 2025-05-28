@@ -229,7 +229,7 @@ namespace CCaptureMockApi.Controllers
             Console.WriteLine($"Simulated Queue Message: {message}");
 
             // Simulate a delay
-            await Task.Delay(4000);
+            await Task.Delay(1000);
 
             // Return the RequestGuid as part of the response
             return Ok(new VerificationResponse { RequestGuid = requestGuid });
@@ -387,7 +387,7 @@ namespace CCaptureMockApi.Controllers
                 return NotFound(new { Code = "-2", Message = "No response found for given requestGuid" });
 
             // Simulate a delay
-            await Task.Delay(4000);
+            await Task.Delay(1000);
 
             return Content(responseRecord.ResponseJson, "application/json");
         }
